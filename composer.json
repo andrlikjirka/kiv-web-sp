@@ -1,0 +1,17 @@
+{
+    "name": "jandrlik/kiv-web-sp",
+    "description": "Semestr\u0000ln\u0000 pr\u0000ce KIV-WEB",
+    "type": "project",
+    "require": {
+        "components/jquery": "^3.6",
+        "components/font-awesome": "4.7.0",
+        "twbs/bootstrap": "^5.1",
+        "alexandermatveev/popper-bundle": "^1.0"
+    },
+    "authors": [
+        {
+            "name": "Jiří Andrlík",
+            "email": "andrlik.jirka@gmail.com"
+        }
+    ]
+}
