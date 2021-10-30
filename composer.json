@@ -6,7 +6,8 @@
         "components/jquery": "^3.6",
         "components/font-awesome": "4.7.0",
         "twbs/bootstrap": "^5.1",
-        "alexandermatveev/popper-bundle": "^1.0"
+        "alexandermatveev/popper-bundle": "^1.0",
+        "twbs/bootstrap-icons": "^1.6"
     },
     "authors": [
         {
