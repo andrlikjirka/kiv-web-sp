@@ -1,0 +1,11 @@
+body {
+    position: relative;
+}
+
+.icon-conf {
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
