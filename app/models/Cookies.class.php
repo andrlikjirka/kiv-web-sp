@@ -1,6 +1,6 @@
 <?php
 
-namespace kivweb_sp\config;
+namespace kivweb_sp\models;
 
 /**
  * Obalova trida pro praci s Cookies

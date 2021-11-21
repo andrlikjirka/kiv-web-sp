@@ -1,73 +1,14 @@
-<!DOCTYPE html>
-<html lang="cs">
-<head>
-    <meta charset="UTF-8">
-    <meta name="author" content="jandrlik">
-    <meta name="description" content="Semestrální práce WEB">
-    <meta name="keywords" content="kiv web sp">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ECO 2022</title>
-    <link rel="icon" type="image/png" href="img/favicon.ico">
+<?php
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
-    <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="styly.css">
-</head>
+namespace kivweb_sp\views;
 
-<body data-bs-spy="scroll" data-bs-target="#navigace">
+/////////////////////////////////////////////////////////////
+/////////// Sablona pro zobrazeni uvodni stranky  ///////////
+/////////////////////////////////////////////////////////////
+// urceni globalnich promennych, se kterymi sablona pracuje
+global $tplData;
 
-<!-- Navbar-->
-<nav id="navigace" class="navbar navbar-expand-lg navbar-light bg-white fixed-top py-3 shadow-sm">
-    <div class="container px-5">
-        <a href="index.html#uvod" class="navbar-brand text-success fw-bold">
-            ECO <sup>2022</sup>
-        </a>
-        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul class="navbar-nav m-auto ">
-                <li class="nav-item me-3">
-                    <a class="nav-link" href="#o_konferenci">O konferenci</a>
-                </li>
-                <li class="nav-item me-3">
-                    <a class="nav-link" href="#program">Program</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="articles.html">Publikované články</a>
-                </li>
-            </ul>
-            <a href="login.html" class="btn btn-success px-3 py-1 me-2">
-                Přihlásit
-            </a>
-            <a href="registrace.html" class="btn btn-outline-success px-3 py-1">
-                Registrace
-            </a>
-
-            <!--
-            <div class="dropdown">
-                <button class="btn btn-success dropdown-toggle px-3 py-1" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    Jiří Andrlík
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <li><a class="dropdown-item" href="#">Správa článků</a></li>
-                    <li><a class="dropdown-item" href="#">Správa uživatelů</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">
-                        Odhlásit
-                        <span class="bi bi-box-arrow-right ms-2"></span>
-                    </a></li>
-                </ul>
-            </div>
-            -->
-
-        </div>
-    </div>
-</nav>
-
+?>
 <!-- Úvod -->
 <section class="bg-success bg-gradient pt-5" id="uvod">
     <div class="container px-5 py-5">
@@ -84,7 +25,7 @@
                 </p>
             </div>
             <div class="col-lg-6 col-md-6">
-                <img style="width: 90%;" class="d-block m-auto" src="img/earth.png" alt="">
+                <img style="width: 90%;" class="d-block m-auto" src="public/img/earth.png" alt="">
             </div>
         </div>
     </div>
@@ -283,28 +224,3 @@
     </div>
 </section>
 
-
-<!-- Paticka -->
-<footer class="pt-4 pb-2 bg-white bg-gradient">
-    <div class="container px-5 text-center">
-        <div class="pb-3">
-            <a href="https://www.facebook.com/" target="_blank" class="text-decoration-none text-success me-3"> <i
-                    class="bi bi-facebook"></i> </a>
-            <a href="https://www.instagram.com/" target="_blank" class="text-decoration-none text-success me-3"> <i
-                    class="bi bi-instagram"></i> </a>
-            <a href="https://www.twitter.com/" target="_blank" class="text-decoration-none text-success "> <i
-                    class="bi bi-twitter"></i> </a>
-        </div>
-        <div class="small text-secondary">
-            <p>&copy; 2021, Jiří Andrlík</p>
-        </div>
-    </div>
-</footer>
-
-
-<!-- Javascripty -->
-<script src="../../../node_modules/jquery/dist/jquery.js"></script>
-<script src="../../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- Konec: Javascripty-->
-</body>
-</html>

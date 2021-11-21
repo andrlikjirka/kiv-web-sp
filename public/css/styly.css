@@ -1,0 +1,23 @@
+body {
+    position: relative;
+}
+
+.icon-conf {
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section {
+    position: relative;
+}
+
+.svg-border-waves svg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+
+}

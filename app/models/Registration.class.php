@@ -1,5 +1,7 @@
 <?php
 
+namespace kivweb_sp\models;
+
 /**
  * Trida pro spravu registrace uzivatele
  */
@@ -13,7 +15,6 @@ class Registration
         require_once("../database/Database.class.php");
         $this->db = Database::getDBConnection();
     }
-
 
     public function registrateUser(string $jmeno, string $login, string $heslo, string $email, int $id_pravo = 4)
     {

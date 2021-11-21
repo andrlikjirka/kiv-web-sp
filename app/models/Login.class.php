@@ -1,5 +1,7 @@
 <?php
 
+namespace kivweb_sp\models;
+
 /**
  * Trida pro spravu prihlaseni uzivatele
  */

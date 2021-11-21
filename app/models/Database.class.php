@@ -2,6 +2,9 @@
 
 namespace kivweb_sp\models;
 
+use PDO;
+use PDOException;
+
 /**
  * Obalova trida pro praci s databazi pomoci PDO
  * (vyuziti navrhoveho vzoru Singleton)
@@ -20,9 +23,9 @@ class Database
     private function __construct()
     {
         try {
-            $this->pdo = new \PDO("mysql:host=".DB_SERVER."; dbname=".DB_NAME."", DB_USER, DB_PASSWORD);
+            $this->pdo = new PDO("mysql:host=".DB_SERVER."; dbname=".DB_NAME."", DB_USER, DB_PASSWORD);
             $this->pdo->exec("SET NAMES UTF8"); //vynuceni, aby data z databaze byla predana v utf8
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             print "Error!: " . $e->getMessage() . "<br/>";
             die();
         }

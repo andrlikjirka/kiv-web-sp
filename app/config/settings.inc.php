@@ -28,3 +28,46 @@ const BASE_APP_DIR_NAME ="app";
 /** @var array FILE_EXTENSIONS Dostupne pripony souboru, ktere budou testovany pri nacitani souboru pozadovanych trid */
 const FILE_EXTENSIONS = array(".class.php", ".interface.php");
 
+
+//// Dostupne stranky webu ////
+const DEFAULT_WEB_PAGE_KEY = "uvod";
+
+const WEB_PAGES = array(
+    //// Uvodni stranka ////
+    "uvod" => array(
+        "title" => "O konferenci",
+        "controller_class_name" => \kivweb_sp\controllers\IntroductionController::class,
+        "view_class_name" => \kivweb_sp\views\TemplateBasics::class,
+        "template_type" => \kivweb_sp\views\TemplateBasics::PAGE_INTRODUCTION,
+    ),
+    //// KONEC: Uvodni stranka ////
+
+    //// Publikovane clanky ////
+    "publikovane_clanky" => array(
+        "title" => "Publikované články",
+        "controller_class_name",
+        "view_class_name",
+        "template_type",
+    ),
+    //// KONEC: Publikovane clanky ////
+
+    //// Login stranka ////
+    "login" => array(
+        "title" => "Přihlásit",
+        "controller_class_name",
+        "view_class_name",
+        "template_type",
+    ),
+    //// KONEC: Login stranka ////
+
+    //// Registrace stranka ////
+    "registrace" => array(
+        "title" => "Registrace",
+        "controller_class_name",
+        "view_class_name",
+        "template_type",
+    ),
+    //// KONEC: Registrace stranka ////
+
+);
+
