@@ -1,5 +1,6 @@
 <?php
 
+namespace kivweb_sp\config;
 /**
  * Obalova trida pro praci se Session
  * (vyuziti navrhoveho vzoru Singleton)

@@ -10,7 +10,7 @@ class Registration
 
     public function __construct()
     {
-        require_once ("../Database/Database.class.php");
+        require_once("../database/Database.class.php");
         $this->db = Database::getDBConnection();
     }
 

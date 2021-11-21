@@ -1,5 +1,7 @@
 <?php
 
+namespace kivweb_sp\config;
+
 /**
  * Obalova trida pro praci s Cookies
  * @author jandrlik

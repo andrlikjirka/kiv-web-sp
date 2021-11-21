@@ -1,6 +1,7 @@
 <?php
 
-require_once ("settings.inc.php");
+namespace kivweb_sp\models;
+
 /**
  * Obalova trida pro praci s databazi pomoci PDO
  * (vyuziti navrhoveho vzoru Singleton)
@@ -10,7 +11,7 @@ class Database
     /** @var Database $dbConnection Jedina instance obalove tridy pro praci s databazi */
     private static $dbConnection;
 
-    /** @var PDO objekt pro praci s databazi */
+    /** @var \PDO objekt pro praci s databazi */
     private $pdo;
 
     /**
@@ -19,9 +20,9 @@ class Database
     private function __construct()
     {
         try {
-            $this->pdo = new PDO("mysql:host=".DB_SERVER."; dbname=".DB_NAME."", DB_USER, DB_PASSWORD);
+            $this->pdo = new \PDO("mysql:host=".DB_SERVER."; dbname=".DB_NAME."", DB_USER, DB_PASSWORD);
             $this->pdo->exec("SET NAMES UTF8"); //vynuceni, aby data z databaze byla predana v utf8
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             print "Error!: " . $e->getMessage() . "<br/>";
             die();
         }
@@ -29,7 +30,7 @@ class Database
 
     /**
      * Staticka tovarni metoda
-     * @return Database Vraci odkaz na jedinou instanci obalove tridy Database
+     * @return Database Vraci odkaz na jedinou instanci obalove tridy database
      */
     public static function getDBConnection()
     {

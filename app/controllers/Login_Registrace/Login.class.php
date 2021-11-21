@@ -19,9 +19,9 @@ class Login
      */
     public function __construct()
     {
-        require_once ("../Session_Cookies/Session.class.php");
+        require_once("../Session_Cookies/Session.class.php");
         $this->session = Session::getSession();
-        require_once ("../Database/Database.class.php");
+        require_once("../database/Database.class.php");
         $this->db = Database::getDBConnection();
     }
 
