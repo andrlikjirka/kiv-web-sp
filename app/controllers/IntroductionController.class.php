@@ -5,33 +5,19 @@ namespace kivweb_sp\controllers;
 use kivweb_sp\models\Database;
 use kivweb_sp\models\Login;
 
-class IntroductionController extends FormsController
+class IntroductionController extends AController
 {
-    /** @var Database $db Objekt pripojeni k databazi */
-    private $db;
-
-    private $login;
-
-    /**
-     * Inicializace pripojeni k databazi
-     */
-    public function __construct(){
-        $db = Database::getDBConnection();
-        $this->login = new Login();
-    }
-
-
     /**
      * Funkce vrati data uvodni stranky
-     * @param string $pageTitle
-     * @return array
+     * @param string $pageTitle Nazev stranky
+     * @return array Data predana sablone
      */
     public function show(string $pageTitle): array
     {
         global $tplData;
         $tplData = [];
 
-        $this->handleLoginForm($this->login); //zpracovani login/logout formularu
+        $this->handleLoginForm(); //zpracovani login/logout formularu
 
         if ($this->login->isUserLoggedIn()) {
             //echo "logged in";

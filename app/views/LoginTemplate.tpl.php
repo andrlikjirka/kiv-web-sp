@@ -48,6 +48,13 @@ if ($tplData['isUserLoggedIn'] == false) {
 
     <?php
 } else {
-    echo "ERROR: Přihlášený uživatel se nemůže znovu přihlásit.";
+    echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Přihlášený uživatel.</div>";
+    echo "Login: ".$tplData['userData']['login']."<br>";
+    echo "Jméno, příjmení: ".$tplData['userData']['jmeno']."<br>";
+    echo "E-mail: ".$tplData['userData']['email']."<br>";
+    echo "Pravo: " .$tplData['userData']['id_pravo']."<br>";
+
+
+
 }
 
