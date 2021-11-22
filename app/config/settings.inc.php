@@ -17,7 +17,7 @@ define("TABLE_UZIVATELE", "jandrlik_uzivatele");
 define("TABLE_PRAVA", "jandrlik_prava");
 define("TABLE_PRISPEVKY", "jandrlik_prispevky");
 define("TABLE_HODNOCENI", "jandrlik_hodnoceni");
-
+//tabulka status
 
 ////// nastaveni konstant pro autoloader ///////
 
@@ -27,7 +27,6 @@ const BASE_NAMESPACE_NAME = "kivweb_sp";
 const BASE_APP_DIR_NAME ="app";
 /** @var array FILE_EXTENSIONS Dostupne pripony souboru, ktere budou testovany pri nacitani souboru pozadovanych trid */
 const FILE_EXTENSIONS = array(".class.php", ".interface.php");
-
 
 //// Dostupne stranky webu ////
 const DEFAULT_WEB_PAGE_KEY = "uvod";
@@ -54,9 +53,9 @@ const WEB_PAGES = array(
     //// Login stranka ////
     "login" => array(
         "title" => "Přihlásit",
-        "controller_class_name",
-        "view_class_name",
-        "template_type",
+        "controller_class_name" => \kivweb_sp\controllers\LoginController::class,
+        "view_class_name" => \kivweb_sp\views\TemplateBasics::class,
+        "template_type" => \kivweb_sp\views\TemplateBasics::PAGE_LOGIN,
     ),
     //// KONEC: Login stranka ////
 

@@ -7,6 +7,8 @@ class TemplateBasics implements IView
     /** @var string PAGE_INTRODUCTION Sablona s uvodni strankou */
     const PAGE_INTRODUCTION = "IntroductionTemplate.tpl.php";
 
+    const PAGE_LOGIN = "LoginTemplate.tpl.php";
+
     /**
      * Zajisti vypsani HTML sablony prislusne stranky
      * @param array $templateData Data stranky
@@ -14,10 +16,10 @@ class TemplateBasics implements IView
      */
     public function printTemplate(array $templateData, string $pageType = self::PAGE_INTRODUCTION)
     {
-        // vypis hlavicky
+       // vypis hlavicky
         $this->getHTMLHead($templateData['title']);
 
-        $this->getHTMLNav();
+        $this->getHTMLNav($templateData);
 
         //vypis sablony obsahu
         //data pro sablonu nastavim na globalni
@@ -60,7 +62,7 @@ class TemplateBasics implements IView
     /**
      * Funkce vrati navigaci stranky
      */
-    private function getHTMLNav()
+    private function getHTMLNav(array $tplData)
     {
         ?>
         <body data-bs-spy="scroll" data-bs-target="#navigace">
@@ -89,31 +91,37 @@ class TemplateBasics implements IView
                         ?>
                     </ul>
                     <?php
-                    foreach (WEB_PAGES as $key => $pageInfo) {
-                        if ($key == "login") {
-                            echo "<a class='btn btn-success px-3 py-1 me-2' href='index.php?page=$key'>$pageInfo[title]</a>";
-                        } else if ($key == "registrace") {
-                            echo "<a class='btn btn-outline-success px-3 py-1' href='index.php?page=$key'>$pageInfo[title]</a>";
+                    if ($tplData['isUserLoggedIn'] == false) {
+                        foreach (WEB_PAGES as $key => $pageInfo) {
+                            if ($key == "login") {
+                                echo "<a class='btn btn-success px-3 py-1 me-2' href='index.php?page=$key'>$pageInfo[title]</a>";
+                            } else if ($key == "registrace") {
+                                echo "<a class='btn btn-outline-success px-3 py-1' href='index.php?page=$key'>$pageInfo[title]</a>";
+                            }
                         }
-                    }
+                    } else {
                     ?>
 
-                    <!--
                     <div class="dropdown">
                         <button class="btn btn-success dropdown-toggle px-3 py-1" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            Jiří Andrlík
+                            <?php echo $tplData['userData']['jmeno']." ". $tplData['userData']['prijmeni'] ?>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <li><a class="dropdown-item" href="#">Správa článků</a></li>
                             <li><a class="dropdown-item" href="#">Správa uživatelů</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">
-                                Odhlásit
-                                <span class="bi bi-box-arrow-right ms-2"></span>
+                                <form action="" method="POST">
+                                    <input type="hidden" name="action" value="logout">
+                                    <input type="submit" name="potvrzeni" value="Odhlásit">
+                                    <span class="bi bi-box-arrow-right ms-2"></span>
+                                </form>
                             </a></li>
                         </ul>
                     </div>
-                    -->
+                    <?php
+                    }
+                    ?>
 
                 </div>
             </div>

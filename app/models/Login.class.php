@@ -21,9 +21,9 @@ class Login
      */
     public function __construct()
     {
-        require_once("../Session_Cookies/Session.class.php");
+//        require_once("../Session_Cookies/Session.class.php");
         $this->session = Session::getSession();
-        require_once("../database/Database.class.php");
+        //require_once("../database/Database.class.php");
         $this->db = Database::getDBConnection();
     }
 
@@ -42,10 +42,11 @@ class Login
      * @param string $password Heslo uzivatele
      * @return bool Vrati true pokud prihlaseni uzivatele probehne uspesne, jinak false
      */
-    public function login(string $login,string $password)
+    public function login(string $login, string $password)
     {
         // ziskam uzivatele z DB - primo overuji login
-        $whereStatement = "login='$login'";
+        $whereStatement = "login='$login'"; //verze:sifrovani hesla
+
         $user = $this->db->selectFromTable(TABLE_UZIVATELE, "*", $whereStatement); //nahrazeni funkcí pro ziskani zašifrovaného hesla?
         //ziskal jsem uzivatele
         if (count($user)) {
