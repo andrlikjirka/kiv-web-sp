@@ -8,6 +8,8 @@ namespace kivweb_sp\views;
 // urceni globalnich promennych, se kterymi sablona pracuje
 global $tplData;
 
+///////////// PRO NEPRIHLASENE UZIVATELE ///////////////
+
 if ($tplData['isUserLoggedIn'] == false) {
     ?>
 
@@ -19,17 +21,19 @@ if ($tplData['isUserLoggedIn'] == false) {
                     <div class="card">
                         <div class="card-header py-3 px-4 text-success">Přihlásit</div>
                         <div class="card-body py-4 px-4">
-                            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"])."?page=login";?>" method="post" autocomplete="off">
+                            <form action=""
+                                  method="post" autocomplete="off">
                                 <div class="mb-3">
                                     <label for="lb_username" class="form-label small">Uživatelské jméno</label>
-                                    <input type="text" class="form-control" id="lb_username" name="login" required>
+                                    <input type="text" class="form-control" id="lb_username" name="login" autofocus required>
                                 </div>
                                 <div class="mb-4">
                                     <label for="lb_password" class="form-label small">Heslo</label>
                                     <input type="password" class="form-control" id="lb_password" name="heslo" required>
                                 </div>
                                 <input type="hidden" name="action" value="login">
-                                <button type="submit" name="potvrzeni" class="btn btn-success mt-1 px-4">Přihlásit se</button>
+                                <button type="submit" name="potvrzeni" class="btn btn-success mt-1 px-4">Přihlásit se
+                                </button>
                                 <!--
                                 <p class="mt-4 small">
                                     Ještě nemáte vytvořený účet?
@@ -49,10 +53,10 @@ if ($tplData['isUserLoggedIn'] == false) {
     <?php
 } else {
     echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Přihlášený uživatel.</div>";
-    echo "Login: ".$tplData['userData']['login']."<br>";
-    echo "Jméno, příjmení: ".$tplData['userData']['jmeno']."<br>";
-    echo "E-mail: ".$tplData['userData']['email']."<br>";
-    echo "Pravo: " .$tplData['userData']['id_pravo']."<br>";
+    echo "Login: " . $tplData['userData']['login'] . "<br>";
+    echo "Jméno, příjmení: " . $tplData['userData']['jmeno'] . " " . $tplData['userData']['prijmeni'] . "<br>";
+    echo "E-mail: " . $tplData['userData']['email'] . "<br>";
+    echo "Pravo: " . $tplData['userRight']['nazev'] . "<br>";
 
 
 

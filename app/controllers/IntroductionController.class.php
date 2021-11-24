@@ -18,11 +18,13 @@ class IntroductionController extends AController
         $tplData = [];
 
         $this->handleLoginForm(); //zpracovani login/logout formularu
+        $this->handleRegistrationForm();
 
         if ($this->login->isUserLoggedIn()) {
             //echo "logged in";
             $tplData['isUserLoggedIn'] = true;
             $tplData['userData'] = $this->login->getLoggedUserData();
+            $tplData['userRight'] = $this->db->getRightByID($tplData['userData']['id_pravo']);
         } else {
             //echo "not logged in";
             $tplData['isUserLoggedIn'] = false;
