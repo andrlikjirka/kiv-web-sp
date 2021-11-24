@@ -12,14 +12,12 @@ class Registration
 
     public function __construct()
     {
-        //require_once("../database/Database.class.php");
         $this->db = Database::getDBConnection();
     }
 
-    public function registrateUser(string $jmeno, string $login, string $heslo, string $email, int $id_pravo = 4)
+    public function registrateUser(string $jmeno, string $prijmeni, string $login, string $hash_password, string $email, int $id_pravo = 4)
     {
-        $hash_password = password_hash($heslo, PASSWORD_BCRYPT);
-        return $this->db->addNewUser($jmeno, $login, $hash_password, $email, $id_pravo);
+        return $this->db->addNewUser($jmeno, $prijmeni, $login, $hash_password, $email, $id_pravo);
     }
 
 

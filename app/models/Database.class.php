@@ -257,11 +257,11 @@ class Database
      * @param int $id_pravo ID prava uzivatele
      * @return bool Vrati true pokud je pridani uzivatele probehne uspesne, jinak false
      */
-    public function addNewUser(string $jmeno, string $login, string $heslo, string $email, int $id_pravo = 4){
+    public function addNewUser(string $jmeno, string $prijmeni, string $login, string $heslo, string $email, int $id_pravo = 4){
         //hlavicka pro vlozeni do tabulky uzivatelu
-        $insertStatements = "jmeno, login, heslo, email, id_pravo";
+        $insertStatements = "jmeno, prijmeni, login, heslo, email, id_pravo";
         //hodnoty pro vlozeni do tabulky uzivatelu
-        $insetValues = "'$jmeno', '$login', '$heslo', '$email', $id_pravo"; //string predany jako hodnota musi byt v ''
+        $insetValues = "'$jmeno', '$prijmeni', '$login', '$heslo', '$email', $id_pravo"; //string predany jako hodnota musi byt v ''
         //provedu dotaz a vratim vysledek
         return $this->insertIntoTable(TABLE_UZIVATELE, $insertStatements, $insetValues);
     }

@@ -6,8 +6,10 @@ class TemplateBasics implements IView
 {
     /** @var string PAGE_INTRODUCTION Sablona s uvodni strankou */
     const PAGE_INTRODUCTION = "IntroductionTemplate.tpl.php";
-
+    /** @var string PAGE_LOGIN Sablona s login strankou */
     const PAGE_LOGIN = "LoginTemplate.tpl.php";
+    /** @var string PAGE_REGISTRATION Sablona s registracni strankou */
+    const PAGE_REGISTRATION = "RegistrationTemplate.tpl.php";
 
     /**
      * Zajisti vypsani HTML sablony prislusne stranky
@@ -16,7 +18,7 @@ class TemplateBasics implements IView
      */
     public function printTemplate(array $templateData, string $pageType = self::PAGE_INTRODUCTION)
     {
-       // vypis hlavicky
+        // vypis hlavicky
         $this->getHTMLHead($templateData['title']);
 
         $this->getHTMLNav($templateData);
@@ -62,72 +64,89 @@ class TemplateBasics implements IView
     /**
      * Funkce vrati navigaci stranky
      */
-    private function getHTMLNav(array $tplData)
-    {
-        ?>
-        <body data-bs-spy="scroll" data-bs-target="#navigace">
+private function getHTMLNav(array $tplData)
+{
+    ?>
+<body data-bs-spy="scroll" data-bs-target="#navigace">
 
-        <!-- Navbar-->
-        <nav id="navigace" class="navbar navbar-expand-lg navbar-light bg-white fixed-top py-3 shadow-sm">
-            <div class="container px-5">
+    <!-- Navbar-->
+    <nav id="navigace" class="navbar navbar-expand-lg navbar-light bg-white fixed-top py-3 shadow-sm">
+        <div class="container px-5">
                 <span class="navbar-brand text-success fw-bold">
                     ECO <sup>2022</sup>
                 </span>
-                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                    <ul class="navbar-nav m-auto ">
-                        <?php
-                        foreach (WEB_PAGES as $key => $pageInfo) {
-                            if ($key != "login" and $key != "registrace") {
-                                echo "<li class='nav-item me-3'>
+            <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul class="navbar-nav m-auto ">
+                    <?php
+                    foreach (WEB_PAGES as $key => $pageInfo) {
+                        if ($key != "login" and $key != "registrace") {
+                            echo "<li class='nav-item me-3'>
                                         <a class='nav-link' href='index.php?page=$key'>$pageInfo[title]</a>
                                       </li>";
-                            }
                         }
-                        ?>
-                    </ul>
-                    <?php
-                    if ($tplData['isUserLoggedIn'] == false) {
-                        foreach (WEB_PAGES as $key => $pageInfo) {
-                            if ($key == "login") {
-                                echo "<a class='btn btn-success px-3 py-1 me-2' href='index.php?page=$key'>$pageInfo[title]</a>";
-                            } else if ($key == "registrace") {
-                                echo "<a class='btn btn-outline-success px-3 py-1' href='index.php?page=$key'>$pageInfo[title]</a>";
-                            }
+                    }
+                    ?>
+                </ul>
+                <?php
+                if ($tplData['isUserLoggedIn'] == false) {
+                    foreach (WEB_PAGES as $key => $pageInfo) {
+                        if ($key == "login") {
+                            echo "<a class='btn btn-success px-3 py-1 me-2' href='index.php?page=$key'>$pageInfo[title]</a>";
+                        } else if ($key == "registrace") {
+                            echo "<a class='btn btn-outline-success px-3 py-1' href='index.php?page=$key'>$pageInfo[title]</a>";
                         }
-                    } else {
+                    }
+                } else {
                     ?>
 
                     <div class="dropdown">
-                        <button class="btn btn-success dropdown-toggle px-3 py-1" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <?php echo $tplData['userData']['jmeno']." ". $tplData['userData']['prijmeni'] ?>
+                        <button class="btn btn-success dropdown-toggle px-3 py-1" type="button" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <?php echo $tplData['userData']['jmeno'] . " " . $tplData['userData']['prijmeni'] ?>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">Správa článků</a></li>
-                            <li><a class="dropdown-item" href="#">Správa uživatelů</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">
-                                <form action="" method="POST">
+                            <?php
+                            if ($tplData['userRight']['vaha'] >= 10) {
+                                ?>
+                                <li><a class="dropdown-item" href="#">Správa článků</a></li>
+                                <li><a class="dropdown-item" href="#">Správa uživatelů</a></li>
+                                <?php
+                            } else {
+                                ?>
+                                <li><a class="dropdown-item" href="#">Moje články</a></li>
+                                <?php
+                            }
+                            ?>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li class="dropdown-item">
+                                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST" class="mb-0">
                                     <input type="hidden" name="action" value="logout">
-                                    <input type="submit" name="potvrzeni" value="Odhlásit">
-                                    <span class="bi bi-box-arrow-right ms-2"></span>
+                                    <!--<input type="submit" name="potvrzeni" value="Odhlásit">-->
+                                    <button type="submit" name="potvrzeni" class="btn btn-outline-success small py-1">
+                                        Odhlásit
+                                        <span class="bi bi-box-arrow-right ms-2"></span>
+                                    </button>
+
                                 </form>
-                            </a></li>
+                            </li>
                         </ul>
                     </div>
                     <?php
-                    }
-                    ?>
+                }
+                ?>
 
-                </div>
             </div>
-        </nav>
-        <?php
-    }
+        </div>
+    </nav>
+    <?php
+}
 
     /**
      * Funkce vrati paticku stranky

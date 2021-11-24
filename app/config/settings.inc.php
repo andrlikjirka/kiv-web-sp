@@ -62,9 +62,9 @@ const WEB_PAGES = array(
     //// Registrace stranka ////
     "registrace" => array(
         "title" => "Registrace",
-        "controller_class_name",
-        "view_class_name",
-        "template_type",
+        "controller_class_name" => \kivweb_sp\controllers\RegistrationController::class,
+        "view_class_name" => \kivweb_sp\views\TemplateBasics::class,
+        "template_type" => \kivweb_sp\views\TemplateBasics::PAGE_REGISTRATION,
     ),
     //// KONEC: Registrace stranka ////
 
