@@ -163,7 +163,7 @@ class Database
     public function getAllUsers()
     {
         //ziskam vsechny uzivatele z tabulky uzivatelu dle ID a vratim je
-        return $this->selectFromTable(TABLE_UZIVATELE, "*", "", "jmeno");
+        return $this->selectFromTable(TABLE_UZIVATELE, "*", "", "id_uzivatel");
     }
 
     /**
@@ -257,11 +257,11 @@ class Database
      * @param int $id_pravo ID prava uzivatele
      * @return bool Vrati true pokud je pridani uzivatele probehne uspesne, jinak false
      */
-    public function addNewUser(string $jmeno, string $prijmeni, string $login, string $heslo, string $email, int $id_pravo = 4){
+    public function addNewUser(string $jmeno, string $prijmeni, string $login, string $heslo, string $email, int $id_pravo = 4, int $povolen = 1){
         //hlavicka pro vlozeni do tabulky uzivatelu
-        $insertStatements = "jmeno, prijmeni, login, heslo, email, id_pravo";
+        $insertStatements = "jmeno, prijmeni, login, heslo, email, id_pravo, povolen";
         //hodnoty pro vlozeni do tabulky uzivatelu
-        $insetValues = "'$jmeno', '$prijmeni', '$login', '$heslo', '$email', $id_pravo"; //string predany jako hodnota musi byt v ''
+        $insetValues = "'$jmeno', '$prijmeni', '$login', '$heslo', '$email', '$id_pravo', '$povolen'"; //string predany jako hodnota musi byt v ''
         //provedu dotaz a vratim vysledek
         return $this->insertIntoTable(TABLE_UZIVATELE, $insertStatements, $insetValues);
     }
@@ -285,13 +285,28 @@ class Database
      * @param int $id_pravo ID prava
      * @return bool Vrati true pokud uprava udaju uzivatele probehne uspesne, jinak false
      */
-    public function updateUser(int $id_uzivatel, string $login, string $heslo, string $jmeno, string $email, int $id_pravo)
+    public function updateUser(int $id_uzivatel, string $login, string $heslo, string $jmeno, string $email, int $id_pravo, int $povolen)
     {
         //slozim cast s hodnotami
-        $updateStatementWithValues = "login='$login', heslo='$heslo', jmeno='$jmeno', email='$email', id_pravo='$id_pravo'";
+        $updateStatementWithValues = "login='$login', heslo='$heslo', jmeno='$jmeno', email='$email', id_pravo='$id_pravo', povolen='$povolen'";
         //podminka
         $whereStatement = "id_uzivatel='$id_uzivatel'";
         //provedu update
+        return $this->updateInTable(TABLE_UZIVATELE, $updateStatementWithValues, $whereStatement);
+    }
+
+    public function updateUserRight(int $id_uzivatel, int $id_pravo)
+    {
+        //slozim cast s hodnotami
+        $updateStatementWithValues = "id_pravo='$id_pravo'";
+        //podminka
+        $whereStatement = "id_uzivatel='$id_uzivatel'";
+        return $this->updateInTable(TABLE_UZIVATELE, $updateStatementWithValues, $whereStatement);
+    }
+
+    public function updateBlockAllowUser(int $id_uzivatel, int $povolen) {
+        $updateStatementWithValues = "povolen=$povolen";
+        $whereStatement = "id_uzivatel='$id_uzivatel'";
         return $this->updateInTable(TABLE_UZIVATELE, $updateStatementWithValues, $whereStatement);
     }
 

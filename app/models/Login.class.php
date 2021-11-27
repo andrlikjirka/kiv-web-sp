@@ -49,7 +49,7 @@ class Login
 
         $user = $this->db->selectFromTable(TABLE_UZIVATELE, "*", $whereStatement); //nahrazeni funkcí pro ziskani zašifrovaného hesla?
         //ziskal jsem uzivatele
-        if (count($user)) {
+        if (count($user) && $user[0]['povolen'] == 1) {
             if (password_verify($password, $user[0]['heslo'])) {
                 //ziskal - ulozim jeho ID do Session
                 $this->session->setSession(self::SESSION_KEY, $user[0]['id_uzivatel']); //beru prvniho nalezeneho a ukladam jen jeho ID

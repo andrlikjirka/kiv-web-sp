@@ -68,5 +68,16 @@ const WEB_PAGES = array(
     ),
     //// KONEC: Registrace stranka ////
 
+    //// Sprava uzivatelu ////
+    "sprava_uzivatelu" => array(
+        "title" => "Správa uživatelů",
+        "controller_class_name" => \kivweb_sp\controllers\UserManagementController::class,
+        "view_class_name" => \kivweb_sp\views\TemplateBasics::class,
+        "template_type" => \kivweb_sp\views\TemplateBasics::PAGE_USER_MANAGEMENT,
+    ),
+    /// KONEC: Sprava uzivatelu ////
+
+
+
 );
 

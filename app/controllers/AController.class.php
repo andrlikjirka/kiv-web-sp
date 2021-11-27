@@ -75,6 +75,55 @@ abstract class AController implements IController
         }
     }
 
+    protected function handleDeleteUserForm()
+    {
+        // zpracovani odeslaneho formulare pro odstraneni uzivatele
+        if (isset($_POST['smazat_id_uzivatel'])) {
+            //smazu daneho uzivatele z databaze
+            $res = $this->db->deleteUser($_POST['smazat_id_uzivatel']);
+            //vysledek maazani
+            if ($res) {
+                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Smazání uživatele proběhlo úspěšně.</div>";
+            } else {
+                echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Smazání uživatele se nezdařilo.</div>";
+            }
+        }
+    }
+
+    protected function handleChangeRoleForm()
+    {
+        // zpracovani odeslaneho formulare pro odstraneni uzivatele
+        if (isset($_POST['zmena_prava_id_uzivatel']) && isset($_POST['pravo'])) {
+            $res = $this->db->updateUserRight($_POST['zmena_prava_id_uzivatel'], $_POST['pravo']);
+            if ($res == null) {
+                echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Změna práva uživatele proběhla neúspěšně.</div>";
+            } else {
+                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Změna práva uživatele proběhla úspěšně.</div>";
+            }
+        }
+    }
+
+    protected function handleBlockAllowUserForm()
+    {
+        if (isset($_POST['stav_id_uzivatel'])) {
+            $res = $this->db->updateBlockAllowUser($_POST['stav_id_uzivatel'], $_POST['povolen']);
+            if ($res == null) {
+                if ($_POST['povolen'] == 0) {
+                    echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Zablokování uživatele proběhla neúspěšně.</div>";
+                } else {
+                    echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Povolení uživatele proběhla neúspěšně.</div>";
+                }
+            } else {
+                if ($_POST['povolen'] == 0) {
+                    echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Zablokování uživatele proběhla úspěšně.</div>";
+                } else {
+                    echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Povolení uživatele proběhla úspěšně.</div>";
+                }
+            }
+        }
+    }
+
+
     /**
      * Funkce vrati data uvodni stranky (implementovano v potomcich - kotrollerech)
      * @param string $pageTitle Nazev stranky

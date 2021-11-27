@@ -10,6 +10,8 @@ class TemplateBasics implements IView
     const PAGE_LOGIN = "LoginTemplate.tpl.php";
     /** @var string PAGE_REGISTRATION Sablona s registracni strankou */
     const PAGE_REGISTRATION = "RegistrationTemplate.tpl.php";
+    /** @var string PAGE_USER_MANAGEMENT Sablona se spravou uzivatelu  */
+    const PAGE_USER_MANAGEMENT = "UserManagementTemplate.tpl.php";
 
     /**
      * Zajisti vypsani HTML sablony prislusne stranky
@@ -84,7 +86,7 @@ private function getHTMLNav(array $tplData)
                 <ul class="navbar-nav m-auto ">
                     <?php
                     foreach (WEB_PAGES as $key => $pageInfo) {
-                        if ($key != "login" and $key != "registrace") {
+                        if ($key == "uvod" or $key == "publikovane_clanky") {
                             echo "<li class='nav-item me-3'>
                                         <a class='nav-link' href='index.php?page=$key'>$pageInfo[title]</a>
                                       </li>";
@@ -112,14 +114,10 @@ private function getHTMLNav(array $tplData)
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <?php
                             if ($tplData['userRight']['vaha'] >= 10) {
-                                ?>
-                                <li><a class="dropdown-item" href="#">Správa článků</a></li>
-                                <li><a class="dropdown-item" href="#">Správa uživatelů</a></li>
-                                <?php
+                                echo "<li><a class='dropdown-item' href='index.php?page=sprava_clanku'>Správa článků</a></li>";
+                                echo "<li><a class='dropdown-item' href='index.php?page=sprava_uzivatelu'>Správa uživatelů</a></li>";
                             } else {
-                                ?>
-                                <li><a class="dropdown-item" href="#">Moje články</a></li>
-                                <?php
+                                echo "<li><a class='dropdown-item' href='#'>Moje články</a></li>";
                             }
                             ?>
                             <li>

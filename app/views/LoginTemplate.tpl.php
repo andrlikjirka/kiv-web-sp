@@ -25,7 +25,8 @@ if ($tplData['isUserLoggedIn'] == false) {
                                   method="post" autocomplete="off">
                                 <div class="mb-3">
                                     <label for="lb_username" class="form-label small">Uživatelské jméno</label>
-                                    <input type="text" class="form-control" id="lb_username" name="login" autofocus required>
+                                    <input type="text" class="form-control" id="lb_username" name="login" autofocus
+                                           required>
                                 </div>
                                 <div class="mb-4">
                                     <label for="lb_password" class="form-label small">Heslo</label>
@@ -51,14 +52,13 @@ if ($tplData['isUserLoggedIn'] == false) {
 
 
     <?php
+    ///////////// PRO PRIHLASENE UZIVATELE ///////////////
 } else {
     echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Přihlášený uživatel.</div>";
     echo "Login: " . $tplData['userData']['login'] . "<br>";
     echo "Jméno, příjmení: " . $tplData['userData']['jmeno'] . " " . $tplData['userData']['prijmeni'] . "<br>";
     echo "E-mail: " . $tplData['userData']['email'] . "<br>";
-    echo "Pravo: " . $tplData['userRight']['nazev'] . "<br>";
-
-
+    echo "Právo: " . $tplData['userRight']['nazev'] . "<br>";
 
 }
 
