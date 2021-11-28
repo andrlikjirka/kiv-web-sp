@@ -209,6 +209,16 @@ class Database
         }
     }
 
+    public function isUserWithLogin($login)
+    {
+        $user = $this->selectFromTable(TABLE_UZIVATELE, "*","login='$login'", "");
+        if (empty($user)){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     /**
      * Ziskani konkretniho prava uzivatele dle ID prava
      * @param int $id ID prava

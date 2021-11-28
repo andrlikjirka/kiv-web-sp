@@ -78,13 +78,13 @@ if ($tplData['isUserLoggedIn'] == false) {
                                                 $tableRows .= "
                                                 <input type='hidden' name='stav_id_uzivatel' value='$user[id_uzivatel]'>
                                                 <input type='hidden' name='povolen' value='0'>
-                                                <button type='submit' class='btn btn-secondary btn-sm text-white py-1 w-75'>Zablokovat</button>
+                                                <button type='submit' class='btn btn-secondary btn-sm text-white py-1 w-100'>Zablokovat</button>
                                                 ";
                                             } else {
                                                 $tableRows .= "
                                                 <input type='hidden' name='stav_id_uzivatel' value='$user[id_uzivatel]'>
                                                 <input type='hidden' name='povolen' value='1'>
-                                                <button type='submit' class='btn btn-success btn-sm text-white py-1 w-75'>Povolit</button>
+                                                <button type='submit' class='btn btn-success btn-sm text-white py-1 w-100'>Povolit</button>
                                                 ";
                                             }
                                     $tableRows .= "</form></td>";
@@ -92,7 +92,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                                     $tableRows .= "<td>
                                             <form action='' method='post'> 
                                                 <input type='hidden' name='smazat_id_uzivatel' value='$user[id_uzivatel]'>
-                                                <button type='submit' class='btn btn-danger btn-sm text-white py-1 w-75'>Smazat</button>
+                                                <button type='submit' class='btn btn-danger btn-sm text-white py-1 w-100'>Smazat</button>
                                             </form>
                                         </td>";
                                 } else {

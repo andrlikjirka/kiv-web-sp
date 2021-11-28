@@ -59,15 +59,20 @@ abstract class AController implements IController
                 && $_POST['password1'] == $_POST['password2']
                 && $_POST['login'] != "" && $_POST['password1'] != "" && $_POST['jmeno'] != "" && $_POST['prijmeni'] != "" && $_POST['email'] != ""
             ) {
-                $hash_password = password_hash($_POST['password1'], PASSWORD_BCRYPT);
-                $result = $this->registration->registrateUser($_POST['jmeno'], $_POST['prijmeni'], $_POST['login'], $hash_password, $_POST['email']);
-                if ($result) {
-                    //echo "OK: Uživatel byl přidán do databáze.";
-                    echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Registrace uživatele proběhla úspěšně.</div>";
+                if ($this->db->isUserWithLogin($_POST['login']) == false) { //neexistuje v db uzivatel se zadanym loginem
+                    $hash_password = password_hash($_POST['password1'], PASSWORD_BCRYPT);
+                    $result = $this->registration->registrateUser($_POST['jmeno'], $_POST['prijmeni'], $_POST['login'], $hash_password, $_POST['email']);
+                    if ($result) {
+                        //echo "OK: Uživatel byl přidán do databáze.";
+                        echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Registrace uživatele proběhla úspěšně.</div>";
+                    } else {
+                        //echo "ERROR: Uložení uživatele do databáze se nezdařilo";
+                        echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Registrace uživatele se nezdařila.</div>";
+                    }
                 } else {
-                    //echo "ERROR: Uložení uživatele do databáze se nezdařilo";
-                    echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Registrace uživatele se nezdařila.</div>";
+                    echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Uživatel se zadaným uživatelským jménem již existuje.</div>";
                 }
+
             } else {
                 //nemam vsechny atributy
                 echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Registrace uživatele se nezdařila.</div>";
