@@ -4,6 +4,7 @@ namespace kivweb_sp\models;
 
 use PDO;
 use PDOException;
+use PDOStatement;
 
 /**
  * Obalova trida pro praci s databazi pomoci PDO
@@ -14,7 +15,7 @@ class Database
     /** @var Database $dbConnection Jedina instance obalove tridy pro praci s databazi */
     private static $dbConnection;
 
-    /** @var \PDO objekt pro praci s databazi */
+    /** @var PDO objekt pro praci s databazi */
     private $pdo;
 
     /**
@@ -35,7 +36,7 @@ class Database
      * Staticka tovarni metoda
      * @return Database Vraci odkaz na jedinou instanci obalove tridy database
      */
-    public static function getDBConnection()
+    public static function getDBConnection(): Database
     {
         if (self::$dbConnection == null) {
             self::$dbConnection = new Database();
