@@ -10,7 +10,7 @@ class RegistrationController extends AController
         global $tplData;
         $tplData = [];
 
-        $this->handleLoginForm();
+        //$this->handleLoginForm();
         $this->handleRegistrationForm();
 
         if ($this->login->isUserLoggedIn()) {

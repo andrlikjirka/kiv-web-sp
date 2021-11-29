@@ -37,8 +37,15 @@ abstract class AController implements IController
                     //echo "ERROR: Přihlášení uživatele se nezdařilo";
                     echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Nesprávné jméno nebo heslo.</div>";
                 }
-            } //odhlaseni
-            else if ($_POST['action'] == 'logout') {
+            }
+        }
+    }
+
+    protected function handleLogoutForm()
+    {
+        if (isset($_POST['action'])) {
+            //odhlaseni
+            if ($_POST['action'] == 'logout') {
                 //odhlasim uzivatele
                 $this->login->logout();
                 echo "OK: Uživatel byl odhlášen.";

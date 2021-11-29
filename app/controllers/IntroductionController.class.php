@@ -17,8 +17,8 @@ class IntroductionController extends AController
         global $tplData;
         $tplData = [];
 
-        $this->handleLoginForm(); //zpracovani login/logout formularu
-        $this->handleRegistrationForm();
+        $this->handleLoginForm(); //zpracovani login formularu
+        $this->handleLogoutForm(); //zpracovani logout formulare
 
         if ($this->login->isUserLoggedIn()) {
             //echo "logged in";

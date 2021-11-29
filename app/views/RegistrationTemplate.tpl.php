@@ -20,7 +20,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                     <div class="card">
                         <div class="card-header py-3 px-4 text-success">Registrace autora</div>
                         <div class="card-body py-4 px-4">
-                            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"
+                            <form action=""
                                   oninput="overeni.value=(password1.value === password2.value)?'Zadaná hesla jsou stejná':'Zadaná hesla nejsou stejná'"
                                   method="post"
                                   autocomplete="off">
