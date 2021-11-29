@@ -44,9 +44,9 @@ const WEB_PAGES = array(
     //// Publikovane clanky ////
     "publikovane_clanky" => array(
         "title" => "Publikované články",
-        "controller_class_name",
-        "view_class_name",
-        "template_type",
+        "controller_class_name" => \kivweb_sp\controllers\PublishedArticlesController::class,
+        "view_class_name" => \kivweb_sp\views\TemplateBasics::class,
+        "template_type" => \kivweb_sp\views\TemplateBasics::PAGE_PUBLISHED_ARTICLES,
     ),
     //// KONEC: Publikovane clanky ////
 
@@ -95,6 +95,14 @@ const WEB_PAGES = array(
     ),
     //// KONEC: Moje clanky ////
 
+    //// Moje recenze ////
+    "moje_recenze" => array(
+        "title" => "Moje recenze",
+        "controller_class_name" => \kivweb_sp\controllers\MyReviewsController::class,
+        "view_class_name" => \kivweb_sp\views\TemplateBasics::class,
+        "template_type" => \kivweb_sp\views\TemplateBasics::PAGE_MY_REVIEWS,
+    )
+    /// KONEC: Moje recenze ////
 
 
 );

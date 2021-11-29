@@ -6,6 +6,8 @@ class TemplateBasics implements IView
 {
     /** @var string PAGE_INTRODUCTION Sablona s uvodni strankou */
     const PAGE_INTRODUCTION = "IntroductionTemplate.tpl.php";
+    /** @var string PAGE_ACCEPTED_ARTICLES Sablona se strankou publikovanych clanku */
+    const PAGE_PUBLISHED_ARTICLES = "PublishedArticlesTemplate.tpl.php";
     /** @var string PAGE_LOGIN Sablona s login strankou */
     const PAGE_LOGIN = "LoginTemplate.tpl.php";
     /** @var string PAGE_REGISTRATION Sablona s registracni strankou */
@@ -119,11 +121,13 @@ private function getHTMLNav(array $tplData)
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <?php
-                            if ($tplData['userRight']['vaha'] >= 10) {
+                            if ($tplData['userRight']['vaha'] >= 10) { //admin nebo Superadmin
                                 echo "<li><a class='dropdown-item' href='index.php?page=sprava_clanku'>Správa článků</a></li>";
                                 echo "<li><a class='dropdown-item' href='index.php?page=sprava_uzivatelu'>Správa uživatelů</a></li>";
-                            } else {
-                                echo "<li><a class='dropdown-item' href='#'>Moje články</a></li>";
+                            } else if ($tplData['userRight']['vaha'] >= 5) { //recenzent
+                                echo "<li><a class='dropdown-item' href='index.php?page=moje_recenze'>Moje recenze</a></li>";
+                            } else { //autor
+                                echo "<li><a class='dropdown-item' href='index.php?page=moje_clanky'>Moje články</a></li>";
                             }
                             ?>
                             <li>
