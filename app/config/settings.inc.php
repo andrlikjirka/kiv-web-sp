@@ -77,7 +77,26 @@ const WEB_PAGES = array(
     ),
     /// KONEC: Sprava uzivatelu ////
 
+    //// Sprava clanku ////
+    "sprava_clanku" => array(
+        "title" => "Správa článků",
+        "controller_class_name" => \kivweb_sp\controllers\ArticlesManagementController::class,
+        "view_class_name" => \kivweb_sp\views\TemplateBasics::class,
+        "template_type" => \kivweb_sp\views\TemplateBasics::PAGE_ARTICLES_MANAGEMENT,
+    ),
+    /// KONEC: Sprava clanku ////
+
+    //// Moje clanky ////
+    "moje_clanky" => array(
+        "title" => "Moje články",
+        "controller_class_name" => \kivweb_sp\controllers\MyArticlesController::class,
+        "view_class_name" => \kivweb_sp\views\TemplateBasics::class,
+        "template_type" => \kivweb_sp\views\TemplateBasics::PAGE_MY_ARTICLES,
+    ),
+    //// KONEC: Moje clanky ////
+
 
 
 );
+
 

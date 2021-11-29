@@ -12,6 +12,12 @@ class TemplateBasics implements IView
     const PAGE_REGISTRATION = "RegistrationTemplate.tpl.php";
     /** @var string PAGE_USER_MANAGEMENT Sablona se spravou uzivatelu  */
     const PAGE_USER_MANAGEMENT = "UserManagementTemplate.tpl.php";
+    /** @var string PAGE_USER_MANAGEMENT Sablona se spravou clanku  */
+    const PAGE_ARTICLES_MANAGEMENT = "ArticlesManagementTemplate.tpl.php";
+    /** @var string PAGE_MY_ARTICLES Sablona pro moje autorske clanky  */
+    const PAGE_MY_ARTICLES = "MyArticlesTemplate.tpl.php";
+    /** @var string PAGE_MY_REVIEWS Sablona pro moje recenze */
+    const PAGE_MY_REVIEWS = "MyReviewsTemplate.tpl.php";
 
     /**
      * Zajisti vypsani HTML sablony prislusne stranky
