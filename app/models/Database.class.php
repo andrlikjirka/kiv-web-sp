@@ -182,7 +182,7 @@ class Database
      */
     public function getAllArticles()
     {
-        return $this->selectFromTable(TABLE_PRISPEVKY);
+        return $this->selectFromTable(TABLE_PRISPEVKY, "*", "", "datum");
     }
 
     /*
@@ -321,14 +321,24 @@ class Database
         return $this->updateInTable(TABLE_UZIVATELE, $updateStatementWithValues, $whereStatement);
     }
 
-    public function addNewArticle()
+    public function addNewArticle($nadpis, $abstrakt, $dokument, $datum, $id_uzivatel, $id_status='1')
     {
         //hlavicka pro vlozeni do tabulky prispevky
-        $insertStatements = ""; //nadpis, abstrakt, ...
+        $insertStatements = "nadpis, abstrakt, dokument, datum, id_uzivatel, id_status"; //nadpis, abstrakt, ...
         //hodnoty pro vlozeni do tabulky prispevky
-        $insertValues = "' ', ' ', ' '";
+        $insertValues = "'$nadpis', '$abstrakt', '$dokument', '$datum','$id_uzivatel', $id_status";
         //provedu dotaz a vratim vysledek
         return $this->insertIntoTable(TABLE_PRISPEVKY, $insertStatements, $insertValues);
+    }
+
+    public function getArticlesbyUser($id_uzivatel)
+    {
+        $articles = $this->selectFromTable(TABLE_PRISPEVKY, "*", "id_uzivatel=$id_uzivatel", "id_status");
+        if (empty($articles)) {
+            return null;
+        } else {
+            return $articles;
+        }
     }
 
     public function deleteArticle($id_prispevek)

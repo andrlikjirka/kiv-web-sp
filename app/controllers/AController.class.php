@@ -135,6 +135,29 @@ abstract class AController implements IController
         }
     }
 
+    protected function handleNewArticleForm()
+    {
+        $UPLOADS_DIR = getcwd().DIRECTORY_SEPARATOR . "uploads\\";
+
+        if (isset($_POST['action']) && $_POST['action'] == 'novy-clanek'
+            && $_POST['nazev-clanku'] != "" && !empty($_POST['user_id']) && $_POST['abstrakt'] != "" && $_FILES['uploadFile']['type'] == 'application/pdf'
+        ) {
+            $uploadDate = date("Y-m-d G:i:s");
+            $uploadDateTime = date("Y-m-d")."_".time();
+            $articleName = $_POST['user_id']."_".$uploadDateTime;
+            $target = $UPLOADS_DIR . basename($articleName . ".pdf");
+
+            $res = $this->db->addNewArticle($_POST['nazev-clanku'], $_POST['abstrakt'], $articleName, $uploadDate, $_POST['user_id']);
+            if ($res) {
+                move_uploaded_file($_FILES['uploadFile']['tmp_name'], $target);
+                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Přidání příspěvku proběhlo úspěšně.</div>";
+            } else {
+                echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Přidání příspěvku se nezdařilo.</div>";
+            }
+
+        }
+    }
+
 
     /**
      * Funkce vrati data uvodni stranky (implementovano v potomcich - kotrollerech)

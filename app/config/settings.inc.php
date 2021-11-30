@@ -28,6 +28,7 @@ const BASE_APP_DIR_NAME ="app";
 /** @var array FILE_EXTENSIONS Dostupne pripony souboru, ktere budou testovany pri nacitani souboru pozadovanych trid */
 const FILE_EXTENSIONS = array(".class.php", ".interface.php");
 
+
 //// Dostupne stranky webu ////
 const DEFAULT_WEB_PAGE_KEY = "uvod";
 
