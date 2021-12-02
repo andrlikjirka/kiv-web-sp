@@ -139,7 +139,7 @@ abstract class AController implements IController
     {
         $UPLOADS_DIR = getcwd().DIRECTORY_SEPARATOR . "uploads\\";
 
-        if (isset($_POST['action']) && $_POST['action'] == 'novy-clanek'
+        if (isset($_POST['action']) && $_POST['action'] == 'new-article'
             && $_POST['nazev-clanku'] != "" && !empty($_POST['user_id']) && $_POST['abstrakt'] != "" && $_FILES['uploadFile']['type'] == 'application/pdf'
         ) {
             $uploadDate = date("Y-m-d G:i:s");
@@ -156,6 +156,11 @@ abstract class AController implements IController
             }
 
         }
+    }
+
+    protected function handleEditArticleForm()
+    {
+
     }
 
 

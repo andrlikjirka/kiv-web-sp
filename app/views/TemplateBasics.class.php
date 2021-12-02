@@ -12,11 +12,11 @@ class TemplateBasics implements IView
     const PAGE_LOGIN = "LoginTemplate.tpl.php";
     /** @var string PAGE_REGISTRATION Sablona s registracni strankou */
     const PAGE_REGISTRATION = "RegistrationTemplate.tpl.php";
-    /** @var string PAGE_USER_MANAGEMENT Sablona se spravou uzivatelu  */
+    /** @var string PAGE_USER_MANAGEMENT Sablona se spravou uzivatelu */
     const PAGE_USER_MANAGEMENT = "UserManagementTemplate.tpl.php";
-    /** @var string PAGE_USER_MANAGEMENT Sablona se spravou clanku  */
+    /** @var string PAGE_USER_MANAGEMENT Sablona se spravou clanku */
     const PAGE_ARTICLES_MANAGEMENT = "ArticlesManagementTemplate.tpl.php";
-    /** @var string PAGE_MY_ARTICLES Sablona pro moje autorske clanky  */
+    /** @var string PAGE_MY_ARTICLES Sablona pro moje autorske clanky */
     const PAGE_MY_ARTICLES = "MyArticlesTemplate.tpl.php";
     /** @var string PAGE_MY_REVIEWS Sablona pro moje recenze */
     const PAGE_MY_REVIEWS = "MyReviewsTemplate.tpl.php";
@@ -124,7 +124,7 @@ private function getHTMLNav(array $tplData)
                             if ($tplData['userData']['id_pravo'] <= 2) { //admin nebo Superadmin
                                 echo "<li><a class='dropdown-item' href='index.php?page=sprava_clanku'>Správa článků</a></li>";
                                 echo "<li><a class='dropdown-item' href='index.php?page=sprava_uzivatelu'>Správa uživatelů</a></li>";
-                            } else if ($tplData['userData']['id_uzivatel'] <= 3) { //recenzent
+                            } else if ($tplData['userData']['id_pravo'] == 3) { //recenzent
                                 echo "<li><a class='dropdown-item' href='index.php?page=moje_recenze'>Moje recenze</a></li>";
                             } else { //autor
                                 echo "<li><a class='dropdown-item' href='index.php?page=moje_clanky'>Moje články</a></li>";
@@ -134,7 +134,8 @@ private function getHTMLNav(array $tplData)
                                 <hr class="dropdown-divider">
                             </li>
                             <li class="dropdown-item">
-                                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST" class="mb-0">
+                                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST"
+                                      class="mb-0">
                                     <input type="hidden" name="action" value="logout">
                                     <!--<input type="submit" name="potvrzeni" value="Odhlásit">-->
                                     <button type="submit" name="potvrzeni" class="btn btn-outline-success small py-1">

@@ -16,6 +16,8 @@ class MyArticlesController extends AController
             $tplData['isUserLoggedIn'] = true;
             $tplData['userData'] = $this->login->getLoggedUserData();
             $tplData['userArticles'] = $this->db->getArticlesbyUser($tplData['userData']['id_uzivatel']);
+            $tplData['UPLOADS_DIR'] = ".\\uploads\\";
+
         } else {
             $tplData['isUserLoggedIn'] = false;
         }
