@@ -7,10 +7,11 @@ class MyArticlesController extends AController
 
     public function show(string $pageTitle): array
     {
+        $this->handleNewArticleForm();
+        /*
         global $tplData;
         $tplData = [];
 
-        $this->handleNewArticleForm();
 
         if ($this->login->isUserLoggedIn()) {
             $tplData['isUserLoggedIn'] = true;
@@ -21,6 +22,8 @@ class MyArticlesController extends AController
         } else {
             $tplData['isUserLoggedIn'] = false;
         }
+        */
+        $tplData = $this->getData();
         $tplData['title'] = $pageTitle;
 
         return $tplData;

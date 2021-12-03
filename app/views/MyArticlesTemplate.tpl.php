@@ -96,6 +96,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                     <?php
 
                     $articles = $tplData['userArticles'];
+
                     if (!empty($articles)) { //ma autor nejake clanky?
                         foreach ($articles as $article) {
                             $dokument = $tplData['UPLOADS_DIR'] . basename($article['dokument'] . ".pdf");
