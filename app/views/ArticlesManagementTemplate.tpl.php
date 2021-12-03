@@ -39,18 +39,17 @@ if ($tplData['isUserLoggedIn'] == false) {
             <div class="row mb-5 justify-content-center">
                 <div class="col-lg-10">
                     <?php
-                    //$articles = $tplData['prispevky'];
                     $prispevky = $tplData['prispevky'];
-                    $uzivatele = $tplData['users'];
+                    $uzivatele = $tplData['allUsers'];
 
-                   /*foreach ($prispevky as $a) {
-                       echo "Počet hodnocení: " . count($a['hodnoceni']) . "<br>";
-                       echo "<pre>" . print_r($a) . "</pre>";
-                   }*/
+                    /*foreach ($prispevky as $a) {
+                        echo "Počet hodnocení: " . count($a['hodnoceni']) . "<br>";
+                        echo "<pre>" . print_r($a) . "</pre>";
+                    }*/
 
                     $recenzenti = [];
                     foreach ($uzivatele as $u) {
-                        if ($u['id_pravo'] == 3)
+                        if ($u['id_pravo'] == 3 && $u['povolen'] == 1)
                             array_push($recenzenti, $u);
                     }
 
@@ -108,32 +107,31 @@ if ($tplData['isUserLoggedIn'] == false) {
                                     <input type='hidden' name='priradit_recenzenta_id_prispevek' value='$prispevek[id_prispevek]'>
                                     <button type='submit' class='btn btn-sm btn-warning'>Přiřadit recenzenta</button>
                                     </div>
-                                   </form>
+                                   </form>";
+                        }
+
+                        $card .= "
                                 </div>
                                 </div>
                                 <div class='row'>
                                     <div class='col-sm-12 col-md-8'>   
-                                ";
-
-                        }
-
-                        $card .= "
-                                <div class='table-responsive'>
-                                <table class='table table-sm '>
-                                    <thead class='table-warning small'>
-                                        <tr>
-                                            <th>Recenzent</th>                                            
-                                            <th>Odbornost</th>                                            
-                                            <th>Obsah</th>
-                                            <th>Jazyk</th>
-                                            <th style='width: 5%' </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class='small'>";
+                                
+                                        <div class='table-responsive'>
+                                        <table class='table table-sm'>
+                                            <thead class='table-warning small'>
+                                                <tr>
+                                                    <th>Recenzent</th>                                            
+                                                    <th>Odbornost</th>                                            
+                                                    <th>Obsah</th>
+                                                    <th>Jazyk</th>
+                                                    <th style='width: 5%'></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class='small'>";
 
                         foreach ($prispevek['hodnoceni'] as $hodnoceni) {
                             $card .= "
-                                <tr >
+                                <tr>
                                     <td>$hodnoceni[recenzent]</td>
                                     <td>$hodnoceni[odbornost]</td>
                                     <td>$hodnoceni[obsah]</td>
@@ -141,8 +139,8 @@ if ($tplData['isUserLoggedIn'] == false) {
                                     <td>
                                         <form action='' method='post' class='m-0 p-0'>
                                             <input type='hidden' name='smazat_id_hodnoceni' value='$hodnoceni[id_hodnoceni]'>
-                                            <button type='submit' class='btn btn-sm btn-outline-danger'>
-                                                <i class='bi bi-x-circle'></i>
+                                            <button type='submit' class='btn btn-sm btn-outline-danger m-0 p-0'>
+                                                <i class='bi bi-x-circle p-1 m-0'></i>
                                             </button>
                                         </form>
                                     </td>
@@ -172,7 +170,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                         if ($prispevek['id_status'] != 3) {
                             $card .= "<form action='' method='post' class='d-inline-block'> 
                                         <input type='hidden' name='schvalit_id_clanek' value='$prispevek[id_prispevek]'>
-                                        <input type='hidden' name='schvalit_id_status' value='".STATUS_SCHVALIT."'>
+                                        <input type='hidden' name='schvalit_id_status' value='" . STATUS_SCHVALIT . "'>
                                         <button type='submit' class='btn btn-success btn-sm text-white me-1 py-1 text-white'
                                         " . ((($prispevek['id_status']) == 2 or ($prispevek['id_status']) == 4) ? '' : 'disabled') . "
                                         >
@@ -184,7 +182,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                         if ($prispevek['id_status'] != 4) {
                             $card .= "<form action='' method='post' class='d-inline-block'> 
                                         <input type='hidden' name='zamitnout_id_clanek' value='$prispevek[id_prispevek]'>
-                                        <input type='hidden' name='zamitnout_id_status' value='".STATUS_ZAMITNOUT."'>
+                                        <input type='hidden' name='zamitnout_id_status' value='" . STATUS_ZAMITNOUT . "'>
                                         <button type='submit' class='btn btn-danger btn-sm text-white me-1 py-1 text-white'
                                         " . ((($prispevek['id_status']) == 2 or ($prispevek['id_status']) == 3) ? '' : 'disabled') . ">
                                             <i class='bi bi-x-circle me-2'></i>
