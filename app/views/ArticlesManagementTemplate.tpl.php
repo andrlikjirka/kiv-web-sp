@@ -172,23 +172,23 @@ if ($tplData['isUserLoggedIn'] == false) {
 
                         $card .= "</div><hr>";
 
-                        if ($prispevek['id_status'] != STATUS_SCHVALIT) {
+                        if ($prispevek['id_status'] == STATUS_CEKA_NA_POSOUZENI) {
                             $card .= "<form action='' method='post' class='d-inline-block'> 
                                         <input type='hidden' name='schvalit_id_clanek' value='$prispevek[id_prispevek]'>
                                         <input type='hidden' name='schvalit_id_status' value='" . STATUS_SCHVALIT . "'>
                                         <button type='submit' class='btn btn-success btn-sm text-white me-1 py-1 text-white'
-                                        " . ((($prispevek['id_status'] == STATUS_CEKA_NA_POSOUZENI && $pocetRecenzi == LIMIT_RECENZENTU) or $prispevek['id_status'] == STATUS_ZAMITNOUT) ? '' : 'disabled') . ">
+                                        " . ((($prispevek['id_status'] == STATUS_CEKA_NA_POSOUZENI && $pocetRecenzi == LIMIT_RECENZENTU)) ? '' : 'disabled') . ">
                                             <i class='bi bi-check-circle me-2'></i>
                                             Schválit článek
                                         </button>
                                     </form>";
                         }
-                        if ($prispevek['id_status'] != STATUS_ZAMITNOUT) {
+                        if ($prispevek['id_status'] == STATUS_CEKA_NA_POSOUZENI) {
                             $card .= "<form action='' method='post' class='d-inline-block'> 
                                         <input type='hidden' name='zamitnout_id_clanek' value='$prispevek[id_prispevek]'>
                                         <input type='hidden' name='zamitnout_id_status' value='" . STATUS_ZAMITNOUT . "'>
                                         <button type='submit' class='btn btn-danger btn-sm text-white me-1 py-1 text-white'
-                                        " . ((($prispevek['id_status'] == STATUS_CEKA_NA_POSOUZENI && $pocetRecenzi == LIMIT_RECENZENTU) or $prispevek['id_status'] == STATUS_SCHVALIT) ? '' : 'disabled') . ">
+                                        " . ((($prispevek['id_status'] == STATUS_CEKA_NA_POSOUZENI && $pocetRecenzi == LIMIT_RECENZENTU)) ? '' : 'disabled') . ">
                                             <i class='bi bi-x-circle me-2'></i>
                                             Zamítnout článek
                                         </button>

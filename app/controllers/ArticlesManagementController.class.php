@@ -21,7 +21,7 @@ class ArticlesManagementController extends AController
         $this->handleDeleteReviewForm();
         $this->handleApproveArticleForm();
         $this->handleRejectArticleForm();
-        $this->handleDeleteReviewsForm(); //znovu posouzeni
+        $this->handleReviewAgainForm(); //znovu posouzeni
 
         $tplData = $this->getData();
         $tplData['title'] = $pageTitle;
