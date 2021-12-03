@@ -48,6 +48,7 @@ if ($tplData['isUserLoggedIn'] == false) {
 
                             <?php
                             $users = $tplData['allUsers'];
+
                             foreach ($users as $user) {
                                 $tableRows = "
                                 <tr>
@@ -92,7 +93,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                                     $tableRows .= "<td>
                                             <form action='' method='post'> 
                                                 <input type='hidden' name='smazat_id_uzivatel' value='$user[id_uzivatel]'>
-                                                <button type='submit' class='btn btn-danger btn-sm text-white py-1 w-100'>Smazat</button>
+                                                <button type='submit' class='btn btn-danger btn-sm text-white py-1 w-100' onclick='funkce(event)'>Smazat</button> <!-- POZOR NA reakci na zrušit, aby se opět neodeslal form-->
                                             </form>
                                         </td>";
                                 } else {
@@ -119,6 +120,19 @@ if ($tplData['isUserLoggedIn'] == false) {
 
         </div>
     </section>
+
+    <script>
+        function funkce(event) {
+            if (!confirm("Opravdu chcete smazat uživatele?")) {
+                event.preventDefault();
+            }
+        }
+    </script>
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
 
     <?php
 }

@@ -7,12 +7,13 @@ class UserManagementController extends AController
 
     public function show(string $pageTitle): array
     {
-        global $tplData;
-        $tplData = [];
-
         $this->handleDeleteUserForm();
         $this->handleChangeRoleForm();
         $this->handleBlockAllowUserForm();
+        /*global $tplData;
+        $tplData = [];
+
+
 
         if ($this->login->isUserLoggedIn()) {
             $tplData['isUserLoggedIn'] = true;
@@ -22,6 +23,8 @@ class UserManagementController extends AController
             $tplData['isUserLoggedIn'] = false;
         }
         $tplData['allUsers'] = $this->db->getAllUsers();
+        */
+        $tplData = $this->getData();
         $tplData['title'] = $pageTitle;
 
         return $tplData;
