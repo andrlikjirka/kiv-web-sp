@@ -163,6 +163,22 @@ abstract class AController implements IController
     protected function handleEditArticleForm()
     {
 
+        if (isset($_POST['action']) && $_POST['action'] == 'edit-article'
+            && $_POST['nazev-clanku'] != "" && !empty($_POST['article_id']) && $_POST['abstrakt'] != ""
+        ) {
+            if (isset($_POST['uploadFile']) && $_FILES['uploadFile']['type'] == 'application/pdf') {
+                //upraveny soubor nahran
+
+            } else {
+                //upraveny soubor nenahran
+                $res = $this->db->updateArticle($_POST['article_id'], $_POST['nazev-clanku'], $_POST['abstrakt']);
+                if ($res) {
+                    echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Úprava příspěvku proběhlo úspěšně.</div>";
+                } else {
+                    echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Úprava příspěvku se nezdařila.</div>";
+                }
+            }
+        }
     }
 
 
@@ -216,7 +232,7 @@ abstract class AController implements IController
         }
     }
 
-    public function handleDeleteReviewsForm()
+    public function handleReviewAgainForm()
     {
         if (isset($_POST['znovu_posoudit_id_clanek']) && isset($_POST['znovu_posoudit_id_status'])) {
             $res = $this->db->changeArticleStatus($_POST['znovu_posoudit_id_clanek'], $_POST['znovu_posoudit_id_status']);

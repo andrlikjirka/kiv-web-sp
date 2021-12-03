@@ -8,6 +8,7 @@ class MyArticlesController extends AController
     public function show(string $pageTitle): array
     {
         $this->handleNewArticleForm();
+        $this->handleEditArticleForm();
         /*
         global $tplData;
         $tplData = [];

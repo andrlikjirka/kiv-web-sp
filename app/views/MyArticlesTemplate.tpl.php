@@ -96,7 +96,6 @@ if ($tplData['isUserLoggedIn'] == false) {
                     <?php
 
                     $articles = $tplData['userArticles'];
-
                     if (!empty($articles)) { //ma autor nejake clanky?
                         foreach ($articles as $article) {
                             $dokument = $tplData['UPLOADS_DIR'] . basename($article['dokument'] . ".pdf");
@@ -207,8 +206,13 @@ if ($tplData['isUserLoggedIn'] == false) {
             document.getElementById("edit-nazev-clanku").value = nazev;
             document.getElementById("edit-abstrakt").value = abstrakt;
         }
-
     </script>
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
+
     <?php
 
 
