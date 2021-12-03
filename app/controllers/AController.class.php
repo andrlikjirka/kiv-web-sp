@@ -166,57 +166,6 @@ abstract class AController implements IController
     }
 
 
-    protected function getData()
-    {
-        global $tplData;
-        $tplData = [];
-
-        if ($this->login->isUserLoggedIn()) {
-            $tplData['isUserLoggedIn'] = true;
-            $tplData['userData'] = $this->login->getLoggedUserData();
-            $tplData['userArticles'] = $this->db->getArticlesbyUser($tplData['userData']['id_uzivatel']);
-            $tplData['UPLOADS_DIR'] = ".\\uploads\\";
-
-        } else {
-            $tplData['isUserLoggedIn'] = false;
-        }
-
-        $tplData['users'] = $this->db->getAllUsers();
-        //je nutne ziskavat info pro vsechny uzivatele?
-        //nestacilo by jen pro prihlaseneho?
-        for ($i = 0; $i < count($tplData['users']); $i++) {
-            $tplData['users'][$i]['pravo'] = $this->db->getUserRight($tplData['users'][$i]['id_uzivatel']);
-
-            if ($tplData['users'][$i]['id_pravo'] == 3) {
-                //$tplData['users'][$i]['hodnoceni'] = $this->db->getReviewsByUser($tplData['users'][$i]['id_uzivatele']);
-
-                if (isset($tplData['users'][$i]['hodnoceni'])) {
-                    for ($j = 0; $j < count($tplData['users'][$i]['hodnoceni']); $j++) {
-                        if (!empty($tplData['users'][$i]['hodnoceni'][$j]['id_prispevek'])) {
-                            $tplData['users'][$i]['reviews'][$j]['prispevek'] = $this->db->getArticleByID($tplData['users'][$i]['hodnoceni'][$j]['id_prispevek']);
-                        }
-                    }
-                }
-            }
-        }
-
-        $tplData['prispevky'] = $this->db->getAllArticles();
-        for ($i = 0; $i < count($tplData['prispevky']); $i++) {
-            $tplData['prispevky'][$i]['status'] = $this->db->getStatus($tplData['prispevky'][$i]['id_status']);
-            $tplData['prispevky'][$i]['autor'] = $this->db->getArticleAuthor($tplData['prispevky'][$i]['id_prispevek']);
-            $tplData['prispevky'][$i]['hodnoceni'] = $this->db->getArticleReviews($tplData['prispevky'][$i]['id_prispevek']);
-            for ($j = 0; $j < count($tplData['prispevky'][$i]['hodnoceni']); $j++) {
-                if (!empty($tplData['prispevky'][$i]['hodnoceni'][$j]['id_uzivatel'])) {
-                    $tplData['prispevky'][$i]['hodnoceni'][$j]['recenzent'] =
-                        $this->db->getUserNameByID($tplData['prispevky'][$i]['hodnoceni'][$j]['id_uzivatel']);
-                }
-            }
-
-        }
-        return $tplData;
-    }
-
-
     protected function handleAddReviewerForm()
     {
         if (isset($_POST['priradit_recenzenta_id_uzivatel']) && isset($_POST['priradit_recenzenta_id_prispevek'])) {
@@ -265,6 +214,79 @@ abstract class AController implements IController
                 echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Zamítnutí článku proběhlo neúspěšně.</div>";
             }
         }
+    }
+
+    public function handleDeleteReviewsForm()
+    {
+        if (isset($_POST['znovu_posoudit_id_clanek']) && isset($_POST['znovu_posoudit_id_status'])) {
+            $res = $this->db->changeArticleStatus($_POST['znovu_posoudit_id_clanek'], $_POST['znovu_posoudit_id_status']);
+            if ($res) {
+                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Článek je znovu možné posoudit.</div>";
+            } else {
+                echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Článek není znovu možné posoudit.</div>";
+            }
+        }
+    }
+
+    protected function getData()
+    {
+        global $tplData;
+        $tplData = [];
+
+        if ($this->login->isUserLoggedIn()) {
+            $tplData['isUserLoggedIn'] = true;
+            $tplData['userData'] = $this->login->getLoggedUserData();
+            if ($tplData['userData']['id_pravo'] == 4) { //prihlaseny uzivatel je autor
+                $tplData['userArticles'] = $this->db->getArticlesByUser($tplData['userData']['id_uzivatel']);
+            }
+            if ($tplData['userData']['id_pravo'] == 3) { //prihlaseny uzivatel je recenzent
+                $tplData['userReviews'] = $this->db->getReviewsByUser($tplData['userData']['id_uzivatel']);
+            }
+            //if prihlaseny uzivatel je alespon admin tak getAllUsers, getAllArticles ???
+            $tplData['UPLOADS_DIR'] = ".\\uploads\\";
+
+        } else {
+            $tplData['isUserLoggedIn'] = false;
+        }
+
+        $tplData['allUsers'] = $this->db->getAllUsers(); //POZOR: na ziskavani vsech data vcetne hesel
+
+        //je nutne ziskavat info pro vsechny uzivatele?
+        //nestacilo by jen pro prihlaseneho?
+        /*
+        for ($i = 0; $i < count($tplData['users']); $i++) {
+            $tplData['users'][$i]['pravo'] = $this->db->getUserRight($tplData['users'][$i]['id_uzivatel']);
+
+            if ($tplData['users'][$i]['id_pravo'] == 3) {
+                //$tplData['users'][$i]['hodnoceni'] = $this->db->getReviewsByUser($tplData['users'][$i]['id_uzivatele']);
+
+                if (isset($tplData['users'][$i]['hodnoceni'])) {
+                    for ($j = 0; $j < count($tplData['users'][$i]['hodnoceni']); $j++) {
+                        if (!empty($tplData['users'][$i]['hodnoceni'][$j]['id_prispevek'])) {
+                            $tplData['users'][$i]['reviews'][$j]['prispevek'] = $this->db->getArticleByID($tplData['users'][$i]['hodnoceni'][$j]['id_prispevek']);
+                        }
+                    }
+                }
+            }
+        }
+        */
+
+        $tplData['prispevky'] = $this->db->getAllArticles();
+        for ($i = 0; $i < count($tplData['prispevky']); $i++) {
+            $tplData['prispevky'][$i]['status'] = $this->db->getStatus($tplData['prispevky'][$i]['id_status']);
+            $tplData['prispevky'][$i]['autor'] = $this->db->getArticleAuthor($tplData['prispevky'][$i]['id_prispevek']);
+            $tplData['prispevky'][$i]['poctyHodnoceni'] = $this->db->getCountReviews($tplData['prispevky'][$i]['id_prispevek']);
+
+            $tplData['prispevky'][$i]['hodnoceni'] = $this->db->getArticleReviews($tplData['prispevky'][$i]['id_prispevek']);
+            for ($j = 0; $j < count($tplData['prispevky'][$i]['hodnoceni']); $j++) {
+                if (!empty($tplData['prispevky'][$i]['hodnoceni'][$j]['id_uzivatel'])) {
+                    $tplData['prispevky'][$i]['hodnoceni'][$j]['recenzent'] =
+                        $this->db->getUserNameByID($tplData['prispevky'][$i]['hodnoceni'][$j]['id_uzivatel']);
+                }
+            }
+
+        }
+        return $tplData;
     }
 
 
