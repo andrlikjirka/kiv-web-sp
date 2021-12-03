@@ -6,8 +6,9 @@ namespace kivweb_sp\views;
 ////// Sablona pro zobrazeni stranky spravy clanku  ///////
 /////////////////////////////////////////////////////////////
 const LIMIT_RECENZENTU = 3;
-const STATUS_SCHVALIT = 3;
-const STATUS_ZAMITNOUT = 4;
+const STATUS_CEKA_NA_POSOUZENI = 1;
+const STATUS_SCHVALIT = 2;
+const STATUS_ZAMITNOUT = 3;
 
 // urceni globalnich promennych, se kterymi sablona pracuje
 global $tplData;
@@ -42,6 +43,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                     $prispevky = $tplData['prispevky'];
                     $uzivatele = $tplData['allUsers'];
 
+
                     /*foreach ($prispevky as $a) {
                         echo "Počet hodnocení: " . count($a['hodnoceni']) . "<br>";
                         echo "<pre>" . print_r($a) . "</pre>";
@@ -54,6 +56,9 @@ if ($tplData['isUserLoggedIn'] == false) {
                     }
 
                     foreach ($prispevky as $prispevek) {
+                        $pocetRecenzi = min($prispevek['poctyHodnoceni']); //pocet ulozenych recenzi (minimum z poctu recenzi obsahu, jazyka, odbornosti)
+                        //echo $pocetRecenzi;
+
                         $card = "
                             <div class='card bg-transparent mb-5 shadow-sm'>
                                 <div class='card-body'>
@@ -75,18 +80,16 @@ if ($tplData['isUserLoggedIn'] == false) {
                                 $card .= "<span class='badge bg-light text-dark mb-3'>Status: " . $prispevek['status'] . "</span><br>";
                                 break;
                             case 2:
-                                $card .= "<span class='badge bg-warning mb-3'>Status: " . $prispevek['status'] . "</span><br>";
-                                break;
-                            case 3:
                                 $card .= "<span class='badge bg-success mb-3'>Status: " . $prispevek['status'] . "</span><br>";
                                 break;
-                            case 4:
+                            case 3:
                                 $card .= "<span class='badge bg-danger mb-3'>Status: " . $prispevek['status'] . "</span><br>";
                                 break;
+
                         }
 
                         /////// FORMULAR PRIRAZOVANI RECENZENTU ////////////
-                        if ($prispevek['id_status'] == 1 && count($prispevek['hodnoceni']) < LIMIT_RECENZENTU) { //prispevek ceka na recenzi a zaroven nema zadny zaznam hodnoceni (zadny prirazeny recenzent)
+                        if ($prispevek['id_status'] == STATUS_CEKA_NA_POSOUZENI && count($prispevek['hodnoceni']) < LIMIT_RECENZENTU) { //prispevek ceka na recenzi a zaroven nema zadny zaznam hodnoceni (zadny prirazeny recenzent)
                             $card .= "
                                     <form action='' method='post' class=''>
                                         <div class='input-group input-group-sm mb-3'>
@@ -136,14 +139,16 @@ if ($tplData['isUserLoggedIn'] == false) {
                                     <td>$hodnoceni[odbornost]</td>
                                     <td>$hodnoceni[obsah]</td>
                                     <td>$hodnoceni[jazyk]</td>
-                                    <td>
-                                        <form action='' method='post' class='m-0 p-0'>
+                                    <td>";
+                            if ($prispevek['id_status'] == 1) { // odstranovat recenzenty lze jen ve stavu cekani na posouzeni
+                                $card .= "<form action='' method='post' class='m-0 p-0'>
                                             <input type='hidden' name='smazat_id_hodnoceni' value='$hodnoceni[id_hodnoceni]'>
                                             <button type='submit' class='btn btn-sm btn-outline-danger m-0 p-0'>
                                                 <i class='bi bi-x-circle p-1 m-0'></i>
                                             </button>
-                                        </form>
-                                    </td>
+                                        </form>";
+                            }
+                            $card .= "</td>
                                 </tr>
                             ";
                         }
@@ -167,26 +172,35 @@ if ($tplData['isUserLoggedIn'] == false) {
 
                         $card .= "</div><hr>";
 
-                        if ($prispevek['id_status'] != 3) {
+                        if ($prispevek['id_status'] != STATUS_SCHVALIT) {
                             $card .= "<form action='' method='post' class='d-inline-block'> 
                                         <input type='hidden' name='schvalit_id_clanek' value='$prispevek[id_prispevek]'>
                                         <input type='hidden' name='schvalit_id_status' value='" . STATUS_SCHVALIT . "'>
                                         <button type='submit' class='btn btn-success btn-sm text-white me-1 py-1 text-white'
-                                        " . ((($prispevek['id_status']) == 2 or ($prispevek['id_status']) == 4) ? '' : 'disabled') . "
-                                        >
+                                        " . ((($prispevek['id_status'] == STATUS_CEKA_NA_POSOUZENI && $pocetRecenzi == LIMIT_RECENZENTU) or $prispevek['id_status'] == STATUS_ZAMITNOUT) ? '' : 'disabled') . ">
                                             <i class='bi bi-check-circle me-2'></i>
                                             Schválit článek
                                         </button>
                                     </form>";
                         }
-                        if ($prispevek['id_status'] != 4) {
+                        if ($prispevek['id_status'] != STATUS_ZAMITNOUT) {
                             $card .= "<form action='' method='post' class='d-inline-block'> 
                                         <input type='hidden' name='zamitnout_id_clanek' value='$prispevek[id_prispevek]'>
                                         <input type='hidden' name='zamitnout_id_status' value='" . STATUS_ZAMITNOUT . "'>
                                         <button type='submit' class='btn btn-danger btn-sm text-white me-1 py-1 text-white'
-                                        " . ((($prispevek['id_status']) == 2 or ($prispevek['id_status']) == 3) ? '' : 'disabled') . ">
+                                        " . ((($prispevek['id_status'] == STATUS_CEKA_NA_POSOUZENI && $pocetRecenzi == LIMIT_RECENZENTU) or $prispevek['id_status'] == STATUS_SCHVALIT) ? '' : 'disabled') . ">
                                             <i class='bi bi-x-circle me-2'></i>
                                             Zamítnout článek
+                                        </button>
+                                    </form>";
+                        }
+                        if ($prispevek['id_status'] == STATUS_SCHVALIT or $prispevek['id_status'] == STATUS_ZAMITNOUT) {
+                            $card .= "<form action='' method='post' class='d-inline-block'> 
+                                        <input type='hidden' name='znovu_posoudit_id_clanek' value='$prispevek[id_prispevek]'>
+                                        <input type='hidden' name='znovu_posoudit_id_status' value='" . STATUS_CEKA_NA_POSOUZENI . "'>
+                                        <button type='submit' class='btn btn-warning btn-sm text-white me-1 py-1 text-white'>
+                                            <i class='bi bi-x-circle me-2'></i>
+                                            Znovu posoudit
                                         </button>
                                     </form>
                                     

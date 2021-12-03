@@ -381,7 +381,7 @@ class Database
         return $this->insertIntoTable(TABLE_PRISPEVKY, $insertStatements, $insertValues);
     }
 
-    public function getArticlesbyUser($id_uzivatel)
+    public function getArticlesByUser($id_uzivatel)
     {
         $articles = $this->selectFromTable(TABLE_PRISPEVKY, "*", "id_uzivatel=$id_uzivatel", "id_status");
         if (empty($articles)) {
@@ -406,6 +406,25 @@ class Database
         return $this->updateInTable(TABLE_PRISPEVKY, $updateStatementWithValues, $whereStatement);
     }
 
+    public function getReviewsByUser($id_uzivatel)
+    {
+        $q = "SELECT h.id_hodnoceni, h.obsah, h.odbornost, h.jazyk, p.id_prispevek, s.id_status, s.nazev as nazevStatus, p.nadpis, p.abstrakt, p.dokument, p.datum, CONCAT(u.jmeno, ' ', u.prijmeni) as autor
+                FROM jandrlik_prispevky p,
+                     jandrlik_hodnoceni h,
+                     jandrlik_uzivatele u,
+                     jandrlik_status s
+                WHERE h.id_uzivatel = :id_recenzent
+                AND   u.id_uzivatel = p.id_uzivatel
+                AND   p.id_status = s.id_status
+                AND   h.id_prispevek = p.id_prispevek
+                ORDER BY s.id_status ASC, p.datum ASC";
+
+        $res = $this->pdo->prepare($q);
+        $res->bindParam(":id_recenzent", $id_uzivatel);
+        if ($res->execute()) return $res->fetchAll();
+        else return [];
+    }
+
     public function addNewReview($id_recenzent, $id_prispevek)
     {
         //hlavicka pro vlozeni do tabulky prispevky
@@ -424,10 +443,10 @@ class Database
 
     public function deleteReview($id_hodnoceni)
     {
-        $q = "DELETE FROM ".TABLE_HODNOCENI." WHERE id_hodnoceni = :id_hodnoceni";
+        $q = "DELETE FROM " . TABLE_HODNOCENI . " WHERE id_hodnoceni = :id_hodnoceni";
         $res = $this->pdo->prepare($q);
         $res->bindParam(":id_hodnoceni", $id_hodnoceni);
-        if($res->execute()) return true;
+        if ($res->execute()) return true;
         else return false;
     }
 
@@ -452,15 +471,6 @@ class Database
     }
 
 
-    public function getCountReviews($id_prispevek)
-    {
-        $q = "SELECT count(*) FROM " . TABLE_HODNOCENI . " WHERE id_prispevek=:id_prispevek";
-        $res = $this->pdo->prepare($q);
-        $res->bindParam(":id_prispevek", $id_prispevek);
-        if ($res->execute()) return $res->fetchColumn();
-        else return [];
-    }
-
     public function changeArticleStatus($id_prispevek, $id_status)
     {
         $q = "UPDATE " . TABLE_PRISPEVKY . " SET id_status=:id_status WHERE id_prispevek=:id_prispevek";
@@ -469,6 +479,17 @@ class Database
         $res->bindValue(":id_prispevek", $id_prispevek);
         if ($res->execute()) return true;
         else return false;
+    }
+
+    public function getCountReviews($id_prispevek)
+    {
+        $q = "SELECT COUNT(obsah) as countObsah, COUNT(jazyk) as countJazyk, COUNT(odbornost) as countOdbornost
+                FROM jandrlik_hodnoceni
+                WHERE id_prispevek = :id_prispevek";
+        $res = $this->pdo->prepare($q);
+        $res->bindParam(":id_prispevek", $id_prispevek);
+        if ($res->execute()) return $res->fetch(PDO::FETCH_ASSOC);
+        else return [];
     }
 
     //////////////////////////////// KONEC: Konkretni funkce ///////////////////////////////////////
