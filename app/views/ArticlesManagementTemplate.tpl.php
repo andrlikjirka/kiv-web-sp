@@ -70,7 +70,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                                 </div>
                                 <div class='card-footer'>
                                     <div class='row'>
-                                        <div class='col-sm-12 col-md-8'>";
+                                        <div class='col-sm-12 col-md-6'>";
                         switch ($prispevek['id_status']) {
                             case 1:
                                 $card .= "<span class='badge bg-light text-dark mb-3'>Status: " . $prispevek['status'] . "</span><br>";
@@ -91,8 +91,8 @@ if ($tplData['isUserLoggedIn'] == false) {
                             $card .= "
                                     <form action='' method='post' class=''>
                                         <div class='input-group input-group-sm mb-3'>
-                                            <span class='input-group-text'>Přiřaď recenzenta</span>
-                                            <select class='form-select' id='recenzenti' name='priradit_recenzenta_id_uzivatel'>";
+                                            <!--<span class='input-group-text'>Přiřaď recenzenta</span>-->
+                                            <select class='form-select form-select-sm' id='recenzenti' name='priradit_recenzenta_id_uzivatel'>";
 
                             foreach ($recenzenti as $recenzent) {
                                 $neprirazen = true;
@@ -106,9 +106,13 @@ if ($tplData['isUserLoggedIn'] == false) {
 
                             $card .= "</select>
                                     <input type='hidden' name='priradit_recenzenta_id_prispevek' value='$prispevek[id_prispevek]'>
-                                    <button type='submit' class='btn btn-sm btn-warning'>Přiřadit</button>
+                                    <button type='submit' class='btn btn-sm btn-warning'>Přiřadit recenzenta</button>
                                     </div>
                                    </form>
+                                </div>
+                                </div>
+                                <div class='row'>
+                                    <div class='col-sm-12 col-md-8'>   
                                 ";
 
                         }
