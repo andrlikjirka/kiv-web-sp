@@ -17,6 +17,7 @@ define("TABLE_UZIVATELE", "jandrlik_uzivatele");
 define("TABLE_PRAVA", "jandrlik_prava");
 define("TABLE_PRISPEVKY", "jandrlik_prispevky");
 define("TABLE_HODNOCENI", "jandrlik_hodnoceni");
+define("TABLE_STATUS", "jandrlik_status");
 //tabulka status
 
 ////// nastaveni konstant pro autoloader ///////
