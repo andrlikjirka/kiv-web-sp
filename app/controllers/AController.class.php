@@ -217,6 +217,57 @@ abstract class AController implements IController
     }
 
 
+    protected function handleAddReviewerForm()
+    {
+        if (isset($_POST['priradit_recenzenta_id_uzivatel']) && isset($_POST['priradit_recenzenta_id_prispevek'])) {
+            //priradim recenezenta
+            $res = $this->db->addNewReview($_POST['priradit_recenzenta_id_uzivatel'], $_POST['priradit_recenzenta_id_prispevek']);
+            if ($res) {
+                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Přiřazení recenzenta proběhlo úspěšně.</div>";
+            } else {
+                echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Přiřazení recenzenta se nezdařilo.</div>";
+            }
+
+        }
+    }
+
+    protected function handleDeleteReviewForm()
+    {
+        if (isset($_POST['smazat_id_hodnoceni'])) {
+            $res = $this->db->deleteReview($_POST['smazat_id_hodnoceni']);
+            if ($res) {
+                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Smazání recenzenta proběhlo úspěšně.</div>";
+            } else {
+                echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Smazání recenzenta se nezdařilo.</div>";
+            }
+        }
+    }
+
+    protected function handleApproveArticleForm()
+    {
+        if (isset($_POST['schvalit_id_clanek']) && isset($_POST['schvalit_id_status'])) {
+            $res = $this->db->changeArticleStatus($_POST['schvalit_id_clanek'], $_POST['schvalit_id_status']);
+            if ($res) {
+                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Schválení článku proběhlo úspěšně.</div>";
+            } else {
+                echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Schválení článku proběhlo neúspěšně.</div>";
+            }
+        }
+    }
+
+    protected function handleRejectArticleForm()
+    {
+        if (isset($_POST['zamitnout_id_clanek']) && isset($_POST['zamitnout_id_status'])) {
+            $res = $this->db->changeArticleStatus($_POST['zamitnout_id_clanek'], $_POST['zamitnout_id_status']);
+            if ($res) {
+                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Zamítnutí článku proběhlo úspěšně.</div>";
+            } else {
+                echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Zamítnutí článku proběhlo neúspěšně.</div>";
+            }
+        }
+    }
+
+
     /**
      * Funkce vrati data uvodni stranky (implementovano v potomcich - kotrollerech)
      * @param string $pageTitle Nazev stranky

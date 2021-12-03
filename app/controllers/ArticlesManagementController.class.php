@@ -17,6 +17,11 @@ class ArticlesManagementController extends AController
         } else {
             $tplData['isUserLoggedIn'] = false;
         }*/
+        $this->handleAddReviewerForm();
+        $this->handleDeleteReviewForm();
+        $this->handleApproveArticleForm();
+        $this->handleRejectArticleForm();
+
         $tplData = $this->getData();
         $tplData['title'] = $pageTitle;
 

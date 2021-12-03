@@ -24,7 +24,7 @@ class Database
     private function __construct()
     {
         try {
-            $this->pdo = new PDO("mysql:host=".DB_SERVER."; dbname=".DB_NAME."", DB_USER, DB_PASSWORD);
+            $this->pdo = new PDO("mysql:host=" . DB_SERVER . "; dbname=" . DB_NAME . "", DB_USER, DB_PASSWORD);
             $this->pdo->exec("SET NAMES UTF8"); //vynuceni, aby data z databaze byla predana v utf8
         } catch (PDOException $e) {
             print "Error!: " . $e->getMessage() . "<br/>";
@@ -79,12 +79,12 @@ class Database
      * @param string $orderByStatement Pripadne razeni ziskanych radek tabulky, default=""
      * @return array Vraci pole hodnot z db
      */
-    public function selectFromTable($tableName, $columnsNames = "*", $whereStatement="", $orderByStatement=""):array
+    public function selectFromTable($tableName, $columnsNames = "*", $whereStatement = "", $orderByStatement = ""): array
     {
         //slozim dotaz
         $query = "SELECT $columnsNames FROM $tableName"
-            .((empty($whereStatement)) ? "" : " WHERE $whereStatement")
-            .((empty($orderByStatement)) ? "" : " ORDER BY $orderByStatement");
+            . ((empty($whereStatement)) ? "" : " WHERE $whereStatement")
+            . ((empty($orderByStatement)) ? "" : " ORDER BY $orderByStatement");
         //provedu ho a vratim vysledek
         $result = $this->executeQuery($query);
         //pokud je null, tak vratim prazdne pole
@@ -121,7 +121,7 @@ class Database
      * @param string $insertValues Vkladane hodnoty
      * @return bool Vrati true pokud vlozeni hodnot probehlo uspesne, jinak false
      */
-    private function insertIntoTable(string $tableName, string $insertStatement, string $insertValues):bool
+    private function insertIntoTable(string $tableName, string $insertStatement, string $insertValues): bool
     {
         //slozim dotaz
         $query = "INSERT INTO $tableName($insertStatement) VALUES ($insertValues)";
@@ -182,7 +182,7 @@ class Database
      */
     public function getAllArticles()
     {
-        $q = "SELECT * FROM ".TABLE_PRISPEVKY. " ORDER BY id_status DESC, datum ASC";
+        $q = "SELECT * FROM " . TABLE_PRISPEVKY . " ORDER BY id_status ASC, datum ASC";
         $res = $this->pdo->prepare($q);
         if ($res->execute()) return $res->fetchAll(PDO::FETCH_ASSOC);
         else return [];
@@ -204,7 +204,7 @@ class Database
      */
     public function getUserByID($id_uzivatel)
     {
-        $user = $this->selectFromTable(TABLE_UZIVATELE, "*","id_uzivatel='$id_uzivatel'", "");
+        $user = $this->selectFromTable(TABLE_UZIVATELE, "*", "id_uzivatel='$id_uzivatel'", "");
         //mam pole s jednou hodnotou
         if (empty($user)) {
             return null;
@@ -213,9 +213,10 @@ class Database
         }
     }
 
-    public function getUserNameByID($id_uzivatel){
+    public function getUserNameByID($id_uzivatel)
+    {
         $q = "SELECT CONCAT(jmeno, ' ' , prijmeni) AS jmenoPrijmeni 
-                FROM ".TABLE_UZIVATELE." WHERE id_uzivatel = $id_uzivatel";
+                FROM " . TABLE_UZIVATELE . " WHERE id_uzivatel = $id_uzivatel";
         $result = $this->executeQuery($q);
         if ($result == null) {
             return [];
@@ -226,8 +227,8 @@ class Database
 
     public function isUserWithLogin($login)
     {
-        $user = $this->selectFromTable(TABLE_UZIVATELE, "*","login='$login'", "");
-        if (empty($user)){
+        $user = $this->selectFromTable(TABLE_UZIVATELE, "*", "login='$login'", "");
+        if (empty($user)) {
             return false;
         } else {
             return true;
@@ -242,7 +243,7 @@ class Database
     public function getRightByID($id)
     {
         //ziskam pravo dle ID
-        $right = $this->selectFromTable(TABLE_PRAVA,"*", "id_pravo='$id'");
+        $right = $this->selectFromTable(TABLE_PRAVA, "*", "id_pravo='$id'");
         if (empty($right)) {
             return null;
         } else {
@@ -251,8 +252,9 @@ class Database
         }
     }
 
-    public function getUserRight($id_uzivatel) {
-        $q = "SELECT p.nazev FROM ".TABLE_UZIVATELE. " u, ". TABLE_PRAVA." p WHERE u.id_pravo = p.id_pravo AND u.id_uzivatel=:id_uzivatel";
+    public function getUserRight($id_uzivatel)
+    {
+        $q = "SELECT p.nazev FROM " . TABLE_UZIVATELE . " u, " . TABLE_PRAVA . " p WHERE u.id_pravo = p.id_pravo AND u.id_uzivatel=:id_uzivatel";
         $res = $this->pdo->prepare($q);
         $res->bindValue(":id_uzivatel", $id_uzivatel);
         if ($res->execute()) return $res->fetchColumn();
@@ -274,23 +276,23 @@ class Database
     public function getArticleAuthor($id_prispevek)
     {
         $q = "SELECT CONCAT(jmeno , ' ' , prijmeni) AS jmenoPrijmeni
-              FROM ".TABLE_UZIVATELE." users JOIN ".TABLE_PRISPEVKY." articles ON users.id_uzivatel = articles.id_uzivatel WHERE id_prispevek=:id_prispevek";
+              FROM " . TABLE_UZIVATELE . " users JOIN " . TABLE_PRISPEVKY . " articles ON users.id_uzivatel = articles.id_uzivatel WHERE id_prispevek=:id_prispevek";
         $res = $this->pdo->prepare($q);
         $res->bindValue(":id_prispevek", $id_prispevek);
 
-        if($res->execute()) return $res->fetchColumn();
+        if ($res->execute()) return $res->fetchColumn();
         else return '';
     }
 
     //POZOR
     public function getArticleReviews($id_prispevek)
     {
-        $q = "SELECT * FROM ".TABLE_HODNOCENI." WHERE id_prispevek=:id_prispevek";
+        $q = "SELECT * FROM " . TABLE_HODNOCENI . " WHERE id_prispevek=:id_prispevek";
         $res = $this->pdo->prepare($q);
         $res->bindValue(":id_prispevek", $id_prispevek);
 
-        if($res->execute()) return $res->fetchAll();
-        else return[];
+        if ($res->execute()) return $res->fetchAll();
+        else return [];
     }
 
     public function getReviewID($id)
@@ -313,7 +315,8 @@ class Database
      * @param int $id_pravo ID prava uzivatele
      * @return bool Vrati true pokud je pridani uzivatele probehne uspesne, jinak false
      */
-    public function addNewUser(string $jmeno, string $prijmeni, string $login, string $heslo, string $email, int $id_pravo = 4, int $povolen = 1){
+    public function addNewUser(string $jmeno, string $prijmeni, string $login, string $heslo, string $email, int $id_pravo = 4, int $povolen = 1)
+    {
         //hlavicka pro vlozeni do tabulky uzivatelu
         $insertStatements = "jmeno, prijmeni, login, heslo, email, id_pravo, povolen";
         //hodnoty pro vlozeni do tabulky uzivatelu
@@ -327,7 +330,8 @@ class Database
      * @param int $id_user ID uzivatele
      * @return bool Vrati true, pokud smazani uzivatele probehne uspesne, jinak false
      */
-    public function deleteUser($id_user){
+    public function deleteUser($id_user)
+    {
         return $this->deleteFromTable(TABLE_UZIVATELE, "id_uzivatel=$id_user");
     }
 
@@ -360,13 +364,14 @@ class Database
         return $this->updateInTable(TABLE_UZIVATELE, $updateStatementWithValues, $whereStatement);
     }
 
-    public function updateBlockAllowUser(int $id_uzivatel, int $povolen) {
+    public function updateBlockAllowUser(int $id_uzivatel, int $povolen)
+    {
         $updateStatementWithValues = "povolen=$povolen";
         $whereStatement = "id_uzivatel='$id_uzivatel'";
         return $this->updateInTable(TABLE_UZIVATELE, $updateStatementWithValues, $whereStatement);
     }
 
-    public function addNewArticle($nadpis, $abstrakt, $dokument, $datum, $id_uzivatel, $id_status='1')
+    public function addNewArticle($nadpis, $abstrakt, $dokument, $datum, $id_uzivatel, $id_status = '1')
     {
         //hlavicka pro vlozeni do tabulky prispevky
         $insertStatements = "nadpis, abstrakt, dokument, datum, id_uzivatel, id_status"; //nadpis, abstrakt, ...
@@ -391,7 +396,7 @@ class Database
         return $this->deleteFromTable(TABLE_PRISPEVKY, "id_prispevek='$id_prispevek'");
     }
 
-    public function updateArticle($id_prispevek ) //doplnit dalsi atributy dle prispevku
+    public function updateArticle($id_prispevek) //doplnit dalsi atributy dle prispevku
     {
         //slozim cast s hodnotami
         $updateStatementWithValues = ""; // "klic='$hodnota', "
@@ -401,22 +406,32 @@ class Database
         return $this->updateInTable(TABLE_PRISPEVKY, $updateStatementWithValues, $whereStatement);
     }
 
-    public function addNewReview()
+    public function addNewReview($id_recenzent, $id_prispevek)
     {
         //hlavicka pro vlozeni do tabulky prispevky
         $insertStatements = "";
         //hodnoty pro vlozeni do tabulky prispevky
         $insertValues = "' ', ' ', ' '";
         //provedu dotaz a vratim vysledek
-        return $this->insertIntoTable(TABLE_HODNOCENI, $insertStatements, $insertValues);
+        //return $this->insertIntoTable(TABLE_HODNOCENI, $insertStatements, $insertValues);
+        $q = "INSERT INTO " . TABLE_HODNOCENI . "(id_uzivatel, id_prispevek) VALUES (:id_recenzent, :id_prispevek)";
+        $res = $this->pdo->prepare($q);
+        $res->bindParam(":id_recenzent", $id_recenzent);
+        $res->bindParam(":id_prispevek", $id_prispevek);
+        if ($res->execute()) return true;
+        else return false;
     }
 
     public function deleteReview($id_hodnoceni)
     {
-        return $this->deleteFromTable(TABLE_HODNOCENI, "id_hodnoceni='$id_hodnoceni'");
+        $q = "DELETE FROM ".TABLE_HODNOCENI." WHERE id_hodnoceni = :id_hodnoceni";
+        $res = $this->pdo->prepare($q);
+        $res->bindParam(":id_hodnoceni", $id_hodnoceni);
+        if($res->execute()) return true;
+        else return false;
     }
 
-    public function updateReview($id_hodnoceni )//doplnit dalsi atributy dle prispevku
+    public function updateReview($id_hodnoceni)//doplnit dalsi atributy dle prispevku
     {
         //slozim cast s hodnotami
         $updateStatementWithValues = ""; // "klic='$hodnota', "
@@ -429,11 +444,31 @@ class Database
 
     public function getStatus($id_status)
     {
-        $q = "SELECT nazev FROM ".TABLE_STATUS." WHERE id_status=:id_status";
+        $q = "SELECT nazev FROM " . TABLE_STATUS . " WHERE id_status=:id_status";
         $res = $this->pdo->prepare($q);
         $res->bindParam(":id_status", $id_status);
-        if($res->execute()) return $res->fetchColumn();
-        else return[];
+        if ($res->execute()) return $res->fetchColumn();
+        else return [];
+    }
+
+
+    public function getCountReviews($id_prispevek)
+    {
+        $q = "SELECT count(*) FROM " . TABLE_HODNOCENI . " WHERE id_prispevek=:id_prispevek";
+        $res = $this->pdo->prepare($q);
+        $res->bindParam(":id_prispevek", $id_prispevek);
+        if ($res->execute()) return $res->fetchColumn();
+        else return [];
+    }
+
+    public function changeArticleStatus($id_prispevek, $id_status)
+    {
+        $q = "UPDATE " . TABLE_PRISPEVKY . " SET id_status=:id_status WHERE id_prispevek=:id_prispevek";
+        $res = $this->pdo->prepare($q);
+        $res->bindValue(":id_status", $id_status);
+        $res->bindValue(":id_prispevek", $id_prispevek);
+        if ($res->execute()) return true;
+        else return false;
     }
 
     //////////////////////////////// KONEC: Konkretni funkce ///////////////////////////////////////
