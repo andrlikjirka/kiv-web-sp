@@ -7,16 +7,17 @@ class ArticlesManagementController extends AController
 
     public function show(string $pageTitle): array
     {
-        global $tplData;
+        /*global $tplData;
         $tplData = [];
 
         if ($this->login->isUserLoggedIn()) {
             $tplData['isUserLoggedIn'] = true;
             $tplData['userData'] = $this->login->getLoggedUserData();
-            $tplData['userRight'] = $this->db->getRightByID($tplData['userData']['id_pravo']);
+            $tplData['prispevky'] = $this->db->getAllArticles();
         } else {
             $tplData['isUserLoggedIn'] = false;
-        }
+        }*/
+        $tplData = $this->getData();
         $tplData['title'] = $pageTitle;
 
         return $tplData;

@@ -182,7 +182,10 @@ class Database
      */
     public function getAllArticles()
     {
-        return $this->selectFromTable(TABLE_PRISPEVKY, "*", "", "datum");
+        $q = "SELECT * FROM ".TABLE_PRISPEVKY. " ORDER BY id_status DESC, datum ASC";
+        $res = $this->pdo->prepare($q);
+        if ($res->execute()) return $res->fetchAll(PDO::FETCH_ASSOC);
+        else return [];
     }
 
     /*
@@ -208,6 +211,17 @@ class Database
         } else {
             return $user[0]; //vratim prvni hodnotu (udaje o jednom uzivateli)
         }
+    }
+
+    public function getUserNameByID($id_uzivatel){
+        $q = "SELECT CONCAT(jmeno, ' ' , prijmeni) AS jmenoPrijmeni 
+                FROM ".TABLE_UZIVATELE." WHERE id_uzivatel = $id_uzivatel";
+        $result = $this->executeQuery($q);
+        if ($result == null) {
+            return [];
+        }
+        //prevedu vsechny ziskane radky tabulky na pole
+        return $result->fetchColumn();
     }
 
     public function isUserWithLogin($login)
@@ -237,6 +251,14 @@ class Database
         }
     }
 
+    public function getUserRight($id_uzivatel) {
+        $q = "SELECT p.nazev FROM ".TABLE_UZIVATELE. " u, ". TABLE_PRAVA." p WHERE u.id_pravo = p.id_pravo AND u.id_uzivatel=:id_uzivatel";
+        $res = $this->pdo->prepare($q);
+        $res->bindValue(":id_uzivatel", $id_uzivatel);
+        if ($res->execute()) return $res->fetchColumn();
+        else return '';
+    }
+
     public function getArticleByID($id)
     {
         //ziskam clanek dle ID
@@ -246,6 +268,29 @@ class Database
         } else {
             return $article[0];
         }
+    }
+
+    //POZOR
+    public function getArticleAuthor($id_prispevek)
+    {
+        $q = "SELECT CONCAT(jmeno , ' ' , prijmeni) AS jmenoPrijmeni
+              FROM ".TABLE_UZIVATELE." users JOIN ".TABLE_PRISPEVKY." articles ON users.id_uzivatel = articles.id_uzivatel WHERE id_prispevek=:id_prispevek";
+        $res = $this->pdo->prepare($q);
+        $res->bindValue(":id_prispevek", $id_prispevek);
+
+        if($res->execute()) return $res->fetchColumn();
+        else return '';
+    }
+
+    //POZOR
+    public function getArticleReviews($id_prispevek)
+    {
+        $q = "SELECT * FROM ".TABLE_HODNOCENI." WHERE id_prispevek=:id_prispevek";
+        $res = $this->pdo->prepare($q);
+        $res->bindValue(":id_prispevek", $id_prispevek);
+
+        if($res->execute()) return $res->fetchAll();
+        else return[];
     }
 
     public function getReviewID($id)
@@ -379,6 +424,16 @@ class Database
         $whereStatement = "id_hodnoceni='$id_hodnoceni'";
         //provedu dotaz a vratim vysledek
         return $this->updateInTable(TABLE_HODNOCENI, $updateStatementWithValues, $whereStatement);
+    }
+
+
+    public function getStatus($id_status)
+    {
+        $q = "SELECT nazev FROM ".TABLE_STATUS." WHERE id_status=:id_status";
+        $res = $this->pdo->prepare($q);
+        $res->bindParam(":id_status", $id_status);
+        if($res->execute()) return $res->fetchColumn();
+        else return[];
     }
 
     //////////////////////////////// KONEC: Konkretni funkce ///////////////////////////////////////

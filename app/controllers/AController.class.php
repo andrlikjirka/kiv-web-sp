@@ -2,6 +2,7 @@
 
 namespace kivweb_sp\controllers;
 
+use http\Header;
 use kivweb_sp\models\Database;
 use kivweb_sp\models\Login;
 use kivweb_sp\models\Registration;
@@ -32,6 +33,7 @@ abstract class AController implements IController
                 //pokusim se prihlasit uzivatele
                 $result = $this->login->login($_POST['login'], $_POST['heslo']);
                 if ($result) {
+                    header('Location: index.php');
                     echo "OK: Uživatel byl přihlášen.";
                 } else {
                     //echo "ERROR: Přihlášení uživatele se nezdařilo";
@@ -137,14 +139,14 @@ abstract class AController implements IController
 
     protected function handleNewArticleForm()
     {
-        $UPLOADS_DIR = getcwd().DIRECTORY_SEPARATOR . "uploads\\";
+        $UPLOADS_DIR = getcwd() . DIRECTORY_SEPARATOR . "uploads\\";
 
         if (isset($_POST['action']) && $_POST['action'] == 'new-article'
             && $_POST['nazev-clanku'] != "" && !empty($_POST['user_id']) && $_POST['abstrakt'] != "" && $_FILES['uploadFile']['type'] == 'application/pdf'
         ) {
             $uploadDate = date("Y-m-d G:i:s");
-            $uploadDateTime = date("Y-m-d")."_".time();
-            $articleName = $_POST['user_id']."_".$uploadDateTime;
+            $uploadDateTime = date("Y-m-d") . "_" . time();
+            $articleName = $_POST['user_id'] . "_" . $uploadDateTime;
             $target = $UPLOADS_DIR . basename($articleName . ".pdf");
 
             $res = $this->db->addNewArticle($_POST['nazev-clanku'], $_POST['abstrakt'], $articleName, $uploadDate, $_POST['user_id']);
@@ -161,6 +163,57 @@ abstract class AController implements IController
     protected function handleEditArticleForm()
     {
 
+    }
+
+
+    protected function getData()
+    {
+        global $tplData;
+        $tplData = [];
+
+        if ($this->login->isUserLoggedIn()) {
+            $tplData['isUserLoggedIn'] = true;
+            $tplData['userData'] = $this->login->getLoggedUserData();
+            $tplData['userArticles'] = $this->db->getArticlesbyUser($tplData['userData']['id_uzivatel']);
+            $tplData['UPLOADS_DIR'] = ".\\uploads\\";
+
+        } else {
+            $tplData['isUserLoggedIn'] = false;
+        }
+
+        $tplData['users'] = $this->db->getAllUsers();
+        //je nutne ziskavat info pro vsechny uzivatele?
+        //nestacilo by jen pro prihlaseneho?
+        for ($i = 0; $i < count($tplData['users']); $i++) {
+            $tplData['users'][$i]['pravo'] = $this->db->getUserRight($tplData['users'][$i]['id_uzivatel']);
+
+            if ($tplData['users'][$i]['id_pravo'] == 3) {
+                //$tplData['users'][$i]['hodnoceni'] = $this->db->getReviewsByUser($tplData['users'][$i]['id_uzivatele']);
+
+                if (isset($tplData['users'][$i]['hodnoceni'])) {
+                    for ($j = 0; $j < count($tplData['users'][$i]['hodnoceni']); $j++) {
+                        if (!empty($tplData['users'][$i]['hodnoceni'][$j]['id_prispevek'])) {
+                            $tplData['users'][$i]['reviews'][$j]['prispevek'] = $this->db->getArticleByID($tplData['users'][$i]['hodnoceni'][$j]['id_prispevek']);
+                        }
+                    }
+                }
+            }
+        }
+
+        $tplData['prispevky'] = $this->db->getAllArticles();
+        for ($i = 0; $i < count($tplData['prispevky']); $i++) {
+            $tplData['prispevky'][$i]['status'] = $this->db->getStatus($tplData['prispevky'][$i]['id_status']);
+            $tplData['prispevky'][$i]['autor'] = $this->db->getArticleAuthor($tplData['prispevky'][$i]['id_prispevek']);
+            $tplData['prispevky'][$i]['hodnoceni'] = $this->db->getArticleReviews($tplData['prispevky'][$i]['id_prispevek']);
+            for ($j = 0; $j < count($tplData['prispevky'][$i]['hodnoceni']); $j++) {
+                if (!empty($tplData['prispevky'][$i]['hodnoceni'][$j]['id_uzivatel'])) {
+                    $tplData['prispevky'][$i]['hodnoceni'][$j]['recenzent'] =
+                        $this->db->getUserNameByID($tplData['prispevky'][$i]['hodnoceni'][$j]['id_uzivatel']);
+                }
+            }
+
+        }
+        return $tplData;
     }
 
 
