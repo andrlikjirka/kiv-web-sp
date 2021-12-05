@@ -183,6 +183,7 @@ class Database
     public function getAllArticles()
     {
         $q = "SELECT * FROM " . TABLE_PRISPEVKY . " ORDER BY id_status ASC, datum ASC";
+
         $res = $this->pdo->prepare($q);
         if ($res->execute()) return $res->fetchAll(PDO::FETCH_ASSOC);
         else return [];
@@ -275,12 +276,17 @@ class Database
     //POZOR
     public function getArticleAuthor($id_prispevek)
     {
-        $q = "SELECT CONCAT(jmeno , ' ' , prijmeni) AS jmenoPrijmeni
-              FROM " . TABLE_UZIVATELE . " users JOIN " . TABLE_PRISPEVKY . " articles ON users.id_uzivatel = articles.id_uzivatel WHERE id_prispevek=:id_prispevek";
+        //$q = "SELECT users.id_uzivatel, CONCAT(jmeno , ' ' , prijmeni) AS jmenoPrijmeni
+        //FROM " . TABLE_UZIVATELE . " users JOIN " . TABLE_PRISPEVKY . " articles ON users.id_uzivatel = articles.id_uzivatel WHERE id_prispevek=:id_prispevek";
+        $q = "SELECT u.id_uzivatel, CONCAT(u.jmeno, ' ' , u.prijmeni) AS jmenoPrijmeni 
+                FROM " . TABLE_UZIVATELE." u, ". TABLE_PRISPEVKY . " p 
+                WHERE id_prispevek = :id_prispevek
+                AND u.id_uzivatel = p.id_uzivatel";
+
         $res = $this->pdo->prepare($q);
         $res->bindValue(":id_prispevek", $id_prispevek);
 
-        if ($res->execute()) return $res->fetchColumn();
+        if ($res->execute()) return $res->fetch(PDO::FETCH_ASSOC);
         else return '';
     }
 
@@ -396,19 +402,24 @@ class Database
         return $this->deleteFromTable(TABLE_PRISPEVKY, "id_prispevek='$id_prispevek'");
     }
 
-    public function updateArticle($id_prispevek) //doplnit dalsi atributy dle prispevku
+    public function updateArticle($id_prispevek, $nadpis, $abstrakt) //doplnit dalsi atributy dle prispevku
     {
-        //slozim cast s hodnotami
-        $updateStatementWithValues = ""; // "klic='$hodnota', "
-        //podminka
-        $whereStatement = "id_prispevek='$id_prispevek'";
-        //provedu dotaz a vratim vysledek
-        return $this->updateInTable(TABLE_PRISPEVKY, $updateStatementWithValues, $whereStatement);
+        $nadpis = htmlspecialchars($nadpis);
+        $abstrakt = htmlspecialchars($abstrakt);
+
+        $q = "UPDATE " . TABLE_PRISPEVKY . " SET nadpis=:nadpis, abstrakt=:abstrakt WHERE id_prispevek=:id_prispevek";
+        $res = $this->pdo->prepare($q);
+        $res->bindValue(":nadpis", $nadpis);
+        $res->bindValue(":abstrakt", $abstrakt);
+        $res->bindValue(":id_prispevek", $id_prispevek);
+        if ($res->execute()) return true;
+        else return false;
+
     }
 
     public function getReviewsByUser($id_uzivatel)
     {
-        $q = "SELECT h.id_hodnoceni, h.obsah, h.odbornost, h.jazyk, p.id_prispevek, s.id_status, s.nazev as nazevStatus, p.nadpis, p.abstrakt, p.dokument, p.datum, CONCAT(u.jmeno, ' ', u.prijmeni) as autor
+        $q = "SELECT h.id_hodnoceni, h.obsah, h.odbornost, h.jazyk, p.id_prispevek, s.id_status, s.nazev as status, p.nadpis, p.abstrakt, p.dokument, p.datum, CONCAT(u.jmeno, ' ', u.prijmeni) as autor
                 FROM jandrlik_prispevky p,
                      jandrlik_hodnoceni h,
                      jandrlik_uzivatele u,
@@ -421,7 +432,7 @@ class Database
 
         $res = $this->pdo->prepare($q);
         $res->bindParam(":id_recenzent", $id_uzivatel);
-        if ($res->execute()) return $res->fetchAll();
+        if ($res->execute()) return $res->fetchAll(PDO::FETCH_ASSOC);
         else return [];
     }
 

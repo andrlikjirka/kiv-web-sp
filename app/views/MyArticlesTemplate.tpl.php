@@ -95,45 +95,103 @@ if ($tplData['isUserLoggedIn'] == false) {
 
                     <?php
 
-                    $articles = $tplData['userArticles'];
-                    if (!empty($articles)) { //ma autor nejake clanky?
-                        foreach ($articles as $article) {
-                            $dokument = $tplData['UPLOADS_DIR'] . basename($article['dokument'] . ".pdf");
+                    $prispevky = $tplData['prispevky'];
+                    $loggedUser = $tplData['userData'];
 
-                            $card = "
+                    if (!empty($prispevky)) {
+                        foreach ($prispevky as $prispevek) {
+                            $dokument = $tplData['UPLOADS_DIR'] . basename($prispevek['dokument'] . ".pdf");
+                            $card = "";
+
+                            if ($prispevek['autor']['id_uzivatel'] == $loggedUser['id_uzivatel']) {
+                                $card .= "
                             <div class='card bg-transparent my-4 shadow-sm'>
                                 <div class='card-body'>
-                                    <h5 class='card-title'>" . $article['nadpis'] . "</h5>
+                                    <h5 class='card-title'>" . $prispevek['nadpis'] . "</h5>
                                     <p class='card-text'>"
-                                . $article['abstrakt']
-                                . "</p>
-                                    <a href='$dokument' target='_blank' class='small'>Zobrazit článek</a>
+                                    . $prispevek['abstrakt']
+                                    . "</p>
+                                    <a href='$dokument' target='_blank' rel='noopener' class='small'>Zobrazit článek</a>
                                     <!--<span class='small'>(" . $dokument . ")</span>-->
                                 </div>
-                                <div class='card-footer'>
-                                    <span class='badge bg-secondary'>Status: " . $article['id_status'] . "</span><br>
-                                      <!-- VLOZIT HODNOCENI DLE KATEGORII-->";
+                                <div class='card-footer'>";
 
+                                switch ($prispevek['id_status']) {
+                                    case 1:
+                                        $card .= "<span class='badge bg-light text-dark mb-3'>Status: " . $prispevek['status'] . "</span><br>";
+                                        break;
+                                    case 2:
+                                        $card .= "<span class='badge bg-success mb-3'>Status: " . $prispevek['status'] . "</span><br>";
+                                        break;
+                                    case 3:
+                                        $card .= "<span class='badge bg-danger mb-3'>Status: " . $prispevek['status'] . "</span><br>";
+                                        break;
 
-                        $card .= "
-                                    
-                                    <hr>
-                                    <!-- Button trigger modal -->                                                     
-                                    <button onclick='prirad($article[id_prispevek], \"$article[nadpis]\", \"$article[abstrakt]\")' type='button' 
-                                            class='btn btn-warning btn-sm py-1 text-white d-inline-block' data-bs-toggle='modal' data-bs-target='#editArticleModal'>
-                                        <i class='bi bi-pencil-square me-2'></i>
-                                        Upravit článek
-                                    </button>
-                                    <form action='' method='post' class='d-inline-block'> 
-                                        <input type='hidden' name='smazat_id_clanek' value='$article[id_prispevek]'>
-                                        <button type='submit' class='btn btn-danger btn-sm text-white py-1 text-white' >
-                                            <i class='bi bi-x-circle me-2'></i>
-                                            Smazat článek
+                                }
+                                if ($prispevek['id_status'] == STATUS_SCHVALIT or $prispevek['id_status'] == STATUS_ZAMITNOUT) {
+                                    $card .= "
+                                        <div class='row'>
+                                            <div class='col-sm-12 col-md-8'>
+                                                <div class='table-responsive'>
+                                                    <table class='table table-sm'>
+                                                        <thead class='table-warning small'>
+                                                            <tr>
+                                                                <th>Recenzent</th>                                            
+                                                                <th>Odbornost</th>                                            
+                                                                <th>Obsah</th>
+                                                                <th>Jazyk</th>
+                                                            </tr>
+                                                        </thead>   
+                                                        <tbody class='small'>";
+
+                                    foreach ($prispevek['hodnoceni'] as $hodnoceni) {
+                                        $card .= "
+                                            <tr>
+                                                <td>$hodnoceni[recenzent]</td>
+                                                <td>$hodnoceni[odbornost]</td>
+                                                <td>$hodnoceni[obsah]</td>
+                                                <td>$hodnoceni[jazyk]</td>
+                                                <td>
+                                            </tr>";
+                                    }
+
+                                    $card .= "          </tbody>
+                                                    </table>
+                                                </div>                                            
+                                            
+                                            </div>
+                                        </div>
+                                    ";
+                                }
+
+                                $card .= "
+                                        
+                                        <hr>
+                                        <!-- Button trigger modal -->                                                     
+                                        <button onclick='prirad($prispevek[id_prispevek], \"$prispevek[nadpis]\", \"$prispevek[abstrakt]\")' type='button' 
+                                                class='btn btn-warning btn-sm py-1 text-white d-inline-block' data-bs-toggle='modal' data-bs-target='#editArticleModal'
+                                                " . (($prispevek['id_status'] == STATUS_CEKA_NA_POSOUZENI) ? '' : 'disabled') . ">
+                                            <i class='bi bi-pencil-square me-2'></i>
+                                            Upravit článek
                                         </button>
-                                    </form>      
-                            </div>
-                        </div>
-                        ";
+                                        <form action='' method='post' class='d-inline-block'> 
+                                            <input type='hidden' name='smazat_id_clanek' value='$prispevek[id_prispevek]'>
+                                            <button type='submit' class='btn btn-danger btn-sm text-white py-1 text-white' 
+                                            " . (($prispevek['id_status'] == STATUS_CEKA_NA_POSOUZENI) ? '' : 'disabled') . ">
+                                                <i class='bi bi-x-circle me-2'></i>
+                                                Smazat článek
+                                            </button>
+                                        </form>      
+                                </div>
+                            </div>";
+
+                            } else {
+                                $card .= "
+                                    
+                                ";
+                            }
+
+
                             echo $card;
                         }
                     }

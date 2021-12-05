@@ -20,6 +20,14 @@ define("TABLE_HODNOCENI", "jandrlik_hodnoceni");
 define("TABLE_STATUS", "jandrlik_status");
 //tabulka status
 
+/// konstanty status ////
+const LIMIT_RECENZENTU = 3;
+const STATUS_CEKA_NA_POSOUZENI = 1;
+const STATUS_SCHVALIT = 2;
+const STATUS_ZAMITNOUT = 3;
+
+
+
 ////// nastaveni konstant pro autoloader ///////
 
 /** @var string BASE_NAMESPACE_NAME Zakladni namespace */

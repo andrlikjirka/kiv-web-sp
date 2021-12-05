@@ -162,7 +162,7 @@ abstract class AController implements IController
 
     protected function handleEditArticleForm()
     {
-
+        //TODO: ZPRACOVANI NAHRANI UPRAVENEHO PDF (NAHRAZENI STAREHO)
         if (isset($_POST['action']) && $_POST['action'] == 'edit-article'
             && $_POST['nazev-clanku'] != "" && !empty($_POST['article_id']) && $_POST['abstrakt'] != ""
         ) {
