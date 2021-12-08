@@ -36,6 +36,62 @@ if ($tplData['isUserLoggedIn'] == false) {
             <div class="row mb-5 justify-content-center">
                 <div class="col-lg-10">
 
+                    <?php
+
+                    $recenze = $tplData['userReviews'];
+                    /*foreach ($recenze as $r) {
+                        echo "<pre>" . print_r($r) . "</pre>";
+                    }*/
+
+                    if (!empty($recenze)) {
+
+                        foreach ($recenze as $r) {
+                            $dokument = $tplData['UPLOADS_DIR'] . basename($r['dokument'] . ".pdf");
+
+                            $card = "
+                            <div class='card bg-transparent mb-5 shadow-sm'>
+                                <div class='card-body'>
+                                    <div class='mb-3'>
+                                        <span class='small'>Autor: " . $r['autor'] . "</span><br>                                    
+                                        <span class='small'>Datum: " . $r['datum'] . "</span>
+                                    </div>          
+                                    <h5 class='card-title'>" . $r['nadpis'] . "</h5>
+                                    <p class='card-text'>"
+                                . $r['abstrakt']
+                                . "</p>
+                               <a href='$dokument' target='_blank' class='small'>Zobrazit článek</a>
+                                </div>
+                                <div class='card-footer'>
+                                    <div class='row'>
+                                        <div class='col-sm-12 col-md-6'>";
+                            switch ($r['id_status']) {
+                                case 1:
+                                    $card .= "<span class='badge bg-light text-dark mb-3'>Status: " . $r['status'] . "</span><br>";
+                                    break;
+                                case 2:
+                                    $card .= "<span class='badge bg-success mb-3'>Status: " . $r['status'] . "</span><br>";
+                                    break;
+                                case 3:
+                                    $card .= "<span class='badge bg-danger mb-3'>Status: " . $r['status'] . "</span><br>";
+                                    break;
+                            }
+
+                            $card .= "
+                                </div>
+                                </div>
+                            </div>
+                        </div>";
+                            echo $card;
+                        }
+
+                    } else {
+                        $noReviews = "<p class='text-dark mt-3'>(Žádné recenze)</p>";
+                        echo $noReviews;
+                    }
+
+                    ?>
+
+
                 </div>
             </div>
 
@@ -43,7 +99,6 @@ if ($tplData['isUserLoggedIn'] == false) {
     </section>
 
     <?php
-
 
 
 }

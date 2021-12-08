@@ -151,7 +151,6 @@ if ($tplData['isUserLoggedIn'] == false) {
                                                 <td>$hodnoceni[odbornost]</td>
                                                 <td>$hodnoceni[obsah]</td>
                                                 <td>$hodnoceni[jazyk]</td>
-                                                <td>
                                             </tr>";
                                     }
 
@@ -190,8 +189,6 @@ if ($tplData['isUserLoggedIn'] == false) {
                                     
                                 ";
                             }
-
-
                             echo $card;
                         }
                     }

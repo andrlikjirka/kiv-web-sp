@@ -45,7 +45,7 @@ class Login
     public function login(string $login, string $password)
     {
         // ziskam uzivatele z DB - primo overuji login
-        $whereStatement = "login='$login'"; //verze:sifrovani hesla
+        $whereStatement = "login='$login'";
 
         $user = $this->db->selectFromTable(TABLE_UZIVATELE, "*", $whereStatement); //nahrazeni funkcí pro ziskani zašifrovaného hesla?
         //ziskal jsem uzivatele
