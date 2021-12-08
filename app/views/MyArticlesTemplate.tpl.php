@@ -248,14 +248,30 @@ if ($tplData['isUserLoggedIn'] == false) {
 
 
     </section>
-
+    <!--
+    <script>
+        CKEDITOR.replace('new-abstrakt', {
+            toolbar: [
+                [ 'Cut', 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo' ],
+                {name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat' ] }
+            ],
+            removeButtons: ''
+        });
+        CKEDITOR.replace('edit-abstrakt', {
+            toolbar: [
+                [ 'Cut', 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo' ],
+                {name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat' ] }
+            ],
+            removeButtons: ''
+        });
+    </script>
+    -->
     <script>
         /*
         function priradArticleID(id) {
             document.getElementById("article_id").value = id;
         }
         */
-
         function prirad(id, nazev, abstrakt) {
             document.getElementById("article_id").value = id;
             document.getElementById("edit-nazev-clanku").value = nazev;
@@ -267,6 +283,7 @@ if ($tplData['isUserLoggedIn'] == false) {
             window.history.replaceState(null, null, window.location.href);
         }
     </script>
+
 
     <?php
 

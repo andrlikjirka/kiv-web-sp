@@ -66,6 +66,7 @@ class TemplateBasics implements IView
             <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
             <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css">
             <link rel="stylesheet" type="text/css" href="public/css/styly.css">
+            <script src="node_modules/ckeditor/ckeditor.js"></script>
 
         </head>
         <?php
@@ -187,6 +188,7 @@ private function getHTMLNav(array $tplData)
         <!-- Javascripty -->
         <script src="node_modules/jquery/dist/jquery.js"></script>
         <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
         <!-- Konec: Javascripty-->
         </body>
         </html>
