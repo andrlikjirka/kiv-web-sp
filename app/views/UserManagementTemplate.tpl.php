@@ -52,17 +52,17 @@ if ($tplData['isUserLoggedIn'] == false) {
                             foreach ($users as $user) {
                                 $tableRows = "
                                 <tr>
-                                    <td". ($user['povolen'] == '0' ? ' class="text-danger"' : '') .">$user[id_uzivatel]</td>
-                                    <td". ($user['povolen'] == '0' ? ' class="text-danger"' : '') .">$user[jmeno] $user[prijmeni]</td>
-                                    <td". ($user['povolen'] == '0' ? ' class="text-danger"' : '') .">$user[login]</td>
+                                    <td" . ($user['povolen'] == '0' ? ' class="text-danger"' : '') . ">$user[id_uzivatel]</td>
+                                    <td" . ($user['povolen'] == '0' ? ' class="text-danger"' : '') . ">$user[jmeno] $user[prijmeni]</td>
+                                    <td" . ($user['povolen'] == '0' ? ' class="text-danger"' : '') . ">$user[login]</td>
                                     ";
 
                                 if ($tplData['userData']['id_pravo'] < $user['id_pravo']) {
                                     $tableRows .= "<td><form action='' method='post'>
                                             <select class='form-select form-select-sm w-75' name = 'pravo' >";
-                                                if ($tplData['userData']['id_pravo'] == 1) {
-                                                    $tableRows .= "<option value = '2'" . ($user['id_pravo'] == '2' ? ' selected' : '') . ">Administrátor </option >";
-                                                }
+                                    if ($tplData['userData']['id_pravo'] == 1) {
+                                        $tableRows .= "<option value = '2'" . ($user['id_pravo'] == '2' ? ' selected' : '') . ">Administrátor </option >";
+                                    }
 
                                     $tableRows .= "
                                                 <option value = 3" . ($user['id_pravo'] == '3' ? ' selected' : '') . ">Recenzent </option >
@@ -73,27 +73,27 @@ if ($tplData['isUserLoggedIn'] == false) {
                                         </form>
                                         </td>";
 
-                                    $tableRows .=  "<td class=''>
+                                    $tableRows .= "<td class=''>
                                             <form action='' method='post'>";
-                                            if ($user['povolen'] == 1) {
-                                                $tableRows .= "
+                                    if ($user['povolen'] == 1) {
+                                        $tableRows .= "
                                                 <input type='hidden' name='stav_id_uzivatel' value='$user[id_uzivatel]'>
                                                 <input type='hidden' name='povolen' value='0'>
-                                                <button type='submit' class='btn btn-secondary btn-sm text-white py-1 w-100'>Zablokovat</button>
+                                                <button type='submit' class='btn btn-secondary btn-sm text-white py-1 w-100' onclick='blockUser(event)'>Zablokovat</button>
                                                 ";
-                                            } else {
-                                                $tableRows .= "
+                                    } else {
+                                        $tableRows .= "
                                                 <input type='hidden' name='stav_id_uzivatel' value='$user[id_uzivatel]'>
                                                 <input type='hidden' name='povolen' value='1'>
-                                                <button type='submit' class='btn btn-success btn-sm text-white py-1 w-100'>Povolit</button>
+                                                <button type='submit' class='btn btn-success btn-sm text-white py-1 w-100' onclick='allowUser(event)'>Povolit</button>
                                                 ";
-                                            }
+                                    }
                                     $tableRows .= "</form></td>";
 
                                     $tableRows .= "<td>
                                             <form action='' method='post'> 
                                                 <input type='hidden' name='smazat_id_uzivatel' value='$user[id_uzivatel]'>
-                                                <button type='submit' class='btn btn-danger btn-sm text-white py-1 w-100' onclick='funkce(event)'>Smazat</button> <!-- POZOR NA reakci na zrušit, aby se opět neodeslal form-->
+                                                <button type='submit' class='btn btn-danger btn-sm text-white py-1 w-100' onclick='deleteUser(event)'>Smazat</button> <!-- POZOR NA reakci na zrušit, aby se opět neodeslal form-->
                                             </form>
                                         </td>";
                                 } else {
@@ -122,8 +122,20 @@ if ($tplData['isUserLoggedIn'] == false) {
     </section>
 
     <script>
-        function funkce(event) {
+        function deleteUser(event) {
             if (!confirm("Opravdu chcete smazat uživatele?")) {
+                event.preventDefault();
+            }
+        }
+
+        function blockUser(event) {
+            if (!confirm("Opravdu chcete zablokovat uživatele?")) {
+                event.preventDefault();
+            }
+        }
+
+        function allowUser(event) {
+            if (!confirm("Opravdu chcete povolit uživatele?")) {
                 event.preventDefault();
             }
         }
