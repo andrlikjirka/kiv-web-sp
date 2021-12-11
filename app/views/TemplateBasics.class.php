@@ -84,7 +84,7 @@ private function getHTMLNav(array $tplData)
     <nav id="navigace" class="navbar navbar-expand-lg navbar-light bg-white fixed-top py-3 shadow-sm">
         <div class="container px-5">
                 <span class="navbar-brand text-success fw-bold">
-                    ECO <sup>2022</sup>
+                    <a href="index.php?page=uvod" class="text-decoration-none text-success">ECO <sup>2022</sup></a>
                 </span>
             <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
@@ -94,11 +94,12 @@ private function getHTMLNav(array $tplData)
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                 <ul class="navbar-nav m-auto ">
                     <?php
+
                     foreach (WEB_PAGES as $key => $pageInfo) {
-                        if ($key == "uvod" or $key == "publikovane_clanky") {
+                        if ($key == "uvod#o_konferenci" or $key == "publikovane_clanky") {
                             echo "<li class='nav-item me-3'>
-                                        <a class='nav-link' href='index.php?page=$key'>$pageInfo[title]</a>
-                                      </li>";
+                                    <a class='nav-link' href='index.php?page=$key'>$pageInfo[title]</a>
+                                  </li>";
                         }
                     }
                     ?>

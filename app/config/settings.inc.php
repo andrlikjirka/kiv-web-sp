@@ -44,12 +44,21 @@ const DEFAULT_WEB_PAGE_KEY = "uvod";
 const WEB_PAGES = array(
     //// Uvodni stranka ////
     "uvod" => array(
-        "title" => "O konferenci",
+        "title" => "ECO 2022",
         "controller_class_name" => \kivweb_sp\controllers\IntroductionController::class,
         "view_class_name" => \kivweb_sp\views\TemplateBasics::class,
         "template_type" => \kivweb_sp\views\TemplateBasics::PAGE_INTRODUCTION,
     ),
     //// KONEC: Uvodni stranka ////
+
+    //// O konferenci ////
+    "uvod#o_konferenci" => array(
+        "title" => "O konferenci",
+        "controller_class_name" => \kivweb_sp\controllers\IntroductionController::class,
+        "view_class_name" => \kivweb_sp\views\TemplateBasics::class,
+        "template_type" => \kivweb_sp\views\TemplateBasics::PAGE_INTRODUCTION,
+    ),
+    //// KONEC: O konferenci ////
 
     //// Publikovane clanky ////
     "publikovane_clanky" => array(
