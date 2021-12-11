@@ -32,7 +32,8 @@ if ($tplData['isUserLoggedIn'] == false) {
                                                 Jméno
                                                 <span class="text-danger">*</span>
                                             </label>
-                                            <input type="text" class="form-control" name="jmeno" id="lb_fname" autofocus required>
+                                            <input type="text" class="form-control" name="jmeno" id="lb_fname" autofocus
+                                                   required>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
@@ -63,7 +64,8 @@ if ($tplData['isUserLoggedIn'] == false) {
                                                 E-mail
                                                 <span class="text-danger">*</span>
                                             </label>
-                                            <input type="email" class="form-control" name="email" id="lb_email" required>
+                                            <input type="email" class="form-control" name="email" id="lb_email"
+                                                   required>
                                         </div>
                                     </div>
                                 </div>
@@ -95,7 +97,9 @@ if ($tplData['isUserLoggedIn'] == false) {
                                     <span>Ověření hesla: </span>
                                     <output id="overeni-hesla" name="overeni" for="password1, password2"></output>
                                 </div>
-                                <button type="submit" name="registrace" class="btn btn-success mt-1 px-4">Registrovat se</button>
+                                <button type="submit" name="registrace" class="btn btn-success mt-1 px-4">Registrovat
+                                    se
+                                </button>
 
                                 <!--
                                 <p class="mt-4 small">
@@ -120,10 +124,10 @@ if ($tplData['isUserLoggedIn'] == false) {
 
             if (heslo === heslo2) {
                 outputElem.className = "text-success fw-bold"
-                outputElem.value = 'Zadaná hesla jsou stejná';
+                outputElem.value = 'Hesla jsou stejná';
             } else {
                 outputElem.className = "text-danger fw-bold"
-                outputElem.value = 'Zadaná hesla nejsou stejná';
+                outputElem.value = 'Hesla nejsou stejná';
             }
         }
 
