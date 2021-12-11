@@ -205,6 +205,10 @@ if ($tplData['isUserLoggedIn'] == false) {
             document.getElementById('input-odbornost').value = odbornost;
         }
 
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+
     </script>
 
     <?php
