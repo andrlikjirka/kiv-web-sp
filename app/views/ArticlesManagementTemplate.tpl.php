@@ -225,21 +225,5 @@ if ($tplData['isUserLoggedIn'] == false) {
         </div>
     </section>
 
-
-    <script>
-        if (window.history.replaceState) {
-            window.history.replaceState(null, null, window.location.href);
-        }
-
-        function deleteReviewer(event) {
-            if (!confirm("Opravdu chcete odstranit recenzenta?")) {
-                event.preventDefault();
-            }
-        }
-
-    </script>
-
     <?php
-
-
 }

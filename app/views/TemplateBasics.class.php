@@ -66,6 +66,7 @@ class TemplateBasics implements IView
             <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
             <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css">
             <link rel="stylesheet" type="text/css" href="public/css/styly.css">
+            <script src="public/js/scripts.js"></script>
             <script src="node_modules/ckeditor/ckeditor.js"></script>
 
         </head>

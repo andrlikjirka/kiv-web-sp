@@ -116,23 +116,6 @@ if ($tplData['isUserLoggedIn'] == false) {
         </div>
     </section>
 
-    <script>
-        function overeniHesel() {
-            var heslo = document.getElementById("lb_password").value;
-            var heslo2 = document.getElementById("lb_confirm_password").value;
-            var outputElem = document.getElementById("overeni-hesla");
-
-            if (heslo === heslo2) {
-                outputElem.className = "text-success fw-bold"
-                outputElem.value = 'Hesla jsou stejná';
-            } else {
-                outputElem.className = "text-danger fw-bold"
-                outputElem.value = 'Hesla nejsou stejná';
-            }
-        }
-
-    </script>
-
     <?php
 } else {
     echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Přihlášený uživatel se nemůže znovu registrovat.</div>";

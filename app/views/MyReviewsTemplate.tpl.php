@@ -192,25 +192,6 @@ if ($tplData['isUserLoggedIn'] == false) {
         </div>
     </section>
 
-    <script>
-
-        function recenzovat(id_hodnoceni) {
-            document.getElementById('id_hodnoceni').value = id_hodnoceni;
-        }
-
-        function upravitRecenzi(id_hodnoceni, obsah, jazyk, odbornost) {
-            document.getElementById('id_hodnoceni').value = id_hodnoceni;
-            document.getElementById('input-obsah').value = obsah;
-            document.getElementById('input-jazyk').value = jazyk;
-            document.getElementById('input-odbornost').value = odbornost;
-        }
-
-        if (window.history.replaceState) {
-            window.history.replaceState(null, null, window.location.href);
-        }
-
-    </script>
-
     <?php
 
 

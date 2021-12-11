@@ -121,29 +121,7 @@ if ($tplData['isUserLoggedIn'] == false) {
         </div>
     </section>
 
-    <script>
-        function deleteUser(event) {
-            if (!confirm("Opravdu chcete smazat uživatele?")) {
-                event.preventDefault();
-            }
-        }
 
-        function blockUser(event) {
-            if (!confirm("Opravdu chcete zablokovat uživatele?")) {
-                event.preventDefault();
-            }
-        }
-
-        function allowUser(event) {
-            if (!confirm("Opravdu chcete povolit uživatele?")) {
-                event.preventDefault();
-            }
-        }
-
-        if (window.history.replaceState) {
-            window.history.replaceState(null, null, window.location.href);
-        }
-    </script>
 
     <?php
 }

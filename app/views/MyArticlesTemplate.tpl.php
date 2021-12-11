@@ -269,31 +269,7 @@ if ($tplData['isUserLoggedIn'] == false) {
         });
     </script>
     -->
-    <script>
-        /*
-        function priradArticleID(id) {
-            document.getElementById("article_id").value = id;
-        }
-        */
-        function prirad(id, nazev, abstrakt) {
-            document.getElementById("article_id").value = id;
-            document.getElementById("edit-nazev-clanku").value = nazev;
-            document.getElementById("edit-abstrakt").value = abstrakt;
-        }
-    </script>
-    <script>
-        if (window.history.replaceState) {
-            window.history.replaceState(null, null, window.location.href);
-        }
-    </script>
-    <script>
-        function deleteArticle(event) {
-            if (!confirm("Opravdu chcete smazat příspěvek?")) {
-                event.preventDefault();
-            }
-        }
-    </script>
-
+    <
     <?php
 
 
