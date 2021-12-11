@@ -142,7 +142,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                                 if ($prispevek['id_status'] == 1) { // odstranovat recenzenty lze jen ve stavu cekani na posouzeni
                                     $card .= "<form action='' method='post' class='m-0 p-0'>
                                             <input type='hidden' name='smazat_id_hodnoceni' value='$hodnoceni[id_hodnoceni]'>
-                                            <button type='submit' class='btn btn-sm btn-outline-danger m-0 p-0'>
+                                            <button type='submit' class='btn btn-sm btn-outline-danger m-0 p-0' onclick='deleteReviewer(event)'>
                                                 <i class='bi bi-x-circle p-1 m-0'></i>
                                             </button>
                                         </form>";
@@ -152,7 +152,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                             ";
                             }
 
-                            if (count($prispevek['hodnoceni']) < 3) {
+                            if (count($prispevek['hodnoceni']) < LIMIT_RECENZENTU) {
                                 $zbyva = LIMIT_RECENZENTU - count($prispevek['hodnoceni']);
                                 $card .= "
                                 <tr><td colspan='5'>
@@ -230,6 +230,13 @@ if ($tplData['isUserLoggedIn'] == false) {
         if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.href);
         }
+
+        function deleteReviewer(event) {
+            if (!confirm("Opravdu chcete odstranit recenzenta?")) {
+                event.preventDefault();
+            }
+        }
+
     </script>
 
     <?php

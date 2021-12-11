@@ -2,7 +2,6 @@
 
 namespace kivweb_sp\controllers;
 
-use http\Header;
 use kivweb_sp\models\Database;
 use kivweb_sp\models\Login;
 use kivweb_sp\models\Registration;
@@ -110,7 +109,7 @@ abstract class AController implements IController
             if ($res) {
                 echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Smazání uživatele s ID: $_POST[smazat_id_uzivatel] proběhlo úspěšně.</div>";
             } else {
-                echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Smazání uživatele s ID: $_POST[smazat_id_uzivatel] se nezdařilo.</div>";
+                echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Smazání uživatele s ID: $_POST[smazat_id_uzivatel] se nezdařilo.</div>";
             }
         }
     }
@@ -132,16 +131,20 @@ abstract class AController implements IController
     {
         if (isset($_POST['stav_id_uzivatel'])) {
             $res = $this->db->updateBlockAllowUser($_POST['stav_id_uzivatel'], $_POST['povolen']);
-            if ($res == null) {
+            if ($res == null) { //update se neprovedl
                 if ($_POST['povolen'] == 0) {
-                    echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Zablokování uživatele s ID: $_POST[stav_id_uzivatel] proběhlo neúspěšně.</div>";
-                } else {
-                    echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Povolení uživatele s ID: $_POST[stav_id_uzivatel] proběhlo neúspěšně.</div>";
+                    //pozadavek na povolen=0, neprovedl se update => uzivatel nezablokovan
+                    echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Zablokování uživatele s ID: $_POST[stav_id_uzivatel] proběhlo neúspěšně.</div>";
+                } else if ($_POST['povolen'] == 1) {
+                    //pozadavek na povolen=1, neprovedl se update => uzivatel nepovolen
+                    echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Povolení uživatele s ID: $_POST[stav_id_uzivatel] proběhlo neúspěšně.</div>";
                 }
             } else {
                 if ($_POST['povolen'] == 0) {
+                    //pozadavek na povolen=0, provedl se update => uzivatel zablokovan
                     echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Zablokování uživatele s ID: $_POST[stav_id_uzivatel] proběhlo úspěšně.</div>";
-                } else {
+                } else if ($_POST['povolen'] == 1){
+                    //pozadavek na povolen=1, provedl se update => uzivatel povolen
                     echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Povolení uživatele s ID: $_POST[stav_id_uzivatel] proběhlo úspěšně.</div>";
                 }
             }
@@ -153,31 +156,35 @@ abstract class AController implements IController
         $UPLOADS_DIR = getcwd() . DIRECTORY_SEPARATOR . "uploads\\";
 
         if (isset($_POST['action']) && $_POST['action'] == 'new-article'
-            && $_POST['nazev-clanku'] != "" && !empty($_POST['user_id']) && $_POST['abstrakt'] != "" && $_FILES['uploadFile']['type'] == 'application/pdf'
+            && $_POST['nazev-clanku'] != "" && !empty($_POST['user_id']) && $_POST['abstrakt'] != "" && isset($_FILES['uploadFile']['type'])
         ) {
-            $uploadDate = date("Y-m-d G:i:s");
-            $uploadDateTime = date("Y-m-d") . "_" . time();
-            $articleName = $_POST['user_id'] . "_" . $uploadDateTime;
-            $target = $UPLOADS_DIR . basename($articleName . ".pdf");
+            if ($_FILES['uploadFile']['type'] == 'application/pdf') {
+                //nahran typ souboru PDF
+                $uploadDate = date("Y-m-d G:i:s");
+                $uploadDateTime = date("Y-m-d") . "_" . time();
+                $articleName = $_POST['user_id'] . "_" . $uploadDateTime;
+                $target = $UPLOADS_DIR . basename($articleName . ".pdf");
 
-            $res = $this->db->addNewArticle($_POST['nazev-clanku'], $_POST['abstrakt'], $articleName, $uploadDate, $_POST['user_id']);
-            if ($res) {
-                move_uploaded_file($_FILES['uploadFile']['tmp_name'], $target);
-                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Přidání příspěvku proběhlo úspěšně.</div>";
+                $res = $this->db->addNewArticle($_POST['nazev-clanku'], $_POST['abstrakt'], $articleName, $uploadDate, $_POST['user_id']);
+                if ($res) {
+                    move_uploaded_file($_FILES['uploadFile']['tmp_name'], $target);
+                    echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Přidání příspěvku proběhlo úspěšně.</div>";
+                } else {
+                    echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Přidání příspěvku se nezdařilo.</div>";
+                }
             } else {
-                echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Přidání příspěvku se nezdařilo.</div>";
+                //nahran jiny typ souboru
+                echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Přidání příspěvku se nezdařilo. Nahrajte soubor ve formátu PDF.</div>";
             }
-
         }
     }
 
     protected function handleEditArticleForm()
     {
-        //TODO: ZPRACOVANI NAHRANI UPRAVENEHO PDF (NAHRAZENI STAREHO)
         if (isset($_POST['action']) && $_POST['action'] == 'edit-article'
             && $_POST['nazev-clanku'] != "" && !empty($_POST['article_id']) && $_POST['abstrakt'] != ""
         ) {
-            if ($_FILES['editUploadFile']['type'] == 'application/pdf') {
+            if (isset($_FILES['editUploadFile']['type']) && $_FILES['editUploadFile']['type'] == 'application/pdf') {
                 //upraveny soubor nahran
 
                 //stary soubor (bude odstranen)
@@ -196,18 +203,21 @@ abstract class AController implements IController
                 if ($res) {
                     move_uploaded_file($_FILES['editUploadFile']['tmp_name'], $target);
                     unlink($oldFile);
-                    echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Úprava příspěvku se souborem proběhla úspěšně.</div>";
+                    echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Úprava příspěvku s ID:$_POST[article_id] se souborem proběhla úspěšně.</div>";
                 } else {
-                    echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Úprava příspěvku se souborem se nezdařila.</div>";
+                    echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Úprava příspěvku s ID:$_POST[article_id] se nezdařila.</div>";
                 }
 
+            } else if ($_FILES['editUploadFile']['type'] && $_FILES['editUploadFile']['type'] != 'application/pdf') {
+                //nahrany soubor neni ve formatu pdf
+                echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Úprava příspěvku s ID:$_POST[article_id] se nezdařila. Nahrajte soubor ve formátu PDF.</div>";
             } else {
                 //upraveny soubor nenahran
                 $res = $this->db->updateArticle($_POST['article_id'], $_POST['nazev-clanku'], $_POST['abstrakt']);
                 if ($res) {
-                    echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Úprava příspěvku proběhla úspěšně.</div>";
+                    echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Úprava příspěvku s ID:$_POST[article_id] proběhla úspěšně.</div>";
                 } else {
-                    echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Úprava příspěvku se nezdařila.</div>";
+                    echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Úprava příspěvku s ID:$_POST[article_id] se nezdařila.</div>";
                 }
             }
         }
@@ -221,6 +231,7 @@ abstract class AController implements IController
     protected function handleDeleteArticleForm()
     {
         if (isset($_POST['smazat_id_clanek'])) {
+            //nejprve ziskam nazev dokumentu
             $article = $this->db->getArticleByID($_POST['smazat_id_clanek']);
             $articleName = $article['dokument'];
             $UPLOADS_DIR = getcwd() . DIRECTORY_SEPARATOR . "uploads\\";
@@ -228,10 +239,11 @@ abstract class AController implements IController
 
             $res = $this->db->deleteArticle($_POST['smazat_id_clanek']);
             if ($res) {
+                //odstraneni dokumentu ze serveru, pokud bylo samzani clanku z databaze uspesne
                 unlink($dokument);
-                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Smazání příspěvku proběhlo úspěšně.</div>";
+                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Smazání příspěvku s ID: $_POST[smazat_id_clanek] proběhlo úspěšně.</div>";
             } else {
-                echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Smazání příspěvku se nezdařilo.</div>";
+                echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Smazání příspěvku s ID: $_POST[smazat_id_clanek] se nezdařilo.</div>";
             }
         }
     }
@@ -245,20 +257,20 @@ abstract class AController implements IController
             if ($res) {
                 echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Přiřazení recenzenta proběhlo úspěšně.</div>";
             } else {
-                echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Přiřazení recenzenta se nezdařilo.</div>";
+                echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Přiřazení recenzenta se nezdařilo.</div>";
             }
 
         }
     }
 
-    protected function handleDeleteReviewForm()
+    protected function handleDeleteReviewerForm()
     {
         if (isset($_POST['smazat_id_hodnoceni'])) {
             $res = $this->db->deleteReview($_POST['smazat_id_hodnoceni']);
             if ($res) {
-                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Smazání recenzenta proběhlo úspěšně.</div>";
+                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Odstranění recenzenta proběhlo úspěšně.</div>";
             } else {
-                echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Smazání recenzenta se nezdařilo.</div>";
+                echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Odstranění recenzenta se nezdařilo.</div>";
             }
         }
     }
@@ -268,9 +280,9 @@ abstract class AController implements IController
         if (isset($_POST['schvalit_id_clanek']) && isset($_POST['schvalit_id_status'])) {
             $res = $this->db->changeArticleStatus($_POST['schvalit_id_clanek'], $_POST['schvalit_id_status']);
             if ($res) {
-                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Schválení článku proběhlo úspěšně.</div>";
+                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Schválení článku s ID: $_POST[schvalit_id_clanek] proběhlo úspěšně.</div>";
             } else {
-                echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Schválení článku proběhlo neúspěšně.</div>";
+                echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Schválení článku s ID: $_POST[schvalit_id_clanek] proběhlo neúspěšně.</div>";
             }
         }
     }
@@ -280,9 +292,9 @@ abstract class AController implements IController
         if (isset($_POST['zamitnout_id_clanek']) && isset($_POST['zamitnout_id_status'])) {
             $res = $this->db->changeArticleStatus($_POST['zamitnout_id_clanek'], $_POST['zamitnout_id_status']);
             if ($res) {
-                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Zamítnutí článku proběhlo úspěšně.</div>";
+                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Zamítnutí článku s ID: $_POST[zamitnout_id_clanek] proběhlo úspěšně.</div>";
             } else {
-                echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Zamítnutí článku proběhlo neúspěšně.</div>";
+                echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Zamítnutí článku s ID: $_POST[zamitnout_id_clanek] proběhlo neúspěšně.</div>";
             }
         }
     }
@@ -292,12 +304,13 @@ abstract class AController implements IController
         if (isset($_POST['znovu_posoudit_id_clanek']) && isset($_POST['znovu_posoudit_id_status'])) {
             $res = $this->db->changeArticleStatus($_POST['znovu_posoudit_id_clanek'], $_POST['znovu_posoudit_id_status']);
             if ($res) {
-                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Článek je znovu možné posoudit.</div>";
+                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Článek s ID: $_POST[znovu_posoudit_id_clanek] je znovu možné posoudit.</div>";
             } else {
-                echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Článek není znovu možné posoudit.</div>";
+                echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Článek s ID: $_POST[znovu_posoudit_id_clanek] není znovu možné posoudit.</div>";
             }
         }
     }
+
 
     protected function getData()
     {
@@ -313,7 +326,7 @@ abstract class AController implements IController
             if ($tplData['userData']['id_pravo'] == 3) { //prihlaseny uzivatel je recenzent
                 $tplData['userReviews'] = $this->db->getReviewsByUser($tplData['userData']['id_uzivatel']);
             }
-            //if prihlaseny uzivatel je alespon admin tak getAllUsers, getAllArticles ???
+            //if prihlaseny uzivatel je alespon admin tak getAllUsers, articles ???
             $tplData['UPLOADS_DIR'] = ".\\uploads\\";
 
         } else {
@@ -321,26 +334,6 @@ abstract class AController implements IController
         }
 
         $tplData['allUsers'] = $this->db->getAllUsers(); //POZOR: na ziskavani vsech data vcetne hesel
-
-        //je nutne ziskavat info pro vsechny uzivatele?
-        //nestacilo by jen pro prihlaseneho?
-        /*
-        for ($i = 0; $i < count($tplData['users']); $i++) {
-            $tplData['users'][$i]['pravo'] = $this->db->getUserRight($tplData['users'][$i]['id_uzivatel']);
-
-            if ($tplData['users'][$i]['id_pravo'] == 3) {
-                //$tplData['users'][$i]['hodnoceni'] = $this->db->getReviewsByUser($tplData['users'][$i]['id_uzivatele']);
-
-                if (isset($tplData['users'][$i]['hodnoceni'])) {
-                    for ($j = 0; $j < count($tplData['users'][$i]['hodnoceni']); $j++) {
-                        if (!empty($tplData['users'][$i]['hodnoceni'][$j]['id_prispevek'])) {
-                            $tplData['users'][$i]['reviews'][$j]['prispevek'] = $this->db->getArticleByID($tplData['users'][$i]['hodnoceni'][$j]['id_prispevek']);
-                        }
-                    }
-                }
-            }
-        }
-        */
 
         $tplData['prispevky'] = $this->db->getAllArticles();
         for ($i = 0; $i < count($tplData['prispevky']); $i++) {

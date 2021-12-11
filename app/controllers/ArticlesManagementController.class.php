@@ -18,7 +18,8 @@ class ArticlesManagementController extends AController
             $tplData['isUserLoggedIn'] = false;
         }*/
         $this->handleAddReviewerForm();
-        $this->handleDeleteReviewForm();
+        $this->handleDeleteReviewerForm();
+
         $this->handleApproveArticleForm();
         $this->handleRejectArticleForm();
         $this->handleReviewAgainForm(); //znovu posouzeni

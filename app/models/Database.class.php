@@ -407,7 +407,7 @@ class Database
         $nadpis = htmlspecialchars($nadpis);
         $abstrakt = htmlspecialchars($abstrakt);
 
-        if (empty($dokument) && empty($datum)) {
+        if (empty($dokument) || empty($datum)) {
             $q = "UPDATE " . TABLE_PRISPEVKY . " SET nadpis=:nadpis, abstrakt=:abstrakt WHERE id_prispevek=:id_prispevek";
             $res = $this->pdo->prepare($q);
             $res->bindValue(":nadpis", $nadpis);
