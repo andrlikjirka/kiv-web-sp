@@ -270,8 +270,24 @@ abstract class AController implements IController
             if ($res) {
                 echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Odstranění recenzenta proběhlo úspěšně.</div>";
             } else {
-                echo "<br><br><div class='alert alert-warning text-center mt-5' role='alert'>Odstranění recenzenta se nezdařilo.</div>";
+                echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Odstranění recenzenta se nezdařilo.</div>";
             }
+        }
+    }
+
+    protected function handleUpdateReviewForm()
+    {
+        if (isset($_POST['action']) && $_POST['action'] == "ulozit-recenzi") {
+            $res = $this->db->updateReview($_POST['id_hodnoceni'], $_POST['obsah'], $_POST['jazyk'], $_POST['odbornost']);
+
+            if ($res) {
+                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Recenzování příspěvku proběhlo úspěšně.</div>";
+            } else {
+                echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Recenzování příspěvku se nezdařilo.</div>";
+
+            }
+
+
         }
     }
 

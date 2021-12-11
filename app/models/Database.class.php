@@ -475,14 +475,22 @@ class Database
         else return false;
     }
 
-    public function updateReview($id_hodnoceni)//doplnit dalsi atributy dle prispevku
+    public function updateReview($id_hodnoceni, $obsah, $jazyk, $odbornost)//doplnit dalsi atributy dle prispevku
     {
-        //slozim cast s hodnotami
-        $updateStatementWithValues = ""; // "klic='$hodnota', "
-        //podminka
-        $whereStatement = "id_hodnoceni='$id_hodnoceni'";
+        $q = "UPDATE ". TABLE_HODNOCENI. " SET obsah=:obsah, jazyk=:jazyk, odbornost=:odbornost WHERE id_hodnoceni=:id_hodnoceni";
         //provedu dotaz a vratim vysledek
-        return $this->updateInTable(TABLE_HODNOCENI, $updateStatementWithValues, $whereStatement);
+        $res = $this->pdo->prepare($q);
+        $res->bindValue(":id_hodnoceni", $id_hodnoceni);
+        $res->bindValue(":obsah", $obsah);
+        $res->bindValue(":jazyk", $jazyk);
+        $res->bindValue(":odbornost", $odbornost);
+
+        if ($res->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
 
