@@ -78,7 +78,7 @@ class TemplateBasics implements IView
 private function getHTMLNav(array $tplData)
 {
     ?>
-<body data-bs-spy="scroll" data-bs-target="#navigace">
+<body>
 
     <!-- Navbar-->
     <nav id="navigace" class="navbar navbar-expand-lg navbar-light bg-white fixed-top py-3 shadow-sm">
