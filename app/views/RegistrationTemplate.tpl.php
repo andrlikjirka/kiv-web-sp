@@ -21,7 +21,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                         <div class="card-header py-3 px-4 text-success">Registrace autora</div>
                         <div class="card-body py-4 px-4">
                             <form action=""
-                                  oninput="overeni.value=(password1.value === password2.value)?'Zadaná hesla jsou stejná':'Zadaná hesla nejsou stejná'"
+                                  oninput="overeniHesel()"
                                   method="post"
                                   autocomplete="off">
                                 <!-- Jméno, Uživatelské jméno -->
@@ -93,14 +93,14 @@ if ($tplData['isUserLoggedIn'] == false) {
                                 </div>
                                 <div class="mb-3 small">
                                     <span>Ověření hesla: </span>
-                                    <output name="overeni" for="password1, password2"></output>
+                                    <output id="overeni-hesla" name="overeni" for="password1, password2"></output>
                                 </div>
                                 <button type="submit" name="registrace" class="btn btn-success mt-1 px-4">Registrovat se</button>
 
                                 <!--
                                 <p class="mt-4 small">
                                     Již máte vytvořený účet?
-                                    <a class="text-success" href="login.html">Přihlaste se</a>
+                                    <a class="text-success" href="">Přihlaste se</a>
                                 </p>
                                 -->
                             </form>
@@ -111,6 +111,23 @@ if ($tplData['isUserLoggedIn'] == false) {
 
         </div>
     </section>
+
+    <script>
+        function overeniHesel() {
+            var heslo = document.getElementById("lb_password").value;
+            var heslo2 = document.getElementById("lb_confirm_password").value;
+            var outputElem = document.getElementById("overeni-hesla");
+
+            if (heslo === heslo2) {
+                outputElem.className = "text-success fw-bold"
+                outputElem.value = 'Zadaná hesla jsou stejná';
+            } else {
+                outputElem.className = "text-danger fw-bold"
+                outputElem.value = 'Zadaná hesla nejsou stejná';
+            }
+        }
+
+    </script>
 
     <?php
 } else {
