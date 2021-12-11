@@ -122,10 +122,10 @@ if ($tplData['isUserLoggedIn'] == false) {
                                         <table class='table table-sm'>
                                             <thead class='table-warning small'>
                                                 <tr>
-                                                    <th>Recenzent</th>                                            
-                                                    <th>Odbornost</th>                                            
+                                                    <th>Recenzent</th>                            
                                                     <th>Obsah</th>
                                                     <th>Jazyk</th>
+                                                    <th>Odbornost</th>
                                                     <th style='width: 5%'></th>
                                                 </tr>
                                             </thead>
@@ -135,9 +135,9 @@ if ($tplData['isUserLoggedIn'] == false) {
                                 $card .= "
                                 <tr>
                                     <td>$hodnoceni[recenzent]</td>
-                                    <td>$hodnoceni[odbornost]</td>
                                     <td>$hodnoceni[obsah]</td>
                                     <td>$hodnoceni[jazyk]</td>
+                                    <td>$hodnoceni[odbornost]</td>
                                     <td>";
                                 if ($prispevek['id_status'] == 1) { // odstranovat recenzenty lze jen ve stavu cekani na posouzeni
                                     $card .= "<form action='' method='post' class='m-0 p-0'>
