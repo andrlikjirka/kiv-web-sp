@@ -402,18 +402,32 @@ class Database
         return $this->deleteFromTable(TABLE_PRISPEVKY, "id_prispevek='$id_prispevek'");
     }
 
-    public function updateArticle($id_prispevek, $nadpis, $abstrakt) //doplnit dalsi atributy dle prispevku
+    public function updateArticle($id_prispevek, $nadpis, $abstrakt, $dokument = "", $datum = "") //doplnit dalsi atributy dle prispevku
     {
         $nadpis = htmlspecialchars($nadpis);
         $abstrakt = htmlspecialchars($abstrakt);
 
-        $q = "UPDATE " . TABLE_PRISPEVKY . " SET nadpis=:nadpis, abstrakt=:abstrakt WHERE id_prispevek=:id_prispevek";
-        $res = $this->pdo->prepare($q);
-        $res->bindValue(":nadpis", $nadpis);
-        $res->bindValue(":abstrakt", $abstrakt);
-        $res->bindValue(":id_prispevek", $id_prispevek);
-        if ($res->execute()) return true;
-        else return false;
+        if (empty($dokument) && empty($datum)) {
+            $q = "UPDATE " . TABLE_PRISPEVKY . " SET nadpis=:nadpis, abstrakt=:abstrakt WHERE id_prispevek=:id_prispevek";
+            $res = $this->pdo->prepare($q);
+            $res->bindValue(":nadpis", $nadpis);
+            $res->bindValue(":abstrakt", $abstrakt);
+            $res->bindValue(":id_prispevek", $id_prispevek);
+
+        } else {
+            $q = "UPDATE " . TABLE_PRISPEVKY . " SET nadpis=:nadpis, abstrakt=:abstrakt, dokument=:dokument, datum=:datum WHERE id_prispevek=:id_prispevek";
+            $res = $this->pdo->prepare($q);
+            $res->bindValue(":nadpis", $nadpis);
+            $res->bindValue(":abstrakt", $abstrakt);
+            $res->bindValue(":id_prispevek", $id_prispevek);
+            $res->bindValue(":dokument", $dokument);
+            $res->bindValue(":datum", $datum);
+        }
+        if ($res->execute()) {
+          return true;
+        } else {
+            return false;
+        }
 
     }
 

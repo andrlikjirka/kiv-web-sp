@@ -176,7 +176,8 @@ if ($tplData['isUserLoggedIn'] == false) {
                                         <form action='' method='post' class='d-inline-block'> 
                                             <input type='hidden' name='smazat_id_clanek' value='$prispevek[id_prispevek]'>
                                             <button type='submit' class='btn btn-danger btn-sm text-white py-1 text-white' 
-                                            " . (($prispevek['id_status'] == STATUS_CEKA_NA_POSOUZENI) ? '' : 'disabled') . ">
+                                            " . (($prispevek['id_status'] == STATUS_CEKA_NA_POSOUZENI) ? '' : 'disabled') . "
+                                            onclick='deleteArticle(event)'>
                                                 <i class='bi bi-x-circle me-2'></i>
                                                 Smazat článek
                                             </button>
@@ -223,10 +224,12 @@ if ($tplData['isUserLoggedIn'] == false) {
                                         <div class="mb-3">
                                             <label for="edit-upload" class="form-label">PDF soubor s upraveným
                                                 článkem</label>
-                                            <input class="form-control" type="file" id="edit-upload" name="uploadFile">
+                                            <input class="form-control" type="file" id="edit-upload" name="editUploadFile">
                                         </div>
 
                                         <input type="hidden" name="article_id" id="article_id">
+                                        <input type="hidden" name="user_id"
+                                               value="<?php echo $tplData['userData']['id_uzivatel'] ?>">
                                     </form>
 
                                 </div>
@@ -283,7 +286,13 @@ if ($tplData['isUserLoggedIn'] == false) {
             window.history.replaceState(null, null, window.location.href);
         }
     </script>
-
+    <script>
+        function deleteArticle(event) {
+            if (!confirm("Opravdu chcete smazat příspěvek?")) {
+                event.preventDefault();
+            }
+        }
+    </script>
 
     <?php
 
