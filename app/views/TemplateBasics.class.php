@@ -124,10 +124,10 @@ private function getHTMLNav(array $tplData)
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <?php
-                            if ($tplData['userData']['id_pravo'] <= 2) { //admin nebo Superadmin
+                            if ($tplData['userData']['id_pravo'] <= PRAVO_ADMIN) { //admin nebo Superadmin
                                 echo "<li><a class='dropdown-item' href='index.php?page=sprava_clanku'>Správa článků</a></li>";
                                 echo "<li><a class='dropdown-item' href='index.php?page=sprava_uzivatelu'>Správa uživatelů</a></li>";
-                            } else if ($tplData['userData']['id_pravo'] == 3) { //recenzent
+                            } else if ($tplData['userData']['id_pravo'] == PRAVO_RECENZENT) { //recenzent
                                 echo "<li><a class='dropdown-item' href='index.php?page=moje_recenze'>Moje recenze</a></li>";
                             } else { //autor
                                 echo "<li><a class='dropdown-item' href='index.php?page=moje_clanky'>Moje články</a></li>";
@@ -190,7 +190,6 @@ private function getHTMLNav(array $tplData)
         <!-- Javascripty -->
         <script src="node_modules/jquery/dist/jquery.js"></script>
         <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-
         <!-- Konec: Javascripty-->
         </body>
         </html>

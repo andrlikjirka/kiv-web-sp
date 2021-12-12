@@ -337,6 +337,7 @@ abstract class AController implements IController
         if ($this->login->isUserLoggedIn()) {
             $tplData['isUserLoggedIn'] = true;
             $tplData['userData'] = $this->login->getLoggedUserData();
+            $tplData['userData']['nazevPravo'] = $this->db->getUserRight($tplData['userData']['id_uzivatel']);
             if ($tplData['userData']['id_pravo'] == PRAVO_AUTOR) { //prihlaseny uzivatel je autor
                 $tplData['userArticles'] = $this->db->getArticlesByUser($tplData['userData']['id_uzivatel']);
             }

@@ -10,21 +10,9 @@ class LoginController extends AController
 
     public function show(string $pageTitle): array
     {
-        global $tplData;
-        $tplData = [];
-
         $this->handleLoginForm();
 
-        if ($this->login->isUserLoggedIn()) {
-            //echo "logged in";
-            $tplData['isUserLoggedIn'] = true;
-            $tplData['userData'] = $this->login->getLoggedUserData();
-            $tplData['userRight'] = $this->db->getRightByID($tplData['userData']['id_pravo']);
-
-        } else {
-            //echo "not logged in";
-            $tplData['isUserLoggedIn'] = false;
-        }
+        $tplData = $this->getData();
 
         $tplData['title'] = $pageTitle;
         return $tplData;

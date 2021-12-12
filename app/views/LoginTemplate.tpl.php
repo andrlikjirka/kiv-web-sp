@@ -58,7 +58,7 @@ if ($tplData['isUserLoggedIn'] == false) {
     echo "Login: " . $tplData['userData']['login'] . "<br>";
     echo "Jméno, příjmení: " . $tplData['userData']['jmeno'] . " " . $tplData['userData']['prijmeni'] . "<br>";
     echo "E-mail: " . $tplData['userData']['email'] . "<br>";
-    echo "Právo: " . $tplData['userRight']['nazev'] . "<br>";
+    echo "Právo: " . $tplData['userData']['nazevPravo'] . "<br>";
 
 }
 
