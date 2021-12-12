@@ -382,6 +382,7 @@ class Database
 
     public function updateArticle($id_prispevek, $nadpis, $abstrakt, $dokument = "", $datum = ""): bool
     {
+        $id_prispevek = intval($id_prispevek);
         $nadpis = htmlspecialchars($nadpis);
         $abstrakt = htmlspecialchars($abstrakt);
 
