@@ -75,13 +75,13 @@ if ($tplData['isUserLoggedIn'] == false) {
                                     <div class='row'>
                                         <div class='col-sm-12 col-md-6'>";
                             switch ($prispevek['id_status']) {
-                                case 1:
+                                case STATUS_CEKA_NA_POSOUZENI:
                                     $card .= "<span class='badge bg-light text-dark mb-3'>Status: " . $prispevek['status'] . "</span><br>";
                                     break;
-                                case 2:
+                                case STATUS_SCHVALIT:
                                     $card .= "<span class='badge bg-success mb-3'>Status: " . $prispevek['status'] . "</span><br>";
                                     break;
-                                case 3:
+                                case STATUS_ZAMITNOUT:
                                     $card .= "<span class='badge bg-danger mb-3'>Status: " . $prispevek['status'] . "</span><br>";
                                     break;
 
@@ -135,10 +135,23 @@ if ($tplData['isUserLoggedIn'] == false) {
                                 $card .= "
                                 <tr>
                                     <td>$hodnoceni[recenzent]</td>
-                                    <td>$hodnoceni[obsah]</td>
-                                    <td>$hodnoceni[jazyk]</td>
-                                    <td>$hodnoceni[odbornost]</td>
                                     <td>";
+                                    for ($i = 0; $i < $hodnoceni['obsah']; $i++) {
+                                        $card .= "<i class='bi bi-star-fill me-1 text-warning'></i>"; //vypis hvezdicek
+                                    }
+                                    $card .= "</td>
+                                    <td>";
+                                    for ($i = 0; $i < $hodnoceni['jazyk']; $i++) {
+                                        $card .= "<i class='bi bi-star-fill me-1 text-warning'></i>"; //vypis hvezdicek
+                                    }
+                                    $card .= "</td>
+                                    <td>";
+                                    for ($i = 0; $i < $hodnoceni['odbornost']; $i++) {
+                                        $card .= "<i class='bi bi-star-fill me-1 text-warning'></i>"; //vypis hvezdicek
+                                    }
+                                    $card .= "</td>
+                                    <td>";
+
                                 if ($prispevek['id_status'] == 1) { // odstranovat recenzenty lze jen ve stavu cekani na posouzeni
                                     $card .= "<form action='' method='post' class='m-0 p-0'>
                                             <input type='hidden' name='smazat_id_hodnoceni' value='$hodnoceni[id_hodnoceni]'>

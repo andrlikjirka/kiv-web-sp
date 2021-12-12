@@ -60,7 +60,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                                 if ($tplData['userData']['id_pravo'] < $user['id_pravo']) {
                                     $tableRows .= "<td><form action='' method='post'>
                                             <select class='form-select form-select-sm w-75' name = 'pravo' >";
-                                    if ($tplData['userData']['id_pravo'] == 1) {
+                                    if ($tplData['userData']['id_pravo'] == PRAVO_SUPERADMIN) {
                                         $tableRows .= "<option value = '2'" . ($user['id_pravo'] == '2' ? ' selected' : '') . ">Administrátor </option >";
                                     }
 
@@ -98,10 +98,10 @@ if ($tplData['isUserLoggedIn'] == false) {
                                         </td>";
                                 } else {
                                     switch ($user['id_pravo']) {
-                                        case 1:
+                                        case PRAVO_SUPERADMIN:
                                             $tableRows .= "<td>SuperAdmin</td>";
                                             break;
-                                        case 2:
+                                        case PRAVO_ADMIN:
                                             $tableRows .= "<td>Administrátor</td>";
                                     }
                                     $tableRows .= "<td></td><td></td>";

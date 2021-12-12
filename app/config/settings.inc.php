@@ -26,6 +26,10 @@ const STATUS_CEKA_NA_POSOUZENI = 1;
 const STATUS_SCHVALIT = 2;
 const STATUS_ZAMITNOUT = 3;
 
+const PRAVO_AUTOR = 4;
+const PRAVO_RECENZENT = 3;
+const PRAVO_ADMIN = 2;
+const PRAVO_SUPERADMIN = 1;
 
 
 ////// nastaveni konstant pro autoloader ///////

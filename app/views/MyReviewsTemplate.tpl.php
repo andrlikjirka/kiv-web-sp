@@ -84,9 +84,9 @@ if ($tplData['isUserLoggedIn'] == false) {
                                 $card .= "
                             <!-- Button trigger modal -->                                                     
                             <button onclick='recenzovat($r[id_hodnoceni])' type='button' 
-                                    class='btn btn-warning btn-sm py-1 d-inline-block' data-bs-toggle='modal' data-bs-target='#recenzeModal'
-                                    ".(($r['id_status'] == STATUS_CEKA_NA_POSOUZENI) ? '' : 'disabled').">
-                                <i class='bi bi-star me-2'></i>
+                                    class='btn btn-warning btn-sm py-1 d-inline-block text-white' data-bs-toggle='modal' data-bs-target='#recenzeModal'
+                                    " . (($r['id_status'] == STATUS_CEKA_NA_POSOUZENI) ? '' : 'disabled') . ">
+                                <i class='bi bi-star-fill me-2'></i>
                                 Recenzovat článek
                             </button> 
                             ";
@@ -105,9 +105,22 @@ if ($tplData['isUserLoggedIn'] == false) {
                                                 </thead>
                                                 <tbody class='small'>
                                                     <tr>
-                                                        <td>$r[obsah]</td>
-                                                        <td>$r[jazyk]</td>
-                                                        <td>$r[odbornost]</td>
+                                                        <td>";
+                                for ($i = 0; $i < $r['obsah']; $i++) {
+                                    $card .= "<i class='bi bi-star-fill me-1 text-warning'></i>";
+                                }
+
+                                $card .= "</td>
+                                                        <td>";
+                                for ($i = 0; $i < $r['jazyk']; $i++) {
+                                    $card .= "<i class='bi bi-star-fill me-1 text-warning'></i>";
+                                }
+                                $card .= "</td>
+                                                        <td>";
+                                for ($i = 0; $i < $r['odbornost']; $i++) {
+                                    $card .= "<i class='bi bi-star-fill me-1 text-warning'></i>";
+                                }
+                                $card .= "</td>
                                                     </tr>
                                                 </tbody>
                                                 </table>
@@ -118,15 +131,16 @@ if ($tplData['isUserLoggedIn'] == false) {
                                 $card .= "
                             <!-- Button trigger modal -->                                                     
                             <button onclick='upravitRecenzi($r[id_hodnoceni], $r[obsah], $r[jazyk], $r[odbornost])' type='button'
-                                    class='btn btn-warning btn-sm py-1 d-inline-block' data-bs-toggle='modal' data-bs-target='#recenzeModal'
-                                    ".(($r['id_status'] == STATUS_CEKA_NA_POSOUZENI) ? '' : 'disabled').">
-                                <i class='bi bi-star me-2'></i>
+                                    class='btn btn-warning btn-sm py-1 d-inline-block text-white' data-bs-toggle='modal' data-bs-target='#recenzeModal'
+                                    " . (($r['id_status'] == STATUS_CEKA_NA_POSOUZENI) ? '' : 'disabled') . ">
+                                <i class='bi bi-star-fill me-2 text-white'></i>
                                 Upravit recenzi
                             </button> 
                             ";
                             }
 
                             $card .= "
+                                </div>
                             </div>";
                             echo $card;
                         }
@@ -177,7 +191,8 @@ if ($tplData['isUserLoggedIn'] == false) {
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zrušit
                                     </button>
-                                    <button type="submit" form="recenze" class="btn btn-warning" name="action"
+                                    <button type="submit" form="recenze" class="btn btn-warning text-white"
+                                            name="action"
                                             value="ulozit-recenzi">Uložit recenzi
                                     </button>
                                 </div>
@@ -193,6 +208,5 @@ if ($tplData['isUserLoggedIn'] == false) {
     </section>
 
     <?php
-
 
 }

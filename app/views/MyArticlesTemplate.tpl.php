@@ -137,9 +137,9 @@ if ($tplData['isUserLoggedIn'] == false) {
                                                         <thead class='table-warning small'>
                                                             <tr>
                                                                 <th>Recenzent</th>                                            
-                                                                <th>Odbornost</th>                                            
-                                                                <th>Obsah</th>
+                                                                <th>Obsah</th>                                            
                                                                 <th>Jazyk</th>
+                                                                <th>Odbornost</th>
                                                             </tr>
                                                         </thead>   
                                                         <tbody class='small'>";
@@ -148,9 +148,21 @@ if ($tplData['isUserLoggedIn'] == false) {
                                         $card .= "
                                             <tr>
                                                 <td>$hodnoceni[recenzent]</td>
-                                                <td>$hodnoceni[odbornost]</td>
-                                                <td>$hodnoceni[obsah]</td>
-                                                <td>$hodnoceni[jazyk]</td>
+                                                <td>";
+                                                for ($i = 0; $i < $hodnoceni['obsah']; $i++) {
+                                                    $card .= "<i class='bi bi-star-fill me-1 text-warning'></i>"; //vypis hvezdicek
+                                                }
+                                                $card .= "</td>
+                                                <td>";
+                                                for ($i = 0; $i < $hodnoceni['jazyk']; $i++) {
+                                                    $card .= "<i class='bi bi-star-fill me-1 text-warning'></i>"; //vypis hvezdicek
+                                                }
+                                                $card .= "</td>
+                                                <td>";
+                                                for ($i = 0; $i < $hodnoceni['odbornost']; $i++) {
+                                                    $card .= "<i class='bi bi-star-fill me-1 text-warning'></i>"; //vypis hvezdicek
+                                                }
+                                                $card .= "</td>
                                             </tr>";
                                     }
 

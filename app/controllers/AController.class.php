@@ -33,7 +33,7 @@ abstract class AController implements IController
                 $result = $this->login->login($_POST['login'], $_POST['heslo']);
                 if ($result) {
                     header('Location: index.php');
-                    echo "OK: Uživatel byl přihlášen.";
+                    //echo "OK: Uživatel byl přihlášen.";
                 } else {
                     //echo "ERROR: Přihlášení uživatele se nezdařilo";
                     echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Nesprávné jméno nebo heslo.</div>";
@@ -49,7 +49,7 @@ abstract class AController implements IController
             if ($_POST['action'] == 'logout') {
                 //odhlasim uzivatele
                 $this->login->logout();
-                echo "OK: Uživatel byl odhlášen.";
+                //echo "OK: Uživatel byl odhlášen.";
             } //neznama akce
             else {
                 echo "WARNING: Neznama akce.";
@@ -68,7 +68,8 @@ abstract class AController implements IController
                 && $_POST['login'] != "" && $_POST['password1'] != "" && $_POST['jmeno'] != "" && $_POST['prijmeni'] != "" && $_POST['email'] != ""
             ) {
                 if ($this->db->isUserWithLogin($_POST['login']) == false) { //neexistuje v db uzivatel se zadanym loginem
-                    $hash_password = password_hash($_POST['password1'], PASSWORD_BCRYPT);
+                    $password = htmlspecialchars($_POST['password1']); //ochrana proti XSS
+                    $hash_password = password_hash($password, PASSWORD_BCRYPT);
                     $result = $this->registration->registrateUser($_POST['jmeno'], $_POST['prijmeni'], $_POST['login'], $hash_password, $_POST['email']);
                     if ($result) {
                         //echo "OK: Uživatel byl přidán do databáze.";
@@ -131,7 +132,7 @@ abstract class AController implements IController
     {
         if (isset($_POST['stav_id_uzivatel'])) {
             $res = $this->db->updateBlockAllowUser($_POST['stav_id_uzivatel'], $_POST['povolen']);
-            if ($res == null) { //update se neprovedl
+            if ($res == false) { //update se neprovedl
                 if ($_POST['povolen'] == 0) {
                     //pozadavek na povolen=0, neprovedl se update => uzivatel nezablokovan
                     echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Zablokování uživatele s ID: $_POST[stav_id_uzivatel] proběhlo neúspěšně.</div>";
@@ -328,7 +329,7 @@ abstract class AController implements IController
     }
 
 
-    protected function getData()
+    protected function getData():array
     {
         global $tplData;
         $tplData = [];
@@ -336,10 +337,10 @@ abstract class AController implements IController
         if ($this->login->isUserLoggedIn()) {
             $tplData['isUserLoggedIn'] = true;
             $tplData['userData'] = $this->login->getLoggedUserData();
-            if ($tplData['userData']['id_pravo'] == 4) { //prihlaseny uzivatel je autor
+            if ($tplData['userData']['id_pravo'] == PRAVO_AUTOR) { //prihlaseny uzivatel je autor
                 $tplData['userArticles'] = $this->db->getArticlesByUser($tplData['userData']['id_uzivatel']);
             }
-            if ($tplData['userData']['id_pravo'] == 3) { //prihlaseny uzivatel je recenzent
+            if ($tplData['userData']['id_pravo'] == PRAVO_RECENZENT) { //prihlaseny uzivatel je recenzent
                 $tplData['userReviews'] = $this->db->getReviewsByUser($tplData['userData']['id_uzivatel']);
             }
             //if prihlaseny uzivatel je alespon admin tak getAllUsers, articles ???
