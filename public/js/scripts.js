@@ -1,10 +1,20 @@
 //// My Articles ////
-function prirad(id, nazev, abstrakt) {
+/**
+ * Funkce pri stisku tlacitka 'Upravit clanek' priradi data do prislusneho modalu
+ * @param id ID clanku
+ * @param nazev Nazev clanku
+ * @param abstrakt Abstrakt clanku
+ */
+function editArticle(id, nazev, abstrakt) {
     document.getElementById("article_id").value = id;
     document.getElementById("edit-nazev-clanku").value = nazev;
     document.getElementById("edit-abstrakt").value = abstrakt;
 }
 
+/**
+ * Funkce pri stistku tlacitka Smazat clanek spusti confirm box
+ * @param event Udalost
+ */
 function deleteArticle(event) {
     if (!confirm("Opravdu chcete smazat příspěvek?")) {
         event.preventDefault();
@@ -12,6 +22,9 @@ function deleteArticle(event) {
 }
 
 //// Registration ////
+/**
+ * Funkce overuje shodnost zadavanych hesel pri registraci
+ */
 function overeniHesel() {
     var heslo = document.getElementById("lb_password").value;
     var heslo2 = document.getElementById("lb_confirm_password").value;
@@ -27,10 +40,21 @@ function overeniHesel() {
 }
 
 //// MyReviews ////
+/**
+ * Funkce po stisku tlacitka 'Recenzovat' priradi id_hodnoceni do hidden inputu prislusneho modalu
+ * @param id_hodnoceni ID recenze
+ */
 function recenzovat(id_hodnoceni) {
     document.getElementById('id_hodnoceni').value = id_hodnoceni;
 }
 
+/**
+ * Funkce po stisku tlacitka 'Upravit recenzi' priradi potrebna data do prislusneho modalu
+ * @param id_hodnoceni ID recenze
+ * @param obsah Hodnoceni obsahu
+ * @param jazyk Hodnoceni jazyka
+ * @param odbornost Hodnoceni odbornosti
+ */
 function upravitRecenzi(id_hodnoceni, obsah, jazyk, odbornost) {
     document.getElementById('id_hodnoceni').value = id_hodnoceni;
     document.getElementById('input-obsah').value = obsah;
@@ -39,6 +63,10 @@ function upravitRecenzi(id_hodnoceni, obsah, jazyk, odbornost) {
 }
 
 //// ArticlesManagement ////
+/**
+ * Funkce pri stistku tlacitka Smazat recenzenta spusti confirm box
+ * @param event Udalost
+ */
 function deleteReviewer(event) {
     if (!confirm("Opravdu chcete odstranit recenzenta?")) {
         event.preventDefault();
@@ -46,18 +74,30 @@ function deleteReviewer(event) {
 }
 
 //// User Management ////
+/**
+ * Funkce pri stistku tlacitka Smazat uzivatele spusti confirm box
+ * @param event Udalost
+ */
 function deleteUser(event) {
     if (!confirm("Opravdu chcete smazat uživatele?")) {
         event.preventDefault();
     }
 }
 
+/**
+ * Funkce pri stistku tlacitka Zablokovat uzivatele spusti confirm box
+ * @param event
+ */
 function blockUser(event) {
     if (!confirm("Opravdu chcete zablokovat uživatele?")) {
         event.preventDefault();
     }
 }
 
+/**
+ * Funkce pri stistku tlacitka Povolit uzivatele spusti confirm box
+ * @param event
+ */
 function allowUser(event) {
     if (!confirm("Opravdu chcete povolit uživatele?")) {
         event.preventDefault();

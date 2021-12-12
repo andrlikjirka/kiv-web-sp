@@ -2,6 +2,10 @@
 
 namespace kivweb_sp\views;
 
+/**
+ * Trida obsahujici zakladni metody pro vypis sablony
+ * @author jandrlik
+ */
 class TemplateBasics implements IView
 {
     /** @var string PAGE_INTRODUCTION Sablona s uvodni strankou */
@@ -76,10 +80,10 @@ class TemplateBasics implements IView
     /**
      * Funkce vrati navigaci stranky
      */
-private function getHTMLNav(array $tplData)
-{
-    ?>
-<body>
+    private function getHTMLNav(array $tplData)
+    {
+        ?>
+    <body>
 
     <!-- Navbar-->
     <nav id="navigace" class="navbar navbar-expand-lg navbar-light bg-white fixed-top py-3 shadow-sm">
@@ -196,7 +200,6 @@ private function getHTMLNav(array $tplData)
 
         <?php
     }
-
 
 
 }

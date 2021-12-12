@@ -5,12 +5,16 @@ namespace kivweb_sp\controllers;
 use kivweb_sp\models\Database;
 use kivweb_sp\models\Login;
 
+/**
+ * Trida reprezentujici kontroler uvodni stranky
+ * @author jandrlik
+ */
 class IntroductionController extends AController
 {
     /**
-     * Funkce vrati data uvodni stranky
+     * Funkce predava pole dat ziskane z modelu do view a zaroven zpracovava potrebne formulare
      * @param string $pageTitle Nazev stranky
-     * @return array Data predana sablone
+     * @return array Vraci pole hodnot ziskane z modelu, ktere predava do view
      */
     public function show(string $pageTitle): array
     {

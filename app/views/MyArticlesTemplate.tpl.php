@@ -179,7 +179,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                                         
                                         <hr>
                                         <!-- Button trigger modal -->                                                     
-                                        <button onclick='prirad($prispevek[id_prispevek], \"$prispevek[nadpis]\", \"$prispevek[abstrakt]\")' type='button' 
+                                        <button onclick='editArticle($prispevek[id_prispevek], \"$prispevek[nadpis]\", \"$prispevek[abstrakt]\")' type='button' 
                                                 class='btn btn-warning btn-sm py-1 text-white d-inline-block' data-bs-toggle='modal' data-bs-target='#editArticleModal'
                                                 " . (($prispevek['id_status'] == STATUS_CEKA_NA_POSOUZENI) ? '' : 'disabled') . ">
                                             <i class='bi bi-pencil-square me-2'></i>

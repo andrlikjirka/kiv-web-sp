@@ -6,16 +6,24 @@ use kivweb_sp\models\Database;
 use kivweb_sp\models\Login;
 use kivweb_sp\models\Registration;
 
+/**
+ * Abstraktni kontroler, predek konkretnich kontrolleru
+ * @author jandrlik
+ */
 abstract class AController implements IController
 {
 
     /** @var Database $db Objekt pripojeni k databazi */
     protected $db;
-
+    /** @var Login $login Objekt pro spravu prihlaseni */
     protected $login;
-
+    /** @var Registration $registration Objekt pro spravu registrace */
     protected $registration;
 
+    /**
+     * Konstruktor slouzi pro inicializaci tridy
+     * Pri inicializaci tridy je ziskan objekt pro pripojeni k databazi, objekt spravy prihlaseni a registrace
+     */
     public function __construct()
     {
         $this->db = Database::getDBConnection();
@@ -23,6 +31,9 @@ abstract class AController implements IController
         $this->registration = new Registration();
     }
 
+    /**
+     * Funkce spravuje prihlasovaci formular
+     */
     protected function handleLoginForm()
     {
         // zpracovani odeslanych formularu
@@ -42,6 +53,9 @@ abstract class AController implements IController
         }
     }
 
+    /**
+     * Funkce spravuje formular odhlaseni
+     */
     protected function handleLogoutForm()
     {
         if (isset($_POST['action'])) {
@@ -57,6 +71,9 @@ abstract class AController implements IController
         }
     }
 
+    /**
+     * Funkce spravuje registracni formular
+     */
     protected function handleRegistrationForm()
     {
         // zpracovani odeslaneho registracniho formulare
@@ -89,6 +106,9 @@ abstract class AController implements IController
         }
     }
 
+    /**
+     * Funkce spravuje formular mazani uzivatelu
+     */
     protected function handleDeleteUserForm()
     {
         // zpracovani odeslaneho formulare pro odstraneni uzivatele
@@ -115,6 +135,9 @@ abstract class AController implements IController
         }
     }
 
+    /**
+     * Funkce spravuje formular zmeny role uzivatelu
+     */
     protected function handleChangeRoleForm()
     {
         // zpracovani odeslaneho formulare pro odstraneni uzivatele
@@ -128,6 +151,9 @@ abstract class AController implements IController
         }
     }
 
+    /**
+     * Funkce spravuje formular blokovani a povoleni uzivatelu
+     */
     protected function handleBlockAllowUserForm()
     {
         if (isset($_POST['stav_id_uzivatel'])) {
@@ -152,6 +178,9 @@ abstract class AController implements IController
         }
     }
 
+    /**
+     * Funkce spravuje formular pridani noveho prispevku
+     */
     protected function handleNewArticleForm()
     {
         $UPLOADS_DIR = getcwd() . DIRECTORY_SEPARATOR . "uploads\\";
@@ -180,6 +209,9 @@ abstract class AController implements IController
         }
     }
 
+    /**
+     * Funkce spravuje formular upravy prispevku
+     */
     protected function handleEditArticleForm()
     {
         if (isset($_POST['action']) && $_POST['action'] == 'edit-article'
@@ -249,7 +281,9 @@ abstract class AController implements IController
         }
     }
 
-
+    /**
+     * Funkce spravuje formular pridani recenzenta k prispevku
+     */
     protected function handleAddReviewerForm()
     {
         if (isset($_POST['priradit_recenzenta_id_uzivatel']) && isset($_POST['priradit_recenzenta_id_prispevek'])) {
@@ -264,6 +298,9 @@ abstract class AController implements IController
         }
     }
 
+    /**
+     * Funkce spravuje formular odebrani recenze (recenzenta) z prispevku
+     */
     protected function handleDeleteReviewerForm()
     {
         if (isset($_POST['smazat_id_hodnoceni'])) {
@@ -276,6 +313,9 @@ abstract class AController implements IController
         }
     }
 
+    /**
+     * Funkce spravuje formular upravy recenze prispevku
+     */
     protected function handleUpdateReviewForm()
     {
         if (isset($_POST['action']) && $_POST['action'] == "ulozit-recenzi") {
@@ -292,6 +332,9 @@ abstract class AController implements IController
         }
     }
 
+    /**
+     * Funkce spravuje formular schvaleni prispevku
+     */
     protected function handleApproveArticleForm()
     {
         if (isset($_POST['schvalit_id_clanek']) && isset($_POST['schvalit_id_status'])) {
@@ -304,6 +347,9 @@ abstract class AController implements IController
         }
     }
 
+    /**
+     * Funkce spravuje formular zamitnuti prispevku
+     */
     protected function handleRejectArticleForm()
     {
         if (isset($_POST['zamitnout_id_clanek']) && isset($_POST['zamitnout_id_status'])) {
@@ -316,6 +362,9 @@ abstract class AController implements IController
         }
     }
 
+    /**
+     * Funkce spravuje formular znovu posouzeni prispevku
+     */
     public function handleReviewAgainForm()
     {
         if (isset($_POST['znovu_posoudit_id_clanek']) && isset($_POST['znovu_posoudit_id_status'])) {
@@ -328,7 +377,10 @@ abstract class AController implements IController
         }
     }
 
-
+    /**
+     * Funkce ziskava vsechna potrebna data, ktere predava sablonam
+     * @return array Pole vsech potrebnych dat
+     */
     protected function getData():array
     {
         global $tplData;
@@ -373,7 +425,7 @@ abstract class AController implements IController
 
 
     /**
-     * Funkce vrati data uvodni stranky (implementovano v potomcich - kotrollerech)
+     * Funkce predava pole dat ziskane z modelu do view a zaroven zpracovava potrebne formulare
      * @param string $pageTitle Nazev stranky
      * @return array Data predana sablone
      */

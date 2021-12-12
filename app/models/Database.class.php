@@ -9,6 +9,7 @@ use PDOStatement;
 /**
  * Obalova trida pro praci s databazi pomoci PDO
  * (vyuziti navrhoveho vzoru Singleton)
+ * @author jandrlik
  */
 class Database
 {
@@ -75,7 +76,7 @@ class Database
      * Funkce ziska vsechny prava z databaze
      * @return array Vrati pole prav
      */
-    public function getAllRightsNames()
+    public function getAllRightsNames(): array
     {
         $q = "SELECT nazev FROM " . TABLE_PRAVA;
         $res = $this->pdo->prepare($q);
@@ -104,7 +105,7 @@ class Database
     /**
      * Funkce vrati uzivatele dle zadaneho ID
      * @param int $id_uzivatel ID uzivatele
-     * @return mixed|null Vrati uzivatele pokud se v db nachazi, jinak null
+     * @return array Vrati uzivatele pokud se v db nachazi, jinak null
      */
     public function getUserByID($id_uzivatel): array
     {
@@ -119,6 +120,11 @@ class Database
         }
     }
 
+    /**
+     * Funkce vrati jmeno a prijmeni uzivatele dle zadaneho ID
+     * @param int $id_uzivatel ID uzivatele
+     * @return string Vrati jmeno a prijmeni uzivatele
+     */
     public function getUserNameByID($id_uzivatel): string
     {
         $id_uzivatel = intval($id_uzivatel);
@@ -133,7 +139,11 @@ class Database
         }
     }
 
-
+    /**
+     * Funkce vrati uzivatele s danym loginem
+     * @param string $login Login uzivatele
+     * @return array Vrati informace o uzivateli s danym loginem
+     */
     public function getUserWithLogin($login): array
     {
         $login = htmlspecialchars($login);
@@ -149,10 +159,9 @@ class Database
     }
 
     /**
-     *
      * Funkce je vyuzita pri registraci ke kontrole, zda jiz existuje v databazi nejaky uzivatel se zadanym loginem
-     * @param $login
-     * @return bool
+     * @param string $login Login uzivatele
+     * @return bool Vrati true, pokud uzivatel s danym loginem existuje, jinak false
      */
     public function isUserWithLogin($login): bool
     {
@@ -176,7 +185,7 @@ class Database
     /**
      * Ziskani konkretniho prava uzivatele dle ID prava
      * @param int $id_pravo ID prava
-     * @return array|null Vrati nalezene pravo pokud se v db nachazi, jinak null
+     * @return array|null Vrati nalezene pravo pokud se v db nachazi, jinak prazdne pole
      */
     public function getRightByID($id_pravo): array
     {
@@ -191,6 +200,11 @@ class Database
         }
     }
 
+    /**
+     * Funkce zjisti nazev prava uzivatele dle zadaneho ID uzivatele
+     * @param int $id_uzivatel ID uzivatele
+     * @return string Nazev prava uzivatele
+     */
     public function getUserRight($id_uzivatel): string
     {
         $id_uzivatel = intval($id_uzivatel);
@@ -201,6 +215,11 @@ class Database
         else return '';
     }
 
+    /**
+     * Funkce zjisti vsechny informace o prispevku dle zadaneho ID
+     * @param int $id_prispevek ID prispevku
+     * @return array Vrati vsechny informace o clanku, pokud existuje, jinak prazdne pole
+     */
     public function getArticleByID($id_prispevek): array
     {
         $id_prispevek = intval($id_prispevek);
@@ -214,7 +233,11 @@ class Database
         }
     }
 
-
+    /**
+     * Funkce zjisti ID a jmenoPrijmeni autora clanku dle zadaneho ID clanku
+     * @param int $id_prispevek ID prispevku
+     * @return array Vrati info o autorovi clanku pokud existuje, jinak prazdne pole
+     */
     public function getArticleAuthor($id_prispevek): array
     {
         $id_prispevek = intval($id_prispevek);
@@ -233,7 +256,11 @@ class Database
         }
     }
 
-
+    /**
+     * Funkce zjisti vsechny prirazen recenze dle daneho ID prispevku
+     * @param int $id_prispevek ID prispevku
+     * @return array Vrati pole recenzi daneho prispevku pokud existuji, jinak prazdne pole
+     */
     public function getArticleReviews($id_prispevek): array
     {
         $id_prispevek = intval($id_prispevek);
@@ -254,6 +281,7 @@ class Database
      * @param string $jmeno Jmeno uzivatele
      * @param string $email Email uzivatele
      * @param int $id_pravo ID prava uzivatele
+     * @param int $povolen Uzivatel povolen nebo nepovolen
      * @return bool Vrati true pokud je pridani uzivatele probehne uspesne, jinak false
      */
     public function addNewUser(string $jmeno, string $prijmeni, string $login, string $heslo, string $email, int $id_pravo = 4, int $povolen = 1): bool
@@ -300,6 +328,12 @@ class Database
         }
     }
 
+    /**
+     * Funkce upravi pravo uzivatele
+     * @param int $id_uzivatel ID uzivatele
+     * @param int $id_pravo Pravo uzivatele
+     * @return bool Vrati true pokud uprava prava uzivatele probehne uspesne, jinak false
+     */
     public function updateUserRight(int $id_uzivatel, int $id_pravo): bool
     {
         $id_uzivatel = intval($id_uzivatel);
@@ -315,6 +349,12 @@ class Database
         }
     }
 
+    /**
+     * Funkce blokuje nebo povoluje uzivatele
+     * @param int $id_uzivatel ID uzivatele
+     * @param int $povolen Hodnota, zda ma byt uzivatel povolen (1) nebo zablokovan (0)
+     * @return bool Vrati true pokud je akce uspesna, jinak false
+     */
     public function updateBlockAllowUser(int $id_uzivatel, int $povolen): bool
     {
         $id_uzivatel = intval($id_uzivatel);
@@ -330,6 +370,15 @@ class Database
         }
     }
 
+    /**
+     * @param string $nadpis Nadpis clanku
+     * @param string $abstrakt Abstrakt clanku
+     * @param string $dokument Nazev nahraneho souboru pdf
+     * @param mixed $datum Datum nahrani souboru
+     * @param int $id_uzivatel ID autora
+     * @param string $id_status ID statustu prispevku
+     * @return bool Vrati true, pokud je pridani prispevku uspesne, jinak false
+     */
     public function addNewArticle($nadpis, $abstrakt, $dokument, $datum, $id_uzivatel, $id_status = '1'): bool
     {
         $nadpis = htmlspecialchars($nadpis);
@@ -353,6 +402,11 @@ class Database
         }
     }
 
+    /**
+     * Funkce ziska vsechny autorovy clanky dle zadaneho ID autora
+     * @param int $id_uzivatel ID uzivatele
+     * @return array Vrati pole clanku autora pokud existuji, jinak prazdne pole
+     */
     public function getArticlesByUser($id_uzivatel): array
     {
         $id_uzivatel = intval($id_uzivatel);
@@ -367,6 +421,11 @@ class Database
         }
     }
 
+    /**
+     * Funkce odstrani prispevek dle zadaneho ID prispevku
+     * @param int $id_prispevek ID prispevku
+     * @return bool Vrati true pokud bylo odstraneni clanku uspesne, jinak false
+     */
     public function deleteArticle($id_prispevek): bool
     {
         $id_prispevek = intval($id_prispevek);
@@ -380,6 +439,14 @@ class Database
         }
     }
 
+    /**
+     * @param int $id_prispevek ID prispevku
+     * @param string $nadpis Opraveny nadpis clanku
+     * @param string $abstrakt Opraveny abstrakt
+     * @param string $dokument Opraveny nahrany soubor
+     * @param string $datum Datum nahrani opraveneho souboru
+     * @return bool Vrati true pokud byla uprava clanku uspesna, jinak false
+     */
     public function updateArticle($id_prispevek, $nadpis, $abstrakt, $dokument = "", $datum = ""): bool
     {
         $id_prispevek = intval($id_prispevek);
@@ -410,6 +477,11 @@ class Database
 
     }
 
+    /**
+     * Funkce zjisti recenze recenzenta dle zadaneho ID
+     * @param int $id_uzivatel ID recenzenta
+     * @return array Vrati vsechny recenze recenzenta pokud existuji, jinak prazdne pole
+     */
     public function getReviewsByUser($id_uzivatel): array
     {
         $id_uzivatel = intval($id_uzivatel);
@@ -432,6 +504,12 @@ class Database
         }
     }
 
+    /**
+     * Funkce prida do tabulky recenzi novy zaznam recenze
+     * @param int $id_recenzent ID recenzenta
+     * @param int $id_prispevek ID recenzovaneho prispevku
+     * @return bool Vrati true pokud byla akce uspesna, jinak false
+     */
     public function addNewReview($id_recenzent, $id_prispevek): bool
     {
         $id_recenzent = intval($id_recenzent);
@@ -447,6 +525,11 @@ class Database
         }
     }
 
+    /**
+     * Funkce odstrani recenzi prispevku dle zadaneho ID recenze
+     * @param int $id_hodnoceni ID recenze
+     * @return bool Vrati true pokud byla akce uspesna, jinak false
+     */
     public function deleteReview($id_hodnoceni): bool
     {
         $id_hodnoceni = intval($id_hodnoceni);
@@ -457,6 +540,13 @@ class Database
         else return false;
     }
 
+    /**
+     * @param int $id_hodnoceni ID hodnoceni
+     * @param int $obsah Hodnoceni obsahu clanku
+     * @param int $jazyk Hodnoceni jazyka clanku
+     * @param int $odbornost Hodnoceni odbornosti clanku
+     * @return bool Vrati true pokud byla akce uspesna, jinak false
+     */
     public function updateReview($id_hodnoceni, $obsah, $jazyk, $odbornost): bool
     {
         $id_hodnoceni = intval($id_hodnoceni);
@@ -477,6 +567,11 @@ class Database
         }
     }
 
+    /**
+     * Funkce ziska nazev statusu dle zadaneho ID statusu
+     * @param int $id_status ID statusu
+     * @return string Vrati nazev statusu nebo prazdny retezec
+     */
     public function getStatus($id_status): string
     {
         $id_status = intval($id_status);
@@ -487,6 +582,12 @@ class Database
         else return '';
     }
 
+    /**
+     * Funkce zmeni status clanku prispevku
+     * @param int $id_prispevek ID prispevku
+     * @param int $id_status ID noveho statusu
+     * @return bool Vrati true pokud byla akce uspesna, jinak false
+     */
     public function changeArticleStatus($id_prispevek, $id_status): bool
     {
         $id_prispevek = intval($id_prispevek);
@@ -499,6 +600,11 @@ class Database
         else return false;
     }
 
+    /**
+     * Funkce vrati pocty vyplnenych hodnoceni jednotlivych kategorii u prispevku
+     * @param int $id_prispevek ID prispevku
+     * @return array Pole poctu hodnoceni jednotlivych kategorii, pokud existuji, jinak false
+     */
     public function getCountReviews($id_prispevek): array
     {
         $id_prispevek = intval($id_prispevek);
@@ -507,8 +613,12 @@ class Database
                 WHERE id_prispevek = :id_prispevek";
         $res = $this->pdo->prepare($q);
         $res->bindParam(":id_prispevek", $id_prispevek);
-        if ($res->execute()) return $res->fetch(PDO::FETCH_ASSOC);
-        else return [];
+        if ($res->execute()) {
+            return $res->fetch(PDO::FETCH_ASSOC);
+        }
+        else {
+            return [];
+        }
     }
 
     //////////////////////////////// KONEC: Konkretni funkce ///////////////////////////////////////

@@ -5,6 +5,10 @@ namespace kivweb_sp;
 use kivweb_sp\controllers\IController;
 use kivweb_sp\views\IView;
 
+/**
+ * Trida pro spusteni cele aplikace - podle pozadovane stranky zavola konstruktor, nacte sablonu a preda ji data, zajisti vypis sablony
+ * @author jandrlik
+ */
 class ApplicationStart
 {
 

@@ -4,6 +4,7 @@ namespace kivweb_sp\models;
 
 /**
  * Trida pro spravu prihlaseni uzivatele
+ * @author jandrlik
  */
 class Login
 {
@@ -44,10 +45,6 @@ class Login
      */
     public function login(string $login, string $password)
     {
-        // ziskam uzivatele z DB - primo overuji login
-        //$whereStatement = "login='$login'";
-
-        //$user = $this->db->selectFromTable(TABLE_UZIVATELE, "*", $whereStatement); //nahrazeni funkcí pro ziskani zašifrovaného hesla?
         $user = $this->db->getUserWithLogin($login);
         //ziskal jsem uzivatele
         if (count($user) && $user[0]['povolen'] == 1) {
@@ -56,7 +53,7 @@ class Login
                 $this->session->setSession(self::SESSION_KEY, $user[0]['id_uzivatel']); //beru prvniho nalezeneho a ukladam jen jeho ID
                 return true;
             } else {
-                echo "ERROR: Zadane heslo není správné.";
+                //echo "ERROR: Zadane heslo není správné.";
                 return false;
             }
         } else {
