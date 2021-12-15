@@ -192,7 +192,9 @@ if ($tplData['isUserLoggedIn'] == false) {
                                         <input type='hidden' name='schvalit_id_clanek' value='$prispevek[id_prispevek]'>
                                         <input type='hidden' name='schvalit_id_status' value='" . STATUS_SCHVALIT . "'>
                                         <button type='submit' class='btn btn-success btn-sm text-white me-1 py-1 text-white'
-                                        " . ((($prispevek['id_status'] == STATUS_CEKA_NA_POSOUZENI && $pocetRecenzi == LIMIT_RECENZENTU)) ? '' : 'disabled') . ">
+                                        " . ((($prispevek['id_status'] == STATUS_CEKA_NA_POSOUZENI && $pocetRecenzi == LIMIT_RECENZENTU)) ? '' : 'disabled') . "
+                                        onclick='approveArticle(event)'
+                                        >
                                             <i class='bi bi-check-circle me-2'></i>
                                             Schválit článek
                                         </button>
@@ -203,7 +205,8 @@ if ($tplData['isUserLoggedIn'] == false) {
                                         <input type='hidden' name='zamitnout_id_clanek' value='$prispevek[id_prispevek]'>
                                         <input type='hidden' name='zamitnout_id_status' value='" . STATUS_ZAMITNOUT . "'>
                                         <button type='submit' class='btn btn-danger btn-sm text-white me-1 py-1 text-white'
-                                        " . ((($prispevek['id_status'] == STATUS_CEKA_NA_POSOUZENI && $pocetRecenzi == LIMIT_RECENZENTU)) ? '' : 'disabled') . ">
+                                        " . ((($prispevek['id_status'] == STATUS_CEKA_NA_POSOUZENI && $pocetRecenzi == LIMIT_RECENZENTU)) ? '' : 'disabled') . "
+                                        onclick='rejectArticle(event)'>
                                             <i class='bi bi-x-circle me-2'></i>
                                             Zamítnout článek
                                         </button>
@@ -213,7 +216,8 @@ if ($tplData['isUserLoggedIn'] == false) {
                                 $card .= "<form action='' method='post' class='d-inline-block'> 
                                         <input type='hidden' name='znovu_posoudit_id_clanek' value='$prispevek[id_prispevek]'>
                                         <input type='hidden' name='znovu_posoudit_id_status' value='" . STATUS_CEKA_NA_POSOUZENI . "'>
-                                        <button type='submit' class='btn btn-warning btn-sm text-white me-1 py-1 text-white'>
+                                        <button type='submit' class='btn btn-warning btn-sm text-white me-1 py-1 text-white'
+                                        onclick='reviewAgainArticle(event)'>
                                             <i class='bi bi-x-circle me-2'></i>
                                             Znovu posoudit
                                         </button>
@@ -249,6 +253,35 @@ if ($tplData['isUserLoggedIn'] == false) {
          */
         function deleteReviewer(event) {
             if (!confirm("Opravdu chcete odstranit recenzenta?")) {
+                event.preventDefault();
+            }
+        }
+
+        /**
+         * Funkce pri stisku tlacitka Schvalit spusti confirm box
+         * @param event Udalost
+         */
+        function approveArticle(event) {
+            if (!confirm("Opravdu chcete článek schválit?")) {
+                event.preventDefault();
+            }
+        }
+
+        /**
+         * Funkce pri stisku tlacitka Zamitnout spusti confirm box
+         * @param event Udalost
+         */
+        function rejectArticle(event) {
+            if (!confirm("Opravdu chcete článek zamítnout?")) {
+                event.preventDefault();
+            }
+        }
+        /**
+         * Funkce pri stisku tlacitka Zamitnout spusti confirm box
+         * @param event Udalost
+         */
+        function reviewAgainArticle(event) {
+            if (!confirm("Opravdu chcete znovu posoudit článek?")) {
                 event.preventDefault();
             }
         }

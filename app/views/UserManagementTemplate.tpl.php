@@ -69,7 +69,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                                                 <option value = 4" . ($user['id_pravo'] == '4' ? ' selected' : '') . ">Autor </option >
                                              </select >
                                              <input type='hidden' value='$user[id_uzivatel]' name='zmena_prava_id_uzivatel'>
-                                             <button type='submit' class='mt-1 btn btn-warning  text-white btn-sm py-1 w-75' value='change'>Změnit právo</button>
+                                             <button type='submit' class='mt-1 btn btn-warning  text-white btn-sm py-1 w-75' value='change' onclick='changeRole(event)'>Změnit právo</button>
                                         </form>
                                         </td>";
 
@@ -124,7 +124,7 @@ if ($tplData['isUserLoggedIn'] == false) {
     <script>
         /**
          * Funkce pri stistku tlacitka Zablokovat uzivatele spusti confirm box
-         * @param event
+         * @param event Udalost
          */
         function blockUser(event) {
             if (!confirm("Opravdu chcete zablokovat uživatele?")) {
@@ -134,13 +134,25 @@ if ($tplData['isUserLoggedIn'] == false) {
 
         /**
          * Funkce pri stistku tlacitka Povolit uzivatele spusti confirm box
-         * @param event
+         * @param event Udalost
          */
         function allowUser(event) {
             if (!confirm("Opravdu chcete povolit uživatele?")) {
                 event.preventDefault();
             }
         }
+
+        /**
+         * Funkce pri stisku tlacitka Zmenit roli spusti confirm box
+         * @param event Udalost
+         */
+        function changeRole(event) {
+            if (!confirm("Opravdu chcete změnit právo uživatele?")) {
+                event.preventDefault();
+            }
+        }
+
+
     </script>
 
 
