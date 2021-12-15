@@ -31,6 +31,8 @@ const PRAVO_RECENZENT = 3;
 const PRAVO_ADMIN = 2;
 const PRAVO_SUPERADMIN = 1;
 
+const UPLOADS_DIR = ".\\uploads\\";
+
 
 ////// nastaveni konstant pro autoloader ///////
 
