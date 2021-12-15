@@ -58,6 +58,8 @@ if ($tplData['isUserLoggedIn'] == false) {
                             $pocetRecenzi = min($prispevek['poctyHodnoceni']); //pocet ulozenych recenzi (minimum z poctu recenzi obsahu, jazyka, odbornosti)
                             //echo $pocetRecenzi;
 
+                            $dokument = UPLOADS_DIR . basename($prispevek['dokument'] . ".pdf");
+
                             $card = "
                             <div class='card bg-transparent mb-5 shadow-sm'>
                                 <div class='card-body'>
@@ -69,7 +71,8 @@ if ($tplData['isUserLoggedIn'] == false) {
                                     <p class='card-text'>"
                                 . $prispevek['abstrakt']
                                 . "</p>
-                                    
+                                <a href='$dokument' target='_blank' rel='noopener' class='small'>Zobrazit článek</a>    
+                                                                    
                                 </div>
                                 <div class='card-footer'>
                                     <div class='row'>
@@ -237,6 +240,20 @@ if ($tplData['isUserLoggedIn'] == false) {
 
         </div>
     </section>
+
+
+    <script>
+        /**
+         * Funkce pri stistku tlacitka Smazat recenzenta spusti confirm box
+         * @param event Udalost
+         */
+        function deleteReviewer(event) {
+            if (!confirm("Opravdu chcete odstranit recenzenta?")) {
+                event.preventDefault();
+            }
+        }
+
+    </script>
 
     <?php
 }

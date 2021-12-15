@@ -48,15 +48,6 @@ function upravitRecenzi(id_hodnoceni, obsah, jazyk, odbornost) {
 }
 
 //// ArticlesManagement ////
-/**
- * Funkce pri stistku tlacitka Smazat recenzenta spusti confirm box
- * @param event Udalost
- */
-function deleteReviewer(event) {
-    if (!confirm("Opravdu chcete odstranit recenzenta?")) {
-        event.preventDefault();
-    }
-}
 
 //// User Management ////
 /**
