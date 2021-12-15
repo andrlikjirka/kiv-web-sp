@@ -439,6 +439,23 @@ class Database
         }
     }
 
+    public function getPublishedArticles()
+    {
+        $q = "
+        SELECT p.nadpis, p.abstrakt, p.datum, p.dokument, CONCAT(u.jmeno, ' ', u.prijmeni) as autor
+        FROM jandrlik_prispevky p,
+             jandrlik_uzivatele u
+        WHERE p.id_uzivatel = u.id_uzivatel
+        AND   p.id_status = 2
+        ORDER BY p.datum DESC";
+        $res = $this->pdo->prepare($q);
+        if ($res->execute()) {
+            return $res->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return [];
+        }
+    }
+
     /**
      * @param int $id_prispevek ID prispevku
      * @param string $nadpis Opraveny nadpis clanku
@@ -615,8 +632,7 @@ class Database
         $res->bindParam(":id_prispevek", $id_prispevek);
         if ($res->execute()) {
             return $res->fetch(PDO::FETCH_ASSOC);
-        }
-        else {
+        } else {
             return [];
         }
     }

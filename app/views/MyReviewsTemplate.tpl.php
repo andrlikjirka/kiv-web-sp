@@ -61,9 +61,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                                         <span class='small'>Datum: " . $r['datum'] . "</span>
                                     </div> 
                                     <h5 class='card-title'>" . $r['nadpis'] . "</h5>
-                                    <p class='card-text'>"
-                                . $r['abstrakt']
-                                . "</p>
+                                    <p class='card-text'>" . htmlspecialchars_decode($r['abstrakt']) . "</p>
                                <a href='$dokument' target='_blank' class='small'>Zobrazit článek</a>
                                 </div>
                                 <div class='card-footer'>

@@ -419,6 +419,8 @@ abstract class AController implements IController
             }
 
         }
+
+        $tplData['publikovanePrispevky'] = $this->db->getPublishedArticles();
         return $tplData;
     }
 

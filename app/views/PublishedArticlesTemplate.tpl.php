@@ -18,11 +18,37 @@ global $tplData;
             </div>
         </div>
         <div class="row mb-5 justify-content-center">
-                <div class="col-lg-10">
+            <div class="col-lg-10">
 
-                </div>
+                <?php
+                $articles = "";
+                $prispevky = $tplData['publikovanePrispevky'];
+
+                foreach ($prispevky as $prispevek) {
+                    $dokument = UPLOADS_DIR . basename($prispevek['dokument'] . ".pdf");
+
+                    $articles .= "
+                     <article>
+                    <a class='link-dark text-decoration-none ' href='$dokument' target='_blank' rel='noopener'>
+                        <h5>$prispevek[nadpis]</h5>
+                        <p class='text-dark'>" . htmlspecialchars_decode($prispevek['abstrakt']) . "</p>
+                    </a> 
+                    <div> 
+                        <div class='text-secondary small'>$prispevek[autor]</div>
+                        <div class='text-secondary small'>$prispevek[datum]</div>
+                    </div>
+                    <hr class='my-4'>
+                </article>
+                    ";
+
+                }
+                echo $articles;
+
+                ?>
+
             </div>
-
         </div>
-    </section>
+
+    </div>
+</section>
 
