@@ -405,7 +405,6 @@ abstract class AController implements IController
 
         $tplData['prispevky'] = $this->db->getAllArticles();
         for ($i = 0; $i < count($tplData['prispevky']); $i++) {
-            $tplData['prispevky'][$i]['abstrakt'] = htmlspecialchars_decode($tplData['prispevky'][$i]['abstrakt']); //abstrakt: prevedeni html entit zpet na tagy
             $tplData['prispevky'][$i]['status'] = $this->db->getStatus($tplData['prispevky'][$i]['id_status']);
             $tplData['prispevky'][$i]['autor'] = $this->db->getArticleAuthor($tplData['prispevky'][$i]['id_prispevek']);
             $tplData['prispevky'][$i]['poctyHodnoceni'] = $this->db->getCountReviews($tplData['prispevky'][$i]['id_prispevek']);

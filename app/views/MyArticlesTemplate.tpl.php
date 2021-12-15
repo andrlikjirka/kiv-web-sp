@@ -110,9 +110,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                             <div class='card bg-transparent my-4 shadow-sm'>
                                 <div class='card-body'>
                                     <h5 class='card-title'>" . $prispevek['nadpis'] . "</h5>
-                                    <div class='card-text'>"
-                                    . $prispevek['abstrakt']
-                                    . "</div>
+                                    <div class='card-text'>" . htmlspecialchars_decode($prispevek['abstrakt']) . "</div>
                                     <a href='$dokument' target='_blank' rel='noopener' class='small'>Zobrazit článek</a>
                                     <!--<span class='small'>(" . $dokument . ")</span>-->
                                 </div>
