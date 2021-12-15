@@ -100,17 +100,19 @@ if ($tplData['isUserLoggedIn'] == false) {
 
                     if (!empty($prispevky)) {
                         foreach ($prispevky as $prispevek) {
-                            $dokument = $tplData['UPLOADS_DIR'] . basename($prispevek['dokument'] . ".pdf");
+                            $dokument = UPLOADS_DIR . basename($prispevek['dokument'] . ".pdf");
                             $card = "";
+
+                            //$prispevek['abstrakt'] = htmlspecialchars_decode($prispevek['abstrakt']);
 
                             if ($prispevek['autor']['id_uzivatel'] == $loggedUser['id_uzivatel']) {
                                 $card .= "
                             <div class='card bg-transparent my-4 shadow-sm'>
                                 <div class='card-body'>
                                     <h5 class='card-title'>" . $prispevek['nadpis'] . "</h5>
-                                    <p class='card-text'>"
+                                    <div class='card-text'>"
                                     . $prispevek['abstrakt']
-                                    . "</p>
+                                    . "</div>
                                     <a href='$dokument' target='_blank' rel='noopener' class='small'>Zobrazit článek</a>
                                     <!--<span class='small'>(" . $dokument . ")</span>-->
                                 </div>
@@ -179,7 +181,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                                         
                                         <hr>
                                         <!-- Button trigger modal -->                                                     
-                                        <button onclick='editArticle($prispevek[id_prispevek], \"$prispevek[nadpis]\", \"$prispevek[abstrakt]\")' type='button' 
+                                        <button onclick=\"editArticle($prispevek[id_prispevek], '$prispevek[nadpis]', this)\" type='button' 
                                                 class='btn btn-warning btn-sm py-1 text-white d-inline-block' data-bs-toggle='modal' data-bs-target='#editArticleModal'
                                                 " . (($prispevek['id_status'] == STATUS_CEKA_NA_POSOUZENI) ? '' : 'disabled') . ">
                                             <i class='bi bi-pencil-square me-2'></i>
@@ -263,15 +265,29 @@ if ($tplData['isUserLoggedIn'] == false) {
 
 
     </section>
-    <!--
+
     <script>
-        CKEDITOR.replace('new-abstrakt', {
-            toolbar: [
-                [ 'Cut', 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo' ],
-                {name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat' ] }
-            ],
-            removeButtons: ''
-        });
+        //místo předávání parametrů do onlclick funkce, vše brát pomocí JS ze stránky
+        //ckeditor - setData
+
+
+        function editArticle(id, nazev, button) {
+            //console.log(abstrakt);
+            document.getElementById("article_id").value = id;
+            document.getElementById("edit-nazev-clanku").value = nazev;
+            //document.getElementById("edit-abstrakt").value = abstrakt;
+            console.log(button.parentElement.parentElement);
+
+            var abstract = button.parentElement.parentElement.querySelector(".card-text").innerHTML;
+            console.log(abstract);
+
+            CKEDITOR.instances['edit-abstrakt'].setData(abstract);
+        }
+    </script>
+
+
+    <script>
+
         CKEDITOR.replace('edit-abstrakt', {
             toolbar: [
                 [ 'Cut', 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo' ],
@@ -279,9 +295,19 @@ if ($tplData['isUserLoggedIn'] == false) {
             ],
             removeButtons: ''
         });
+
+
+        CKEDITOR.replace('new-abstrakt', {
+            toolbar: [
+                [ 'Cut', 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo' ],
+                {name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat' ] }
+            ],
+            removeButtons: ''
+        });
+
+
     </script>
-    -->
-    <
+
     <?php
 
 

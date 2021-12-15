@@ -45,7 +45,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                     if (!empty($recenze)) {
 
                         foreach ($recenze as $r) {
-                            $dokument = $tplData['UPLOADS_DIR'] . basename($r['dokument'] . ".pdf");
+                            $dokument = UPLOADS_DIR . basename($r['dokument'] . ".pdf");
 
                             if (empty($r['obsah']) || empty($r['jazyk']) || empty($r['odbornost'])) {
                                 $recenzovano = false;

@@ -1,15 +1,8 @@
+/// funkce, které dělají manipulaci s daty do modalu, vratit je do sablon!!!!!
+
+
 //// My Articles ////
-/**
- * Funkce pri stisku tlacitka 'Upravit clanek' priradi data do prislusneho modalu
- * @param id ID clanku
- * @param nazev Nazev clanku
- * @param abstrakt Abstrakt clanku
- */
-function editArticle(id, nazev, abstrakt) {
-    document.getElementById("article_id").value = id;
-    document.getElementById("edit-nazev-clanku").value = nazev;
-    document.getElementById("edit-abstrakt").value = abstrakt;
-}
+
 
 /**
  * Funkce pri stistku tlacitka Smazat clanek spusti confirm box

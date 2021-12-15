@@ -388,14 +388,14 @@ abstract class AController implements IController
             $tplData['isUserLoggedIn'] = true;
             $tplData['userData'] = $this->login->getLoggedUserData();
             $tplData['userData']['nazevPravo'] = $this->db->getUserRight($tplData['userData']['id_uzivatel']);
-            if ($tplData['userData']['id_pravo'] == PRAVO_AUTOR) { //prihlaseny uzivatel je autor
+            /*if ($tplData['userData']['id_pravo'] == PRAVO_AUTOR) { //prihlaseny uzivatel je autor
                 $tplData['userArticles'] = $this->db->getArticlesByUser($tplData['userData']['id_uzivatel']);
-            }
+            }*/
             if ($tplData['userData']['id_pravo'] == PRAVO_RECENZENT) { //prihlaseny uzivatel je recenzent
                 $tplData['userReviews'] = $this->db->getReviewsByUser($tplData['userData']['id_uzivatel']);
             }
-            //if prihlaseny uzivatel je alespon admin tak getAllUsers, articles ???
-            $tplData['UPLOADS_DIR'] = ".\\uploads\\";
+
+            //$tplData['UPLOADS_DIR'] = ".\\uploads\\";
 
         } else {
             $tplData['isUserLoggedIn'] = false;
@@ -405,6 +405,7 @@ abstract class AController implements IController
 
         $tplData['prispevky'] = $this->db->getAllArticles();
         for ($i = 0; $i < count($tplData['prispevky']); $i++) {
+            $tplData['prispevky'][$i]['abstrakt'] = htmlspecialchars_decode($tplData['prispevky'][$i]['abstrakt']); //abstrakt: prevedeni html entit zpet na tagy
             $tplData['prispevky'][$i]['status'] = $this->db->getStatus($tplData['prispevky'][$i]['id_status']);
             $tplData['prispevky'][$i]['autor'] = $this->db->getArticleAuthor($tplData['prispevky'][$i]['id_prispevek']);
             $tplData['prispevky'][$i]['poctyHodnoceni'] = $this->db->getCountReviews($tplData['prispevky'][$i]['id_prispevek']);
