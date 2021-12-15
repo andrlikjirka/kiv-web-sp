@@ -4,15 +4,7 @@
 //// My Articles ////
 
 
-/**
- * Funkce pri stistku tlacitka Smazat clanek spusti confirm box
- * @param event Udalost
- */
-function deleteArticle(event) {
-    if (!confirm("Opravdu chcete smazat příspěvek?")) {
-        event.preventDefault();
-    }
-}
+
 
 //// Registration ////
 /**

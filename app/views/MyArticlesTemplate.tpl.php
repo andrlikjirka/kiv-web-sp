@@ -151,20 +151,20 @@ if ($tplData['isUserLoggedIn'] == false) {
                                             <tr>
                                                 <td>$hodnoceni[recenzent]</td>
                                                 <td>";
-                                                for ($i = 0; $i < $hodnoceni['obsah']; $i++) {
-                                                    $card .= "<i class='bi bi-star-fill me-1 text-warning'></i>"; //vypis hvezdicek
-                                                }
-                                                $card .= "</td>
+                                        for ($i = 0; $i < $hodnoceni['obsah']; $i++) {
+                                            $card .= "<i class='bi bi-star-fill me-1 text-warning'></i>"; //vypis hvezdicek
+                                        }
+                                        $card .= "</td>
                                                 <td>";
-                                                for ($i = 0; $i < $hodnoceni['jazyk']; $i++) {
-                                                    $card .= "<i class='bi bi-star-fill me-1 text-warning'></i>"; //vypis hvezdicek
-                                                }
-                                                $card .= "</td>
+                                        for ($i = 0; $i < $hodnoceni['jazyk']; $i++) {
+                                            $card .= "<i class='bi bi-star-fill me-1 text-warning'></i>"; //vypis hvezdicek
+                                        }
+                                        $card .= "</td>
                                                 <td>";
-                                                for ($i = 0; $i < $hodnoceni['odbornost']; $i++) {
-                                                    $card .= "<i class='bi bi-star-fill me-1 text-warning'></i>"; //vypis hvezdicek
-                                                }
-                                                $card .= "</td>
+                                        for ($i = 0; $i < $hodnoceni['odbornost']; $i++) {
+                                            $card .= "<i class='bi bi-star-fill me-1 text-warning'></i>"; //vypis hvezdicek
+                                        }
+                                        $card .= "</td>
                                             </tr>";
                                     }
 
@@ -181,7 +181,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                                         
                                         <hr>
                                         <!-- Button trigger modal -->                                                     
-                                        <button onclick=\"editArticle($prispevek[id_prispevek], '$prispevek[nadpis]', this)\" type='button' 
+                                        <button onclick=\"editArticle('$prispevek[id_prispevek]', this)\" type='button' 
                                                 class='btn btn-warning btn-sm py-1 text-white d-inline-block' data-bs-toggle='modal' data-bs-target='#editArticleModal'
                                                 " . (($prispevek['id_status'] == STATUS_CEKA_NA_POSOUZENI) ? '' : 'disabled') . ">
                                             <i class='bi bi-pencil-square me-2'></i>
@@ -238,7 +238,8 @@ if ($tplData['isUserLoggedIn'] == false) {
                                         <div class="mb-3">
                                             <label for="edit-upload" class="form-label">PDF soubor s upraveným
                                                 článkem</label>
-                                            <input class="form-control" type="file" id="edit-upload" name="editUploadFile">
+                                            <input class="form-control" type="file" id="edit-upload"
+                                                   name="editUploadFile">
                                         </div>
 
                                         <input type="hidden" name="article_id" id="article_id">
@@ -270,41 +271,61 @@ if ($tplData['isUserLoggedIn'] == false) {
         //místo předávání parametrů do onlclick funkce, vše brát pomocí JS ze stránky
         //ckeditor - setData
 
-
-        function editArticle(id, nazev, button) {
-            //console.log(abstrakt);
+        /**
+         * Funkce pri stisku tlacita "Upravit clanek" priradi do modalu potrebna data
+         * @param id ID upravovaneho clanku
+         * @param button Aktualni instance tlacitka Upravit
+         */
+        function editArticle(id, button) {
             document.getElementById("article_id").value = id;
-            document.getElementById("edit-nazev-clanku").value = nazev;
-            //document.getElementById("edit-abstrakt").value = abstrakt;
+
             console.log(button.parentElement.parentElement);
+
+            var nazev = button.parentElement.parentElement.querySelector(".card-title").innerHTML;
+            console.log(nazev);
+            document.getElementById("edit-nazev-clanku").value = nazev;
 
             var abstract = button.parentElement.parentElement.querySelector(".card-text").innerHTML;
             console.log(abstract);
 
             CKEDITOR.instances['edit-abstrakt'].setData(abstract);
         }
+
+        /**
+         * Funkce pri stistku tlacitka Smazat clanek spusti confirm box
+         * @param event Udalost
+         */
+        function deleteArticle(event) {
+            if (!confirm("Opravdu chcete smazat příspěvek?")) {
+                event.preventDefault();
+            }
+        }
     </script>
 
 
+    <!-- CKEditor - nahrazeni textarea -->
     <script>
-
         CKEDITOR.replace('edit-abstrakt', {
             toolbar: [
-                [ 'Cut', 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo' ],
-                {name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat' ] }
+                ['Cut', 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo'],
+                {
+                    name: 'basicstyles',
+                    items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat']
+                }
             ],
             removeButtons: ''
         });
-
 
         CKEDITOR.replace('new-abstrakt', {
             toolbar: [
-                [ 'Cut', 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo' ],
-                {name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat' ] }
+                ['Cut', 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo'],
+                {
+                    name: 'basicstyles',
+                    items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat']
+                }
             ],
             removeButtons: ''
         });
-
 
     </script>
 
