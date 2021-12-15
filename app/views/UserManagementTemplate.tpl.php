@@ -121,6 +121,28 @@ if ($tplData['isUserLoggedIn'] == false) {
         </div>
     </section>
 
+    <script>
+        /**
+         * Funkce pri stistku tlacitka Zablokovat uzivatele spusti confirm box
+         * @param event
+         */
+        function blockUser(event) {
+            if (!confirm("Opravdu chcete zablokovat uživatele?")) {
+                event.preventDefault();
+            }
+        }
+
+        /**
+         * Funkce pri stistku tlacitka Povolit uzivatele spusti confirm box
+         * @param event
+         */
+        function allowUser(event) {
+            if (!confirm("Opravdu chcete povolit uživatele?")) {
+                event.preventDefault();
+            }
+        }
+    </script>
+
 
 
     <?php

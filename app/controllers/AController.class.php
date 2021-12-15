@@ -320,9 +320,9 @@ abstract class AController implements IController
             $res = $this->db->updateReview($_POST['id_hodnoceni'], $_POST['obsah'], $_POST['jazyk'], $_POST['odbornost']);
 
             if ($res) {
-                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Recenzování příspěvku proběhlo úspěšně.</div>";
+                echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Uložení recenze proběhlo úspěšně.</div>";
             } else {
-                echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Recenzování příspěvku se nezdařilo.</div>";
+                echo "<br><br><div class='alert alert-danger text-center mt-5' role='alert'>Uložení recenze se nezdařilo.</div>";
 
             }
 

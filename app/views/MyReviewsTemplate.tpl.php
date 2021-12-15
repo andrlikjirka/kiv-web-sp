@@ -83,7 +83,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                             if ($recenzovano == false) {
                                 $card .= "
                             <!-- Button trigger modal -->                                                     
-                            <button onclick='recenzovat($r[id_hodnoceni])' type='button' 
+                            <button onclick=\"recenzovat('$r[id_hodnoceni]')\" type='button' 
                                     class='btn btn-warning btn-sm py-1 d-inline-block text-white' data-bs-toggle='modal' data-bs-target='#recenzeModal'
                                     " . (($r['id_status'] == STATUS_CEKA_NA_POSOUZENI) ? '' : 'disabled') . ">
                                 <i class='bi bi-star-fill me-2'></i>
@@ -130,7 +130,7 @@ if ($tplData['isUserLoggedIn'] == false) {
 
                                 $card .= "
                             <!-- Button trigger modal -->                                                     
-                            <button onclick='upravitRecenzi($r[id_hodnoceni], $r[obsah], $r[jazyk], $r[odbornost])' type='button'
+                            <button onclick=\"upravitRecenzi('$r[id_hodnoceni]', '$r[obsah]', '$r[jazyk]', '$r[odbornost]')\" type='button'
                                     class='btn btn-warning btn-sm py-1 d-inline-block text-white' data-bs-toggle='modal' data-bs-target='#recenzeModal'
                                     " . (($r['id_status'] == STATUS_CEKA_NA_POSOUZENI) ? '' : 'disabled') . ">
                                 <i class='bi bi-star-fill me-2 text-white'></i>
@@ -206,6 +206,33 @@ if ($tplData['isUserLoggedIn'] == false) {
 
         </div>
     </section>
+
+
+    <script>
+        /**
+         * Funkce po stisku tlacitka 'Recenzovat' priradi id_hodnoceni do hidden inputu prislusneho modalu
+         * @param id_hodnoceni ID recenze
+         */
+        function recenzovat(id_hodnoceni) {
+            document.getElementById('id_hodnoceni').value = id_hodnoceni;
+        }
+
+        /**
+         * Funkce po stisku tlacitka 'Upravit recenzi' priradi potrebna data do prislusneho modalu
+         * @param id_hodnoceni ID recenze
+         * @param obsah Hodnoceni obsahu
+         * @param jazyk Hodnoceni jazyka
+         * @param odbornost Hodnoceni odbornosti
+         */
+        function upravitRecenzi(id_hodnoceni, obsah, jazyk, odbornost) {
+            document.getElementById('id_hodnoceni').value = id_hodnoceni;
+            document.getElementById('input-obsah').value = obsah;
+            document.getElementById('input-jazyk').value = jazyk;
+            document.getElementById('input-odbornost').value = odbornost;
+        }
+
+
+    </script>
 
     <?php
 
