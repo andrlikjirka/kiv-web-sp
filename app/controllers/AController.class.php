@@ -85,9 +85,7 @@ abstract class AController implements IController
                 && $_POST['login'] != "" && $_POST['password1'] != "" && $_POST['jmeno'] != "" && $_POST['prijmeni'] != "" && $_POST['email'] != ""
             ) {
                 if ($this->db->isUserWithLogin($_POST['login']) == false) { //neexistuje v db uzivatel se zadanym loginem
-                    $password = htmlspecialchars($_POST['password1']); //ochrana proti XSS
-                    $hash_password = password_hash($password, PASSWORD_BCRYPT);
-                    $result = $this->registration->registrateUser($_POST['jmeno'], $_POST['prijmeni'], $_POST['login'], $hash_password, $_POST['email']);
+                    $result = $this->registration->registrateUser($_POST['jmeno'], $_POST['prijmeni'], $_POST['login'], $_POST['password1'], $_POST['email']);
                     if ($result) {
                         //echo "OK: Uživatel byl přidán do databáze.";
                         echo "<br><br><div class='alert alert-success text-center mt-5' role='alert'>Registrace uživatele proběhla úspěšně.</div>";

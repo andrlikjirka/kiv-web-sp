@@ -29,8 +29,10 @@ class Registration
      * @param int $id_pravo ID prava uzivatele
      * @return bool Vrati true, pokud byla registrace uspesna, jinak false
      */
-    public function registrateUser(string $jmeno, string $prijmeni, string $login, string $hash_password, string $email, int $id_pravo = 4)
+    public function registrateUser(string $jmeno, string $prijmeni, string $login, string $password, string $email, int $id_pravo = 4)
     {
+        $password = htmlspecialchars($password); //ochrana proti XSS
+        $hash_password = password_hash($password, PASSWORD_BCRYPT); //sifrovani hesla
         return $this->db->addNewUser($jmeno, $prijmeni, $login, $hash_password, $email, $id_pravo);
     }
 
