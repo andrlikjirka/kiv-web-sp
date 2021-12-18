@@ -24,6 +24,8 @@ class TemplateBasics implements IView
     const PAGE_MY_ARTICLES = "MyArticlesTemplate.tpl.php";
     /** @var string PAGE_MY_REVIEWS Sablona pro moje recenze */
     const PAGE_MY_REVIEWS = "MyReviewsTemplate.tpl.php";
+    /** @var string PAGE_VIEW_ARTICLE Sablona pro zobrazeni clanku (prazdna, zobrazeni probiha pres readfile() ) */
+    const PAGE_VIEW_ARTICLE = "ViewArticleTemplate.tpl.php";
 
     /**
      * Zajisti vypsani HTML sablony prislusne stranky

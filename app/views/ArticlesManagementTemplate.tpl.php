@@ -58,8 +58,6 @@ if ($tplData['isUserLoggedIn'] == false) {
                             $pocetRecenzi = min($prispevek['poctyHodnoceni']); //pocet ulozenych recenzi (minimum z poctu recenzi obsahu, jazyka, odbornosti)
                             //echo $pocetRecenzi;
 
-                            $dokument = UPLOADS_DIR . basename($prispevek['dokument'] . ".pdf");
-
                             $card = "
                             <div class='card bg-transparent mb-5 shadow-sm'>
                                 <div class='card-body'>
@@ -69,9 +67,9 @@ if ($tplData['isUserLoggedIn'] == false) {
                                     </div>          
                                     <h5 class='card-title'>" . $prispevek['nadpis'] . "</h5>
                                     <p class='card-text'>"
-                                . $prispevek['abstrakt']
+                                . htmlspecialchars_decode($prispevek['abstrakt'])
                                 . "</p>
-                                <a href='$dokument' target='_blank' rel='noopener' class='small'>Zobrazit článek</a>    
+                                <a href='?page=zobrazeni&dokument=" . $prispevek['dokument'] . "' target='_blank' rel='noopener' class='small'>Zobrazit článek</a>    
                                                                     
                                 </div>
                                 <div class='card-footer'>
@@ -139,20 +137,20 @@ if ($tplData['isUserLoggedIn'] == false) {
                                 <tr>
                                     <td>$hodnoceni[recenzent]</td>
                                     <td>";
-                                    for ($i = 0; $i < $hodnoceni['obsah']; $i++) {
-                                        $card .= "<i class='bi bi-star-fill me-1 text-warning'></i>"; //vypis hvezdicek
-                                    }
-                                    $card .= "</td>
+                                for ($i = 0; $i < $hodnoceni['obsah']; $i++) {
+                                    $card .= "<i class='bi bi-star-fill me-1 text-warning'></i>"; //vypis hvezdicek
+                                }
+                                $card .= "</td>
                                     <td>";
-                                    for ($i = 0; $i < $hodnoceni['jazyk']; $i++) {
-                                        $card .= "<i class='bi bi-star-fill me-1 text-warning'></i>"; //vypis hvezdicek
-                                    }
-                                    $card .= "</td>
+                                for ($i = 0; $i < $hodnoceni['jazyk']; $i++) {
+                                    $card .= "<i class='bi bi-star-fill me-1 text-warning'></i>"; //vypis hvezdicek
+                                }
+                                $card .= "</td>
                                     <td>";
-                                    for ($i = 0; $i < $hodnoceni['odbornost']; $i++) {
-                                        $card .= "<i class='bi bi-star-fill me-1 text-warning'></i>"; //vypis hvezdicek
-                                    }
-                                    $card .= "</td>
+                                for ($i = 0; $i < $hodnoceni['odbornost']; $i++) {
+                                    $card .= "<i class='bi bi-star-fill me-1 text-warning'></i>"; //vypis hvezdicek
+                                }
+                                $card .= "</td>
                                     <td>";
 
                                 if ($prispevek['id_status'] == 1) { // odstranovat recenzenty lze jen ve stavu cekani na posouzeni
@@ -276,6 +274,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                 event.preventDefault();
             }
         }
+
         /**
          * Funkce pri stisku tlacitka Zamitnout spusti confirm box
          * @param event Udalost

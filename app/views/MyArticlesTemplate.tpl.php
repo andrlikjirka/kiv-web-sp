@@ -100,10 +100,7 @@ if ($tplData['isUserLoggedIn'] == false) {
 
                     if (!empty($prispevky)) {
                         foreach ($prispevky as $prispevek) {
-                            $dokument = UPLOADS_DIR . basename($prispevek['dokument'] . ".pdf");
                             $card = "";
-
-                            //$prispevek['abstrakt'] = htmlspecialchars_decode($prispevek['abstrakt']);
 
                             if ($prispevek['autor']['id_uzivatel'] == $loggedUser['id_uzivatel']) {
                                 $card .= "
@@ -111,8 +108,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                                 <div class='card-body'>
                                     <h5 class='card-title'>" . $prispevek['nadpis'] . "</h5>
                                     <div class='card-text'>" . htmlspecialchars_decode($prispevek['abstrakt']) . "</div>
-                                    <a href='$dokument' target='_blank' rel='noopener' class='small'>Zobrazit článek</a>
-                                    <!--<span class='small'>(" . $dokument . ")</span>-->
+                                    <a href='index.php?page=zobrazeni&dokument=" . $prispevek['dokument']."' target='_blank' rel='noopener' class='small'>Zobrazit článek</a>
                                 </div>
                                 <div class='card-footer'>";
 

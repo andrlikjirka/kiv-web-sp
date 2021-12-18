@@ -9,7 +9,7 @@ namespace kivweb_sp\controllers;
 interface IController
 {
     /**
-     * Funkce predava pole dat ziskane z modelu do view a zaroven zpracovava potrebne formualre
+     * Funkce predava pole dat ziskane z modelu do view a zaroven zpracovava potrebne formulare
      * @param string $pageTitle Nazev stranky
      * @return array Vraci pole hodnot ziskane z modelu, ktere predava do view
      */

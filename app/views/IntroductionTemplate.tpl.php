@@ -8,7 +8,11 @@ namespace kivweb_sp\views;
 // urceni globalnich promennych, se kterymi sablona pracuje
 global $tplData;
 
+if (isset($_GET['zobrazeni']) && $_GET['zobrazeni'] == "chyba")
+    echo "<div class='pt-5 mt-5'><div class='alert alert-danger text-center' role='alert'>Chyba při zobrazení článku.</div></div>";
 ?>
+
+
 <!-- Úvod -->
 <section class="bg-success bg-gradient pt-5" id="uvod">
     <div class="container px-5 py-5">

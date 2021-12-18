@@ -126,10 +126,18 @@ const WEB_PAGES = array(
         "controller_class_name" => \kivweb_sp\controllers\MyReviewsController::class,
         "view_class_name" => \kivweb_sp\views\TemplateBasics::class,
         "template_type" => \kivweb_sp\views\TemplateBasics::PAGE_MY_REVIEWS,
-    )
+    ),
     /// KONEC: Moje recenze ////
 
+    //// Download ////
+    "zobrazeni" => array(
+        "title" => "Zobrazení článku",
+        "controller_class_name" => \kivweb_sp\controllers\ViewArticleController::class,
+        "view_class_name" => \kivweb_sp\views\TemplateBasics::class,
+        "template_type" => \kivweb_sp\views\TemplateBasics::PAGE_VIEW_ARTICLE,
+    )
 
+    //// KONEC: Download /////
 );
 
 

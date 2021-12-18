@@ -45,8 +45,6 @@ if ($tplData['isUserLoggedIn'] == false) {
                     if (!empty($recenze)) {
 
                         foreach ($recenze as $r) {
-                            $dokument = UPLOADS_DIR . basename($r['dokument'] . ".pdf");
-
                             if (empty($r['obsah']) || empty($r['jazyk']) || empty($r['odbornost'])) {
                                 $recenzovano = false;
                             } else {
@@ -62,7 +60,7 @@ if ($tplData['isUserLoggedIn'] == false) {
                                     </div> 
                                     <h5 class='card-title'>" . $r['nadpis'] . "</h5>
                                     <p class='card-text'>" . htmlspecialchars_decode($r['abstrakt']) . "</p>
-                               <a href='$dokument' target='_blank' class='small'>Zobrazit článek</a>
+                               <a href='index.php?page=zobrazeni&dokument=".$r['dokument']."' target='_blank' class='small'>Zobrazit článek</a>
                                 </div>
                                 <div class='card-footer'>
                                     ";
