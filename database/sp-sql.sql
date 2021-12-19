@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `jandrlik_prispevky` (
   `id_prispevek` INT NOT NULL AUTO_INCREMENT,
   `id_uzivatel` INT NOT NULL,
   `id_status` INT NOT NULL,
-  `nadpis` VARCHAR(50) NOT NULL,
+  `nadpis` VARCHAR(250) NOT NULL,
   `abstrakt` LONGTEXT NOT NULL,
   `dokument` VARCHAR(60) NOT NULL,
   `datum` DATETIME NOT NULL,
