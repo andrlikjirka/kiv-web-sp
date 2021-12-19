@@ -152,6 +152,16 @@ if ($tplData['isUserLoggedIn'] == false) {
             }
         }
 
+        /**
+         * Funkce pri stisku tlacitak Smazat uzivatele spusti confirm box
+         * @param event Udalost
+         */
+        function deleteUser(event) {
+            if (!confirm("Opravdu chcete smazat uživatele?")) {
+                event.preventDefault();
+            }
+        }
+
 
     </script>
 
