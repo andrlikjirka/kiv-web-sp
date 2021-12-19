@@ -43,6 +43,12 @@ global $tplData;
                 }
                 echo $articles;
 
+                if ($articles == "") {      // zadne publikovane clanky
+                    $noReviews = "<p class='text-dark mt-3'>(Žádné publikované články)</p>";
+                    echo $noReviews;
+                }
+
+
                 ?>
 
             </div>
